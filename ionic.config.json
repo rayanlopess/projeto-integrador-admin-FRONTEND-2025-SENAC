@@ -1,0 +1,7 @@
+{
+  "name": "pi-2025-frontend",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
