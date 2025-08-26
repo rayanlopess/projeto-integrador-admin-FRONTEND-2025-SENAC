@@ -3,15 +3,8 @@ import { PathsPage } from './pages/paths/paths.page';
 
 export const routes: Routes = [
 
-  //caminho vazio redireciona para home
-  {
-    path: '',
-    redirectTo: 'path/home',
-    pathMatch: 'full',
-  },
-
-  //rotas principais
-  {
+   //rotas principais
+   {
     path: 'path',
     component: PathsPage,
     children: [
@@ -74,7 +67,11 @@ export const routes: Routes = [
   },
 
 
-
-
+  //caminho vazio redireciona para home
+  {
+    path: '',
+    redirectTo: 'path/home',
+    pathMatch: 'full',
+  }
   
 ];

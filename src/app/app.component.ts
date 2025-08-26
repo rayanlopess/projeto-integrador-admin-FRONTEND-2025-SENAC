@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { ThemeService } from './services/theme/theme';
+import {  } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
