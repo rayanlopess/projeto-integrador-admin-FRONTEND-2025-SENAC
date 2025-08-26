@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Configurações</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Aparência</ion-label>
+    </ion-list-header>
+
+    <ion-item button (click)="openThemeSelector()" detail="true">
+      <ion-icon name="contrast" slot="start" color="primary"></ion-icon>
+      <ion-label>Tema do App</ion-label>
+      <ion-note slot="end">{{ getCurrentStatus() }}</ion-note>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="information-circle" slot="start" color="medium"></ion-icon>
+      <ion-label>Status Atual</ion-label>
+      <ion-note slot="end">
+        {{ themeInfo.appliedTheme === 'dark' ? 'Escuro' : 'Claro' }}
+        <span *ngIf="themeInfo.isAuto">(Auto)</span>
+      </ion-note>
+    </ion-item>
+  </ion-list>
+
+  <div class="info-section">
+    <ion-text color="medium">
+      <small>
+        No modo automático, o tema segue a configuração do seu sistema.
+        Mudanças no sistema são detectadas automaticamente.
+      </small>
+    </ion-text>
+  </div>
+</ion-content>

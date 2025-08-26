@@ -35,3 +35,97 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/**
+ * Ionic Dark Mode
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
+
+/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+@import '@ionic/angular/css/palettes/dark.system.css';
+
+
+
+ion-header ion-toolbar {
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
+}
+
+body {
+  --ion-background-color: #fff;
+  --ion-background-color-rgb: 255, 255, 255;
+  --ion-text-color: #000;
+  --ion-text-color-rgb: 0, 0, 0;
+  --ion-border-color: #fff;
+  --ion-item-background: #fff;
+  
+  /* Componentes específicos */
+  --ion-toolbar-background: #fff;
+  --ion-toolbar-color: #fff;
+  --ion-tab-bar-background: #fff;
+  --ion-card-background: #fff;
+}
+
+
+
+
+// src/global.scss
+/* Força o Ionic a respeitar nossas mudanças de tema */
+body.dark {
+  --ion-background-color: #121212;
+  --ion-background-color-rgb: 18, 18, 18;
+  --ion-text-color: #ffffff;
+  --ion-text-color-rgb: 255, 255, 255;
+  --ion-border-color: #222222;
+  --ion-item-background: #1a1a1a;
+  
+  /* Componentes específicos */
+  --ion-toolbar-background: #1a1a1a;
+  --ion-tab-bar-background: #1a1a1a;
+  --ion-card-background: #1e1e1e;
+}
+
+/* Transições suaves */
+ion-content, ion-item, ion-card, ion-toolbar {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Action Sheet customizado */
+.action-sheet-group {
+  border-radius: 12px;
+}
+
+.action-sheet-button[role="selected"] {
+  --color: var(--ion-color-primary);
+  font-weight: bold;
+}
