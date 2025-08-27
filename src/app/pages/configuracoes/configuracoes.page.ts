@@ -6,6 +6,9 @@ import { IonicModule } from '@ionic/angular';
 import { ThemeActionService } from '../../services/theme/theme-action';
 import { ThemeService, ThemeMode } from '../../services/theme/theme';
 
+import { addIcons } from 'ionicons';
+import { sunny, moon, phonePortrait, close } from 'ionicons/icons';
+
 import { Subscription } from 'rxjs';
 
 
@@ -24,7 +27,9 @@ export class ConfiguracoesPage implements OnInit, OnDestroy  {
   constructor(
     private themeActionService: ThemeActionService,
     private themeService: ThemeService
-  ) {}
+  ) {
+      addIcons({ sunny, moon, phonePortrait, close });
+  }
 
   ngOnInit() {
     this.updateThemeInfo();
@@ -45,9 +50,14 @@ export class ConfiguracoesPage implements OnInit, OnDestroy  {
   }
 
   getCurrentStatus(): string {
+
+    const temaAtual = this.themeService.getCurrentTheme() === 'dark' ? 'Escuro' : 'Claro';
+
+   
+
     const mode = this.themeService.getCurrentMode();
     switch (mode) {
-      case 'auto': return 'Automático';
+      case 'auto': return `Auto (${temaAtual})`;
       case 'light': return 'Claro';
       case 'dark': return 'Escuro';
       default: return 'Automático';

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { addIcons } from 'ionicons';
-import { home, map, call, settings } from 'ionicons/icons';
+import { home, map, call, settings, personCircle } from 'ionicons/icons';
 import { Router, RouterLink } from '@angular/router';
 import { AlertController } from '@ionic/angular/standalone';
 
@@ -27,7 +27,7 @@ export class HomePage implements OnInit  {
     private router: Router,
     public titleService: Title,
   ) {
-    addIcons({ home, map, call, settings });
+    addIcons({ home, map, call, settings, personCircle });
   }
 
   ngOnInit() {

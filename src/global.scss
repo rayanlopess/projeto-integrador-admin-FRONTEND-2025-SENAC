@@ -75,6 +75,9 @@
 @import '@ionic/angular/css/palettes/dark.system.css';
 
 
+//import de fontes
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap');
+
 
 ion-header ion-toolbar {
   padding-top: constant(safe-area-inset-top);
@@ -85,22 +88,57 @@ body {
   --ion-background-color: #fff;
   --ion-background-color-rgb: 255, 255, 255;
   --ion-text-color: #000;
-  --ion-text-color-rgb: 0, 0, 0;
+ 
   --ion-border-color: #fff;
   --ion-item-background: #fff;
   
   /* Componentes específicos */
-  --ion-toolbar-background: #fff;
-  --ion-toolbar-color: #fff;
-  --ion-tab-bar-background: #fff;
-  --ion-card-background: #fff;
+  --ion-toolbar-background: #d8dde3;
+  --ion-toolbar-color: #0e2b52;
+  
+  
+}
+
+ion-tab-bar {
+    --background: #d8dde3 !important;
+    --color: #0e2b52 !important;
+     --color-selected: #a4071a;
 }
 
 
+/* Action Sheet customizado */
+.action-sheet-wrapper{
+  background-color: #d8dde3 !important;
 
+  --color: #0e2b52 !important;
 
-// src/global.scss
-/* Força o Ionic a respeitar nossas mudanças de tema */
+}
+.action-sheet-group{
+  background-color: #d8dde3 !important;
+ 
+  --color: #0e2b52 !important;
+
+}
+
+.action-sheet-button{
+  background-color: #d8dde3 !important;
+  color: #0e2b52 !important;
+
+}
+.cancelarAction{
+  --color: #a4071a !important;
+  color: #a4071a !important;
+}
+
+ion-card{
+  background-color: #fff;
+  border: 3px solid #0e2b52;
+  border-radius: 30px;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+
+}
+
+/* dark mode */
 body.dark {
   --ion-background-color: #121212;
   --ion-background-color-rgb: 18, 18, 18;
@@ -111,21 +149,49 @@ body.dark {
   
   /* Componentes específicos */
   --ion-toolbar-background: #1a1a1a;
-  --ion-tab-bar-background: #1a1a1a;
-  --ion-card-background: #1e1e1e;
+  --ion-toolbar-color: #f5f5f5;
+  
 }
 
-/* Transições suaves */
-ion-content, ion-item, ion-card, ion-toolbar {
-  transition: background-color 0.3s ease, color 0.3s ease;
+
+
+/* Modo escuro - mais específico */
+body.dark tabs-page ion-tab-bar,
+body.dark .ion-page ion-tab-bar {
+    --background: #1e1e1e !important;
+    --color: #fff !important;
+     --color-selected: #b1c2d8;
 }
 
-/* Action Sheet customizado */
-.action-sheet-group {
-  border-radius: 12px;
+
+
+
+body.dark .action-sheet-wrapper{
+  background-color: #1a1a1a !important;
+
+  --color: #0e2b52 !important;
+
+}
+body.dark .action-sheet-group{
+  background-color: #1a1a1a !important;
+ 
+  --color: #f5f5f5 !important;
+
 }
 
-.action-sheet-button[role="selected"] {
-  --color: var(--ion-color-primary);
-  font-weight: bold;
+body.dark .action-sheet-button{
+  background-color: #1a1a1a !important;
+  color: #f5f5f5 !important;
+
 }
+body.dark .cancelarAction{
+  --color: #a4071a !important;
+  color: #a4071a !important;
+}
+
+
+
+
+
+
+

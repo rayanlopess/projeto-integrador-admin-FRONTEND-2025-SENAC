@@ -22,8 +22,8 @@ export class ThemeActionService {
       subHeader: this.getSubHeader(currentMode, currentTheme),
       buttons: [
         {
-          text: 'Automático',
-          icon: 'phone-portrait-outline',
+          text: `Automático ${currentMode === 'auto' ? '✓' : ''}`,
+          icon: 'phone-portrait',
           data: 'auto',
           role: currentMode === 'auto' ? 'selected' : undefined,
           handler: () => {
@@ -31,9 +31,10 @@ export class ThemeActionService {
           }
         },
         {
-          text: `Claro ${currentMode === 'light' ? '✓' : ''}`,
+          text: `Claro ${currentMode === 'light' ? ' ✓' : ''}`,
           icon: 'sunny',
           data: 'light',
+          role: currentMode === 'light' ? 'selected' : undefined,
           handler: () => {
             this.themeService.setTheme('light');
           }
@@ -42,6 +43,7 @@ export class ThemeActionService {
           text: `Escuro ${currentMode === 'dark' ? '✓' : ''}`,
           icon: 'moon',
           data: 'dark',
+          role: currentMode === 'dark' ? 'selected' : undefined,
           handler: () => {
             this.themeService.setTheme('dark');
           }
@@ -49,7 +51,8 @@ export class ThemeActionService {
         {
           text: 'Cancelar',
           icon: 'close',
-          role: 'cancel'
+          role: 'cancel',
+          cssClass: 'cancelarAction'
         }
       ]
     });
