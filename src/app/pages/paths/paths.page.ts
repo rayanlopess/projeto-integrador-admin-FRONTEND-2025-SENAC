@@ -6,30 +6,37 @@ import { IonicModule } from '@ionic/angular';
 
 import { addIcons } from 'ionicons';
 import { home, map, call, settings } from 'ionicons/icons';
-import { Router, RouterLink } from '@angular/router';
-import { AlertController } from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
+import { AlertController, IonRouterLink, NavController } from '@ionic/angular/standalone';
 
 import { Title } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-paths',
   templateUrl: './paths.page.html',
   styleUrls: ['./paths.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonRouterLink, IonicModule, CommonModule, FormsModule]
 })
 export class PathsPage implements OnInit {
-
-
+  activeTab: string = 'home';
   constructor(
     private router: Router,
     public titleService: Title,
+    private navCtrl: NavController
   ) {
     addIcons({ home, map, call, settings });
+
+    
   }
 
   ngOnInit() {
   
   }
+
+
+
+ 
 
 
 }

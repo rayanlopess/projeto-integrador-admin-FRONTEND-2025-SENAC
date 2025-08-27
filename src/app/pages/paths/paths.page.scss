@@ -2,3 +2,18 @@
 .icons-tab{
     font-size: 24px;
 }
+ion-tab-bar{
+    width: 95%;
+    margin: auto;
+    margin-bottom: 20px;
+    border-radius: 100px;
+}
+
+.footer{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 10px;
+    background-color: #0e2b52;
+    z-index: 0;
+}
