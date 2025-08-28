@@ -10,22 +10,26 @@ import { AlertController } from '@ionic/angular/standalone';
 
 import { Title } from '@angular/platform-browser';
 
+import { DateService } from '../../services/datetime-service/date-service';
+
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, RouterLink],
+  imports: [IonicModule, CommonModule, FormsModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePage implements OnInit  {
 
-
+  public usuario:string = "Julia";
+  public data:string = this.dateService.getFormattedDate();
 
   constructor(
     private router: Router,
     public titleService: Title,
+    private dateService: DateService,
   ) {
     addIcons({ home, map, call, settings, personCircle });
   }
