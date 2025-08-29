@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
 @Component({
-  selector: 'app-page1',
-  templateUrl: './page1.page.html',
-  styleUrls: ['./page1.page.scss'],
+  selector: 'app-swipper',
+  templateUrl: './swipper.page.html',
+  styleUrls: ['./swipper.page.scss'],
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
-export class Page1Page implements OnInit {
+export class SwipperPage implements OnInit {
 
   constructor() { }
 

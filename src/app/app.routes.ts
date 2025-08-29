@@ -25,18 +25,6 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/configuracoes/configuracoes.page').then(m => m.ConfiguracoesPage)
       },
       {
-        path: 'page1',
-        loadComponent: () => import('./pages/swipper/page1/page1.page').then( m => m.Page1Page)
-      },
-      {
-        path: 'page2',
-        loadComponent: () => import('./pages/swipper/page2/page2.page').then( m => m.Page2Page)
-      },
-      {
-        path: 'page3',
-        loadComponent: () => import('./pages/swipper/page3/page3.page').then( m => m.Page3Page)
-      },
-      {
         path: '',
         redirectTo: '/path/home',
         pathMatch: 'full',
@@ -72,6 +60,26 @@ export const routes: Routes = [
     path: '',
     redirectTo: 'path/home',
     pathMatch: 'full',
+  },  {
+    path: 'swipper',
+    loadComponent: () => import('./pages/subpages/swipper/swipper.page').then( m => m.SwipperPage)
+  },
+  {
+    path: 'privacidade-seguranca',
+    loadComponent: () => import('./pages/subpages/termos-privacidade/privacidade-seguranca/privacidade-seguranca.page').then( m => m.PrivacidadeSegurancaPage)
+  },
+  {
+    path: 'termos-uso',
+    loadComponent: () => import('./pages/subpages/termos-privacidade/termos-uso/termos-uso.page').then( m => m.TermosUsoPage)
+  },
+  {
+    path: 'config-user',
+    loadComponent: () => import('./pages/subpages/config-user/config-user.page').then( m => m.ConfigUserPage)
+  },
+  {
+    path: 'tela-logo',
+    loadComponent: () => import('./pages/subpages/tela-logo/tela-logo.page').then( m => m.TelaLogoPage)
   }
+
   
 ];

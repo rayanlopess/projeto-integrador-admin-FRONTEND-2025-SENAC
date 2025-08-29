@@ -16,7 +16,7 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './paths.page.html',
   styleUrls: ['./paths.page.scss'],
   standalone: true,
-  imports: [IonRouterLink, IonicModule, CommonModule, FormsModule]
+  imports: [ IonicModule, CommonModule, FormsModule]
 })
 export class PathsPage implements OnInit {
   activeTab: string = 'home';
