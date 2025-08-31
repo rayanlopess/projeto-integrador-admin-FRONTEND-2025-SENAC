@@ -1,13 +1,113 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>swipper</ion-title>
+  <ion-toolbar class="transparent-toolbar">
+    <ion-title>
+          <img src="../../../../assets/icons/filamed-azul-sf.png" alt="FilaMed Logo" id="filamed-logo">
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">swipper</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content>
+<ion-content fullscreen>
+        <div class="carousel-container">
+          <div class="carousel" [style.transform]="'translateX(-' + currentIndex * 100 + '%)'">
+            
+            <!-- Página 1 -->
+            <div class="carousel-page">
+              <div class="indicators-container">
+                <div class="indicators">
+                  <div *ngFor="let indicator of pages; let i = index" 
+                       class="indicator" 
+                       [class.active]="currentIndex === i">
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Página 2 -->
+            <div class="carousel-page">
+              <div class="indicators-container">
+                <div class="indicators">
+                  <div *ngFor="let indicator of pages; let i = index" 
+                       class="indicator" 
+                       [class.active]="currentIndex === i">
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Página 3 -->
+            <div class="carousel-page">
+              <div class="indicators-container">
+                <div class="indicators">
+                  <div *ngFor="let indicator of pages; let i = index" 
+                       class="indicator" 
+                       [class.active]="currentIndex === i">
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Página 4 -->
+            <div class="carousel-page">
+              <div class="indicators-container">
+                <div class="indicators">
+                  <div *ngFor="let indicator of pages; let i = index" 
+                       class="indicator" 
+                       [class.active]="currentIndex === i">
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Página 5 -->
+            <div class="carousel-page">
+              <div class="indicators-container">
+                <div class="indicators">
+                  <div *ngFor="let indicator of pages; let i = index" 
+                       class="indicator" 
+                       [class.active]="currentIndex === i">
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Página 6 -->
+            <div class="carousel-page">
+              <div class="indicators-container">
+                <div class="indicators">
+                  <div *ngFor="let indicator of pages; let i = index" 
+                       class="indicator" 
+                       [class.active]="currentIndex === i">
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Página 7 -->
+            <div class="carousel-page">
+              <div class="indicators-container">
+                <div class="indicators">
+                  <div *ngFor="let indicator of pages; let i = index" 
+                       class="indicator" 
+                       [class.active]="currentIndex === i">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Botões de controle -->
+          <button class="carousel-control prev" 
+                  [class.hidden]="currentIndex === 0"
+                  (click)="goToPrev()"
+                  ion-activatable="false">
+            <ion-icon class="butao-icon" name="chevron-back"></ion-icon>
+          </button>
+          
+          <button class="carousel-control next" 
+                  [class.hidden]="currentIndex === 6"
+                  (click)="goToNext()"
+                  ion-activatable="false">
+            <ion-icon class="butao-icon" name="chevron-forward"></ion-icon>
+          </button>
+        </div>
+      </ion-content>

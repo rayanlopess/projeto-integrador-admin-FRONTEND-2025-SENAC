@@ -100,18 +100,7 @@ export class MapaPage implements AfterViewInit {
           streetViewControl: false,        // Remove o boneco do Street View
           rotateControl: false,            // Remove controle de rotação
           fullscreenControl: false,
-          styles: [
-                        {
-                            featureType: 'all',
-                            elementType: 'geometry',
-                            stylers: [{ color: '#f5f5f5' }]
-                        },
-                        {
-                            featureType: 'water',
-                            elementType: 'geometry',
-                            stylers: [{ color: '#c5e3f6' }]
-                        }
-                    ]
+          mapId: "16abc58f124f6eeb3b852ceb" 
         },
 
       });
