@@ -4,7 +4,7 @@
       <ion-button id="button-profile" disabled>
       </ion-button>
     </ion-buttons>
-    
+
     <div class="titulos-container">
 
       <ion-title>Configurações</ion-title>
@@ -12,33 +12,52 @@
 
     </div>
 
-    
 
-   
+
+
 
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <ion-list-header>
-      <ion-label>Aparência</ion-label>
-    </ion-list-header>
 
-    <ion-item button (click)="openThemeSelector()" detail="true">
-      <ion-icon name="contrast" slot="" color="primary"></ion-icon>
-      <ion-label>Tema do App</ion-label>
-      <ion-note slot="end">{{ getCurrentStatus() }}</ion-note>
-    </ion-item>
+
+    <ion-label>
+      <span class="label-fixa">Conta</span>
+      <ion-item button detail="true">
+ 
+        <ion-label slot="start" class="label-clicavel">Gerenciamento de conta</ion-label>
+        <ion-note slot="end"></ion-note>
+      </ion-item>
+    </ion-label>
+
+
+    <br>
+   
+     <ion-label>
+      <span class="label-fixa">Suporte</span>
+      <ion-item button detail="true">
+        
+        <ion-label slot="start" class="label-clicavel">Central de ajuda</ion-label>
+        <ion-note slot="end"></ion-note>
+      </ion-item>
+    </ion-label>
+
+    <br>
+
+    <ion-label>
+      <span class="label-fixa">Aparencia</span>
+      <ion-item button (click)="openThemeSelector()" detail="true">
+        <ion-icon name="contrast" slot="" color="primary"></ion-icon>
+        <ion-label slot="start" class="label-clicavel">Tema do App</ion-label>
+        <ion-note slot="end">{{ getCurrentStatus() }}</ion-note>
+      </ion-item>
+    </ion-label>
+
+
 
   </ion-list>
 
-  <div class="info-section">
-    <ion-text color="medium">
-      <small>
-        No modo automático, o tema segue a configuração do seu sistema.
-        Mudanças no sistema são detectadas automaticamente.
-      </small>
-    </ion-text>
-  </div>
+
 </ion-content>

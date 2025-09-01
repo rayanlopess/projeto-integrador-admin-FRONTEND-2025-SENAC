@@ -1,113 +1,186 @@
 <ion-header [translucent]="true">
   <ion-toolbar class="transparent-toolbar">
     <ion-title>
-          <img src="../../../../assets/icons/filamed-azul-sf.png" alt="FilaMed Logo" id="filamed-logo">
+      <img src="../../../../assets/icons/filamed-azul-sf.png" alt="FilaMed Logo" id="filamed-logo">
+      <img src="../../../../assets/icons/filamed-sem-fundo.png" alt="FilaMed Logo" id="filamed-logo-1">
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content fullscreen>
-        <div class="carousel-container">
-          <div class="carousel" [style.transform]="'translateX(-' + currentIndex * 100 + '%)'">
-            
-            <!-- Página 1 -->
-            <div class="carousel-page">
-              <div class="indicators-container">
-                <div class="indicators">
-                  <div *ngFor="let indicator of pages; let i = index" 
-                       class="indicator" 
-                       [class.active]="currentIndex === i">
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Página 2 -->
-            <div class="carousel-page">
-              <div class="indicators-container">
-                <div class="indicators">
-                  <div *ngFor="let indicator of pages; let i = index" 
-                       class="indicator" 
-                       [class.active]="currentIndex === i">
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Página 3 -->
-            <div class="carousel-page">
-              <div class="indicators-container">
-                <div class="indicators">
-                  <div *ngFor="let indicator of pages; let i = index" 
-                       class="indicator" 
-                       [class.active]="currentIndex === i">
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Página 4 -->
-            <div class="carousel-page">
-              <div class="indicators-container">
-                <div class="indicators">
-                  <div *ngFor="let indicator of pages; let i = index" 
-                       class="indicator" 
-                       [class.active]="currentIndex === i">
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Página 5 -->
-            <div class="carousel-page">
-              <div class="indicators-container">
-                <div class="indicators">
-                  <div *ngFor="let indicator of pages; let i = index" 
-                       class="indicator" 
-                       [class.active]="currentIndex === i">
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Página 6 -->
-            <div class="carousel-page">
-              <div class="indicators-container">
-                <div class="indicators">
-                  <div *ngFor="let indicator of pages; let i = index" 
-                       class="indicator" 
-                       [class.active]="currentIndex === i">
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Página 7 -->
-            <div class="carousel-page">
-              <div class="indicators-container">
-                <div class="indicators">
-                  <div *ngFor="let indicator of pages; let i = index" 
-                       class="indicator" 
-                       [class.active]="currentIndex === i">
-                  </div>
-                </div>
-              </div>
+  <div class="carousel-container">
+    <div class="carousel" [style.transform]="'translateX(-' + currentIndex * 100 + '%)'">
+
+      <!-- Página 1 -->
+      <div class="carousel-page">
+
+        <div class="carousel-content">
+
+          <div>
+            <p>
+              Bem-vindo, usuário!
+              O <span>FilaMed</span> é o aplicativo
+              feito para ajudar <span>você</span>!
+            </p>
+          </div>
+
+          <div>
+            <img src="../../../../assets/images/swipper/enf-light-mode.png" alt="" id="enf-img">
+            <img src="../../../../assets/images/swipper/enf-dark-mode.png" alt="" id="enf-img-1">
+          </div>
+
+          <div>
+            <p>
+              Entenda como nosso <span>APP</span> funciona
+              nas próximas páginas!
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="indicators-container">
+          <div class="indicators">
+            <div *ngFor="let indicator of pages; let i = index" class="indicator" [class.active]="currentIndex === i">
             </div>
           </div>
-          
-          <!-- Botões de controle -->
-          <button class="carousel-control prev" 
-                  [class.hidden]="currentIndex === 0"
-                  (click)="goToPrev()"
-                  ion-activatable="false">
-            <ion-icon class="butao-icon" name="chevron-back"></ion-icon>
-          </button>
-          
-          <button class="carousel-control next" 
-                  [class.hidden]="currentIndex === 6"
-                  (click)="goToNext()"
-                  ion-activatable="false">
-            <ion-icon class="butao-icon" name="chevron-forward"></ion-icon>
-          </button>
         </div>
-      </ion-content>
+      </div>
+
+      <!-- Página 2 -->
+      <div class="carousel-page">
+
+        <div class="carousel-content">
+
+          <div>
+            <p>
+              Bem-vindo, usuário!
+              O <span>FilaMed</span> é o aplicativo
+              feito para ajudar <span>você</span>!
+            </p>
+          </div>
+
+          <div>
+            <ion-card>
+              <ion-card-content>
+                <ion-list>
+                  <ion-item>
+                    <ion-thumbnail slot="end">
+                      <img alt="FilaMed Logo" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+                    </ion-thumbnail>
+                    <div class="informacoes-div">
+                      <h1>UPA Rio Maina - 3,5 km </h1>
+                      <p><i class="bi bi-geo-alt-fill icon-text"></i>&nbsp; Tempo Ida: <span>10 min</span></p>
+                      <p><i class="bi bi-clock-fill icon-text"></i>&nbsp; Fila Espera: <span>10 min</span></p>
+                    </div>
+                  </ion-item>
+                </ion-list>
+              </ion-card-content>
+            </ion-card>
+          </div>
+
+          <div>
+            <p>
+              Entenda como nosso <span>APP</span> funciona
+              nas próximas páginas!
+            </p>
+          </div>
+
+        </div>
+
+        <div class="indicators-container">
+          <div class="indicators">
+            <div *ngFor="let indicator of pages; let i = index" class="indicator" [class.active]="currentIndex === i">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Página 3 -->
+      <div class="carousel-page">
+
+        <div class="carousel-content">
+
+        </div>
+
+        <div class="indicators-container">
+          <div class="indicators">
+            <div *ngFor="let indicator of pages; let i = index" class="indicator" [class.active]="currentIndex === i">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Página 4 -->
+      <div class="carousel-page">
+
+        <div class="carousel-content">
+
+        </div>
+
+        <div class="indicators-container">
+          <div class="indicators">
+            <div *ngFor="let indicator of pages; let i = index" class="indicator" [class.active]="currentIndex === i">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Página 5 -->
+      <div class="carousel-page">
+
+        <div class="carousel-content">
+
+        </div>
+
+        <div class="indicators-container">
+          <div class="indicators">
+            <div *ngFor="let indicator of pages; let i = index" class="indicator" [class.active]="currentIndex === i">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Página 6 -->
+      <div class="carousel-page">
+
+        <div class="carousel-content">
+
+        </div>
+
+        <div class="indicators-container">
+          <div class="indicators">
+            <div *ngFor="let indicator of pages; let i = index" class="indicator" [class.active]="currentIndex === i">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Página 7 -->
+      <div class="carousel-page">
+
+        <div class="carousel-content">
+
+        </div>
+
+        <div class="indicators-container">
+          <div class="indicators">
+            <div *ngFor="let indicator of pages; let i = index" class="indicator" [class.active]="currentIndex === i">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botões de controle -->
+    <button class="carousel-control prev" [class.hidden]="currentIndex === 0" (click)="goToPrev()"
+      ion-activatable="false">
+      <ion-icon class="butao-icon" name="chevron-back"></ion-icon>
+    </button>
+
+    <button class="carousel-control next" [class.hidden]="currentIndex === 6" (click)="goToNext()"
+      ion-activatable="false">
+      <ion-icon class="butao-icon" name="chevron-forward"></ion-icon>
+    </button>
+  </div>
+</ion-content>

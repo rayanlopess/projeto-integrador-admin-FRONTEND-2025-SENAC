@@ -1,8 +1,4 @@
-#filamed-logo {
-    width: 111.1111111111111px;
-    height: 38.88888888888889px;
-    margin-top: 10px;
-}
+
 
 .transparent-toolbar {
     --background: transparent;
@@ -20,128 +16,16 @@ ion-toolbar {
     box-shadow: none !important;
 }
 
-.carousel-container {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
+ion-button{
+    position: absolute;
 }
 
-.carousel {
-    display: flex;
-    height: 100%;
-    transition: transform 1s ease;
-    will-change: transform;
-}
-
-.carousel-page {
-    flex: 0 0 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    position: relative;
-    padding-bottom: 40px;
-
-}
-
-.indicators-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    padding: 20px;
-}
-
-.indicators {
-    display: flex;
-    gap: 12px;
-    font-size: 30px;
-    padding: 20px 20px;
-
-
-}
-
-.indicator {
-    width: 12px;
-    height: 12px;
-    border-radius: 100%;
-    background-color: rgba(14, 43, 82, 0.5);
-    transition: all 0.3s ease;
-}
-
-.indicator.active {
-    background-color: #0e2b52;
-    transform: scale(1.2);
-}
-
-/* Cores diferentes para cada página */
-.carousel-page:nth-child(1) {
-    background-color: #fff;
-}
-
-.carousel-page:nth-child(2) {
-    background-color: #fff;
-}
-
-.carousel-page:nth-child(3) {
-    background-color: #fff;
-}
-
-.carousel-page:nth-child(4) {
-    background-color: #fff;
-}
-
-.carousel-page:nth-child(5) {
-    background-color: #fff;
-}
-
-.carousel-page:nth-child(6) {
-    background-color: #fff;
-}
-
-.carousel-page:nth-child(7) {
-    background-color: #fff;
-}
-
-.carousel-control {
+.carousel-content{
+    width: 75%;
+    height: 70%;
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
-    background-color: #fff;
- 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: all .5s ease;
-    z-index: 10;
-}
-
-.carousel-control:active .butao-icon{
-    font-size: 45px;
- transition: all .5s ease;
-}
-
-.butao-icon {
-    color: #0e2b52;
-    font-size: 50px;
-
-}
-
-.carousel-control.prev {
-    left: 0px;
-}
-
-.carousel-control.next {
-    right: 0px;
-}
-
-.carousel-control.hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
-ion-button, .button-native {
-  --background-activated: transparent !important;
-  --background-focused: transparent !important;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
 }

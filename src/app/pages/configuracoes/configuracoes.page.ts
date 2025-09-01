@@ -69,4 +69,8 @@ export class ConfiguracoesPage implements OnInit, OnDestroy  {
     console.log('Tema atualizado:', this.themeInfo);
   }
 
+  irPagina(){
+    
+  }
+
 }

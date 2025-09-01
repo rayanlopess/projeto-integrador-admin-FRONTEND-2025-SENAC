@@ -21,23 +21,55 @@ import { DateService } from '../../services/datetime-service/date-service';
   imports: [IonicModule, CommonModule, FormsModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class HomePage implements OnInit  {
-
-  public usuario:string = "Julia";
-  public data:string = this.dateService.getFormattedDate();
+export class HomePage implements OnInit {
+  public upa:string = 'UPA Rio Maina'
+  public usuario: string = "Julia";
+  public tempo:string = "10 min";
+  public data: string = this.dateService.getFormattedDate();
 
   constructor(
     private router: Router,
     public titleService: Title,
     private dateService: DateService,
+    public alertController: AlertController
   ) {
     addIcons({ home, map, call, settings, personCircle });
   }
 
   ngOnInit() {
-  
+
   }
 
-  
+
+  async irHospital() {
+
+    const alert = await this.alertController.create({
+      header: `Deseja realmente ir até ${this.upa}`,
+      cssClass: 'container-alert',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'cancelarAction',
+          handler: () => {
+            console.log('Operação cancelada.');
+          },
+        },
+        {
+          text: 'OK',
+          role: 'confirm',
+          cssClass: 'confirmarAction',
+          handler: async () => {
+            
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+
+    
+  }
+
 
 }

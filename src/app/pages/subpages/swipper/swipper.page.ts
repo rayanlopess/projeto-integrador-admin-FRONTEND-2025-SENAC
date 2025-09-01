@@ -6,6 +6,8 @@ import { IonicModule } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { home, map, call, settings, personCircle, chevronBack, chevronForward } from 'ionicons/icons';
 
+import { ThemeService, ThemeMode } from '../../../services/theme/theme';
+
 @Component({
   selector: 'app-swipper',
   templateUrl: './swipper.page.html',
@@ -16,15 +18,20 @@ import { home, map, call, settings, personCircle, chevronBack, chevronForward } 
 })
 export class SwipperPage implements OnInit {
 
-  constructor() {
+
+  constructor(
+        private themeService: ThemeService
+  ) {
     addIcons({ home, map, call, settings, personCircle, chevronBack, chevronForward });
    }
   
+   public temaAtual:string = this.themeService.getCurrentTheme()
 
   ngOnInit() {
+    
   }
 
-    currentIndex = 0;
+  currentIndex = 0;
   pages = Array(7).fill(0); // 7 páginas
 
   goToNext() {

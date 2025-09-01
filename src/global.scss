@@ -1,13 +1,24 @@
-/*
- * App Global CSS
- * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
- */
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+
+/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+@import '@ionic/angular/css/palettes/dark.system.css';
+
 
 /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
@@ -25,119 +36,57 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
-
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
-
-/*
- * App Global CSS
- * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
- */
-
-/* Core CSS required for Ionic components to work properly */
-@import "@ionic/angular/css/core.css";
-
-/* Basic CSS for apps built with Ionic */
-@import "@ionic/angular/css/normalize.css";
-@import "@ionic/angular/css/structure.css";
-@import "@ionic/angular/css/typography.css";
-@import "@ionic/angular/css/display.css";
-
-/* Optional CSS utils that can be commented out */
-@import "@ionic/angular/css/padding.css";
-@import "@ionic/angular/css/float-elements.css";
-@import "@ionic/angular/css/text-alignment.css";
-@import "@ionic/angular/css/text-transformation.css";
-@import "@ionic/angular/css/flex-utils.css";
-
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
-
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
-
 
 //import de fontes
 @import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap');
 
 
+/* ------------ LIGHT MODE ------------ */
+
+//HTML GERAL
+
+*{
+  font-family: "Red Hat Display", sans-serif;
+}
+
+//padding top pra não ficar grudado com a barra de notificação do celular (android/IOS)
 ion-header ion-toolbar {
   padding-top: constant(safe-area-inset-top);
   padding-top: env(safe-area-inset-top);
 }
 
+//corpo principal de texto
 body {
   --ion-background-color: #fff;
   --ion-background-color-rgb: 255, 255, 255;
   --ion-text-color: #000;
- 
+
+  //border do body
   --ion-border-color: #fff;
   --ion-item-background: #fff;
-  
-  /* Componentes específicos */
+
+  //toolbar
   --ion-toolbar-background: #d8dde3;
   --ion-toolbar-color: #0e2b52;
-  
-  
+
 }
 
+//tab-bar
 ion-tab-bar {
-    --background: #d8dde3 !important;
-    --color: #0e2b52 !important;
-     --color-selected: #a4071a;
-}
-
-
-/* Action Sheet customizado */
-.action-sheet-wrapper{
-  background-color: #d8dde3 !important;
-
+  --background: #d8dde3 !important;
   --color: #0e2b52 !important;
-
+  --color-selected: #a4071a;
 }
-.action-sheet-group{
-  background-color: #d8dde3 !important;
- 
-  --color: #0e2b52 !important;
+//FIM DO HTML GERAL
 
-}
 
-.action-sheet-button{
-  background-color: #d8dde3 !important;
-  color: #0e2b52 !important;
+//-----------------------------------------------//
 
-}
-.cancelarAction{
-  --color: #a4071a !important;
-  color: #a4071a !important;
-}
+//PATHS.SCSS
 
-ion-card{
-  background-color: #fff;
-  border: 3px solid #0e2b52;
-  border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
-
-}
-.titulos-container{
+//textos da toolbar do paths
+.titulos-container {
   font-size: 12px;
   width: 80%;
   text-align: center;
@@ -147,7 +96,9 @@ ion-card{
   transform: translate(-50%, -50%);
   color: #0e2b52;
 }
-.footer-paths{
+
+//footer do paths.scss
+.footer-paths {
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -155,15 +106,105 @@ ion-card{
   background-color: #0e2b52;
   z-index: 0;
   display: flex;
-  justify-content: center;    
+  justify-content: center;
 }
 
 
+//action sheet customizado 
+.action-sheet-wrapper {
+  background-color: #d8dde3 !important;
+  --color: #0e2b52 !important;
+}
+
+.action-sheet-group {
+  background-color: #d8dde3 !important;
+  --color: #0e2b52 !important;
+}
+
+.action-sheet-button {
+  background-color: #d8dde3 !important;
+  color: #0e2b52 !important;
+}
+.cancelarAction {
+  --color: #a4071a !important;
+  color: #a4071a !important;
+}
+
+//alerts
+.alert-wrapper{
+  --background: #fff !important;
+  border: 2px solid #0e2b52;
+  border-radius: 10px !important;
+}
+.alert-title{
+  color: #0e2b52 !important;
+}
+.confirmarAction{
+  --color: #0e2b52 !important;
+  color: #0e2b52 !important;
+}
+//fim dos alerts
+
+//fim do action sheet 
+
+//cards tela principal
+#titulo-cards-home{
+
+  margin: auto;
+  text-align: center;
+  width: 95%;
+  font-size: 22px;
+  margin-top: 40px;
+  margin-bottom: 10px;
+  font-weight: 700;
+  color: #0e2b52;
+}
+ion-card {
+  transform: scale(0.9);
+  background-color: #fff;
+  border: 3px solid #0e2b52;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  ion-card-content{
+    padding: 4px 10px 4px 10px !important; 
+  }
+  .informacoes-div > p{
+    margin: 0;
+    padding: 0;
+    font-size: 17px;
+    color: #0e2b52;
+  }
+  .informacoes-div > p > span{
+    font-weight: 600;
+  }
+  .informacoes-div > h1{
+    margin: 0;
+    padding: 0;
+    margin: 0 0 2px 0;
+    font-size: 20px;
+    color: #0e2b52;
+    font-weight: 800;
+  }
+  .icon-text{
+    color: #a4071a;
+    font-size: 16px;
+  }
+  ion-thumbnail{
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  } 
+}
+//fim do cards tela principal
+
+//search bar
 .container-search {
   position: relative;
   display: flex;
   justify-content: flex-end;
-  margin-left: auto; /* Isso força o container para a direita */
+  margin-left: auto;
   margin-right: 20px;
 }
 
@@ -171,7 +212,8 @@ ion-card{
   position: absolute;
   margin: auto;
   top: 0px;
-  right: 0; /* Alterado de left para right */
+  right: 0;
+  /* Alterado de left para right */
   bottom: 0;
   width: 35px;
   height: 35px;
@@ -182,14 +224,14 @@ ion-card{
   cursor: pointer;
 }
 
-
 // perninha do Lupa
 .search::before {
   content: "";
   position: absolute;
   margin: auto;
   top: 20px;
-  right: 7px; /* Alterado de left para right */
+  right: 7px;
+  /* Alterado de left para right */
   width: 10px;
   height: 2px;
   background: #d8dde3;
@@ -203,7 +245,7 @@ ion-card{
   position: absolute;
   margin: auto;
   top: 7px;
-  right: 13px; /* Alterado de left para right */
+  right: 13px;
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -215,7 +257,7 @@ ion-card{
   position: absolute;
   margin: auto;
   top: 0;
-  right: 0; /* Alterado de left para right */
+  right: 0;
   bottom: 0;
   width: 0px;
   height: 30px;
@@ -223,13 +265,12 @@ ion-card{
   border: none;
   background: #d8dde3;
   color: #0e2b52;
-  padding: 16px 10px 16px 10px; /* Invertido o padding */
+  padding: 16px 10px 16px 10px;
   border-radius: 30px;
   transition: all 1s;
   opacity: 0;
   z-index: 5;
   border: 2px solid #0e2b52;
- /* Texto da direita para esquerda */
 }
 
 .container-search input:hover {
@@ -240,163 +281,550 @@ ion-card{
   width: 250px;
   opacity: 1;
   cursor: text;
-  padding: 16px 20px 16px 20px; /* Ajuste no padding quando expandido */
-
-
+  padding: 16px 20px 16px 20px;
+  /* Ajuste no padding quando expandido */
 }
 
-.container-search input:focus ~ .search {
-  right: 0px; /* Posição ajustada para a esquerda */
+.container-search input:focus~.search {
+  right: 0px;
+  /* Posição ajustada para a esquerda */
   background: #0e2b52;
   z-index: 6;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
 //perninha do X
-
-.container-search input:focus ~ .search::before {
+.container-search input:focus~.search::before {
   top: 16px;
-  right: 4px; /* Alterado de left para right */
+  right: 4px;
+  /* Alterado de left para right */
   width: 25px;
   background-color: #d8dde3;
 }
 
-.container-search input:focus ~ .search::after {
+.container-search input:focus~.search::after {
   top: 16px;
-  right: 4px; /* Alterado de left para right */
+  right: 4px;
   width: 25px;
   height: 2px;
   border: none;
   background: #d8dde3;
   border-radius: 0%;
   transform: rotate(-45deg);
-  
-}
 
-//
+}
 
 .container-search input::placeholder {
   color: #0e2b52;
- /* Alinhamento do placeholder à direita */
+}
+//fim da search bar
+
+//FIM DO PATHS.SCSS
+
+//-----------------------------------------------//
+
+//SWIPPER.SCSS
+
+//filamed icon
+#filamed-logo {
+    width: 111.1111111111111px;
+    height: 38.88888888888889px;
+    margin-top: 10px;
+}
+#filamed-logo-1 {
+    width: 0;
+    height: 0;
+}
+//fim do filamed icon
+
+//config carrossel
+.carousel-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
 }
 
+.carousel {
+  display: flex;
+  height: 100%;
+  transition: transform 1s ease;
+  will-change: transform;
+}
+
+.carousel-page {
+  flex: 0 0 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: relative;
+  padding-bottom: 40px;
+}
+//fim da config carrossel
+
+//indicadores
+.indicators-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 20px;
+}
+
+.indicators {
+  display: flex;
+  gap: 12px;
+  font-size: 30px;
+  padding: 20px 20px;
+}
+
+.indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 100%;
+  background-color: rgba(14, 43, 82, 0.5);
+  transition: all 0.3s ease;
+}
+
+.indicator.active {
+  background-color: #0e2b52;
+  transform: scale(1.2);
+}
+//fim dos indicadores
+
+//botao carrossel
+.carousel-control {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all .3s ease;
+  z-index: 10;
+}
+
+.butao-icon {
+  color: rgba(14, 43, 82, 0.5);
+  font-size: 55px;
+  transition: .3s ease-in-out;
+}
+
+.carousel-control:active .butao-icon {
+  font-size: 50px;
+  color: #0e2b52;
+}
+
+.carousel-control.prev {
+  left: 0px;
+}
+
+.carousel-control.next {
+  right: 0px;
+}
+
+.carousel-control.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+ion-button,
+.button-native {
+  --background-activated: transparent !important;
+  --background-focused: transparent !important;
+}
+//fim do botao carrossel
+
+//------------//
+
+//page1
+
+//coloração
+.carousel-page:nth-child(1) {
+  background-color: #fff;
+}
+
+//enfermeira e paciente
+#enf-img {
+    width: 290px;
+    height: 290px;
+    height: max-content;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+#enf-img-1 {
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+//fim da page1
+
+//------------//
+
+//page2
+
+//coloração
+.carousel-page:nth-child(2) {
+  background-color: #fff;
+}
+
+//fim da page2
+
+//------------//
+
+//page3
+
+//coloração
+.carousel-page:nth-child(3) {
+  background-color: #fff;
+}
+
+//fim da page3
+
+//------------//
+
+//page4
+
+//coloração
+.carousel-page:nth-child(4) {
+  background-color: #fff;
+}
+
+//fim da page4
+
+//------------//
+
+//page5
+
+//coloração
+.carousel-page:nth-child(5) {
+  background-color: #fff;
+}
+
+//fim da page5
+
+//------------//
+
+//page6
+
+//coloração
+.carousel-page:nth-child(6) {
+  background-color: #fff;
+}
+
+//fim da page6
+
+//------------//
+
+//page7
+
+//coloração
+.carousel-page:nth-child(7) {
+  background-color: #fff;
+}
+
+//fim da page7
+
+//------------//
+
+//FIM DO SWIPPER.SCSS
+
+
+/* ------------ FIM DO LIGHT MODE ------------ */
 
 
 
 
-/* dark mode */
+
+
+
+/* ------------ DARK MODE ------------ */
+
+//HTML GERAL
+
+//corpo geral de texto
 body.dark {
+  //HEADER
+  --ion-toolbar-background: #1a1a1a;
+  --ion-toolbar-color: #f5f5f5;
+
+  //CONTENT
   --ion-background-color: #121212;
   --ion-background-color-rgb: 18, 18, 18;
   --ion-text-color: #ffffff;
   --ion-text-color-rgb: 255, 255, 255;
   --ion-border-color: #222222;
   --ion-item-background: #1a1a1a;
-  
-  /* Componentes específicos */
-  --ion-toolbar-background: #1a1a1a;
-  --ion-toolbar-color: #f5f5f5;
-  
 }
 
-
-
-/* Modo escuro - mais específico */
+//ion-tabs 
 body.dark tabs-page ion-tab-bar,
 body.dark .ion-page ion-tab-bar {
-    --background: #1e1e1e !important;
-    --color: #fff !important;
-     --color-selected: #b1c2d8;
+  --background: #1e1e1e !important;
+  --color: #fff !important;
+  --color-selected: #b1c2d8;
 }
 
-
-
-
-body.dark .action-sheet-wrapper{
-  background-color: #1a1a1a !important;
-
-  --color: #0e2b52 !important;
-
-}
-body.dark .action-sheet-group{
-  background-color: #1a1a1a !important;
- 
-  --color: #f5f5f5 !important;
-
-}
-
-body.dark .action-sheet-button{
-  background-color: #1a1a1a !important;
-  color: #f5f5f5 !important;
-
-}
-body.dark .cancelarAction{
-  --color: #a4071a !important;
-  color: #a4071a !important;
-}
-body.dark .titulos-container{
+//titulos do header
+body.dark .titulos-container {
   color: #f5f5f5;
 }
 
-body.dark .footer-paths{
+//background do footer
+body.dark .footer-paths {
   background-color: #1a1a1a;
 }
 
+//FIM DO HTML GERAL
 
+//-----------------------------------------------//
+
+//PATHS.SCSS
+
+//action-sheets
+body.dark .action-sheet-wrapper {
+  background-color: #1a1a1a !important;
+  --color: #0e2b52 !important;
+}
+
+body.dark .action-sheet-group {
+  background-color: #1a1a1a !important;
+  --color: #f5f5f5 !important;
+}
+
+body.dark .action-sheet-button {
+  background-color: #1a1a1a !important;
+  color: #f5f5f5 !important;
+}
+
+body.dark .cancelarAction {
+  --color: #a4071a !important;
+  color: #a4071a !important;
+}
+
+//alerts
+body.dark .alert-wrapper{
+  --background: #1a1a1a !important;
+  border: 2px solid #fff;
+  border-radius: 10px !important;
+}
+body.dark .alert-title{
+  color: #fff !important;
+}
+body.dark .confirmarAction{
+  --color: #fff !important;
+  color: #fff !important;
+}
+//fim dos alerts
+
+//fim do action-sheets
+
+//cards tela principal
+body.dark ion-card {
+  background-color: #1a1a1a;
+  border: 3px solid #fff;
+  border-radius: 10px;
+  box-shadow: rgba(255, 255, 255, 0.1) 2px 2px 2px;  
+
+
+  .informacoes-div > p{
+    color: #fff;
+  }
+  .informacoes-div > h1{
+    color: #fff;
+  }
+  .icon-text{
+    color: #a4071a;
+  }
+  ion-thumbnail{
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  } 
+ 
+}
+//fim do cards tela principal
+
+//barra de pesquisa
 body.dark .search {
   background: #fff;
 }
 
-
 // perninha do Lupa
 body.dark .search::before {
-
   background: #1a1a1a;
-
 }
 
 // bolinha do Lupa
 body.dark .search::after {
-
   border: 2px solid #1a1a1a;
-
 }
 
 body.dark .container-search input {
   background: #1a1a1a;
   color: #fff;
   border: 2px solid #fff;
- /* Texto da direita para esquerda */
+  /* Texto da direita para esquerda */
 }
 
-
-
-
-body.dark .container-search input:focus ~ .search {
+body.dark .container-search input:focus~.search {
   background: #fff;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
 //perninha do X
-
-body.dark .container-search input:focus ~ .search::before {
+body.dark .container-search input:focus~.search::before {
   background-color: #1a1a1a;
 }
 
-body.dark .container-search input:focus ~ .search::after {
+body.dark .container-search input:focus~.search::after {
   background: #1a1a1a;
-
-  
 }
-
-//
 
 body.dark .container-search input::placeholder {
   color: #fff;
- /* Alinhamento do placeholder à direita */
+}
+//fim da barra de pesquisa
+
+//FIM DO PATHS.SCSS
+
+//-----------------------------------------------//
+
+//SWIPPER.SCSS
+
+//filamed icon
+body.dark #filamed-logo {
+  width: 0;
+  height: 0;
+}
+body.dark #filamed-logo-1 {
+  width: 111.1111111111111px;
+  height: 38.88888888888889px;
+  margin-top: 10px;
+}
+//fim do filamed icon
+
+//config carrossel
+body.dark .indicator {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+body.dark .indicator.active {
+  background-color: #fff;
+}
+//fim da config carrossel
+
+//botao do swipper
+body.dark .butao-icon {
+  color: rgba(255, 255, 255, 0.5);
+}
+body.dark .carousel-control:active .butao-icon {
+  font-size: 50px;
+  color: #fff;
+}
+//fim do botao swipper
+
+//------------//
+
+//page1
+
+//coloração
+body.dark .carousel-page:nth-child(1) {
+  background-color: #1a1a1a;
+}
+
+body.dark #enf-img {
+    width: 0;
+    height: 0;
+}
+body.dark #enf-img-1 {
+    width: 290px;
+    height: 290px;
+
+}
+
+//fim da page1
+
+//------------//
+
+//page2
+
+//coloração
+body.dark .carousel-page:nth-child(2) {
+  background-color: #1a1a1a;
 }
 
 
+//fim da page2
+
+//------------//
+
+//page3
+
+//coloração
+body.dark .carousel-page:nth-child(3) {
+  background-color: #1a1a1a;
+}
+
+//fim da page3
+
+//------------//
+
+//page4
+
+//coloração
+body.dark .carousel-page:nth-child(4) {
+  background-color: #1a1a1a;
+}
+
+//fim da page4
+
+//------------//
+
+//page5
+
+//coloração
+body.dark .carousel-page:nth-child(5) {
+  background-color: #1a1a1a;
+}
+
+//fim da page5
+
+//------------//
+
+//page6
+
+//coloração
+body.dark .carousel-page:nth-child(6) {
+  background-color: #1a1a1a;
+}
+
+//fim da page6
+
+//------------//
+
+//page7
+
+//coloração
+body.dark .carousel-page:nth-child(7) {
+  background-color: #1a1a1a;
+}
+
+//fim da page7
+
+//------------//
+
+//FIM DO SWIPPER.SCSS
 
 
-
+/* ------------ FIM DO DARK MODE ------------ */

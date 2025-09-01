@@ -22,9 +22,16 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
   
 })
 export class AppComponent implements OnInit {
-  constructor(private themeService: ThemeService) {}
+  constructor(
+    private themeService: ThemeService
+  ) {
+      
+    }
+
+
 
   ngOnInit() {
+    
     // Garante que o tema seja aplicado na inicialização
     setTimeout(() => {
       this.themeService.setTheme(this.themeService.getCurrentMode());
