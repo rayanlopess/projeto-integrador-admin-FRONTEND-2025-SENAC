@@ -475,6 +475,11 @@ ion-button,
 }
 //fim dos letreiros 
 
+.div-pular-button{
+  
+}
+
+
 //fim da page1
 
 //------------//
@@ -615,6 +620,38 @@ ion-button,
   background-color: #fff;
 }
 
+.dedo-apontado-4{
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: 52%;
+  left: 38%;
+  transform: translate(-50%, -50%);
+  transform: rotate(-20deg);
+  z-index:2; /* Número MAIOR que o pai */
+  font-size: 48px;
+  color: #0e2b52;
+}
+
+//letreiros
+.carousel-title-page-4{
+  font-size: 20px;
+  text-align: center;
+  span{
+    font-weight: 800;
+  }
+  
+}
+.carousel-footer-page-4{
+    font-size: 20px;
+    text-align: center;
+    span{
+    font-weight: 800;
+  }
+ 
+}
+//fim dos letreiros
+
 //fim da page4
 
 //------------//
@@ -625,6 +662,39 @@ ion-button,
 .carousel-page:nth-child(5) {
   background-color: #fff;
 }
+
+//
+.dedo-apontado-5{
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: 52%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  transform: rotate(-20deg);
+  z-index:2; /* Número MAIOR que o pai */
+  font-size: 48px;
+  color: #0e2b52;
+}
+
+//letreiros
+.carousel-title-page-5{
+  font-size: 20px;
+  text-align: center;
+  span{
+    font-weight: 800;
+  }
+  
+}
+.carousel-footer-page-5{
+    font-size: 20px;
+    text-align: center;
+    span{
+    font-weight: 800;
+  }
+ 
+}
+//fim dos letreiros
 
 //fim da page5
 
@@ -637,6 +707,39 @@ ion-button,
   background-color: #fff;
 }
 
+//
+.dedo-apontado-6{
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: 52%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+  transform: rotate(-20deg);
+  z-index:2; /* Número MAIOR que o pai */
+  font-size: 48px;
+  color: #0e2b52;
+}
+
+//letreiros
+.carousel-title-page-6{
+  font-size: 20px;
+  text-align: center;
+  span{
+    font-weight: 800;
+  }
+  
+}
+.carousel-footer-page-6{
+    font-size: 20px;
+    text-align: center;
+    span{
+    font-weight: 800;
+  }
+ 
+}
+//fim dos letreiros
+
 //fim da page6
 
 //------------//
@@ -647,6 +750,40 @@ ion-button,
 .carousel-page:nth-child(7) {
   background-color: #fff;
 }
+
+//letreiros
+.carousel-title-page-7{
+  font-size: 32px;
+  span{
+    font-weight: 800;
+  }
+}
+#btIniciarApp{
+  margin-bottom: 5%;
+  --background: #0e2b52;
+  --color: #fff;
+  --border-radius: 20px;
+  border-radius: 20px;
+  border: 3px solid #d9d9d9;
+  width: 250px;
+  height: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  
+}
+#btSairApp{
+  margin-bottom: 60%;
+  --background: transparent;
+  --color: #0e2b52;
+  --border-radius: 20px;
+  border-radius: 20px;
+  border: 3px solid #d9d9d9;
+  width: 250px;
+  height: 50px;
+  font-size: 18px;
+  font-weight: 600;
+}
+//fim dos letreiros 
 
 //fim da page7
 

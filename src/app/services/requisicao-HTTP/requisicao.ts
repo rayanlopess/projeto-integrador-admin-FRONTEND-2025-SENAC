@@ -6,25 +6,25 @@ import { Injectable } from '@angular/core';
 })
 export class RequiemDosDeusesService {
 
-  constructor(
-    public http:HttpClient
-  ) { }
+  private baseUrl = 'http://localhost:3000'; // Adicione http://
 
-  get(dados:any){
-    return this.http.get('/', {
-      params: {
-        _dados:dados
-      }
-    })
+  constructor(public http: HttpClient) { }
+
+  get(endpoint: string, dados: any) {
+    return this.http.get(`${this.baseUrl}${endpoint}`, {
+      params: dados // Passe os dados diretamente como params
+    });
   }
 
-  post(formData:any){
+  post(endpoint: string, formData: any) {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Access-Control-Allow-Origin': '*'
+        'Content-Type': 'application/json', // Geralmente melhor usar JSON
+        'Accept': 'application/json'
       })
     };
-    return this.http.post('/', formData, httpOptions);
+    
+    // Se realmente precisa de FormData, remova o Content-Type para o browser definir automaticamente
+    return this.http.post(`${this.baseUrl}${endpoint}`, formData, httpOptions);
   }
-
 }

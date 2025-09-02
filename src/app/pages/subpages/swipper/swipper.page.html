@@ -1,9 +1,15 @@
 <ion-header [translucent]="true">
   <ion-toolbar class="transparent-toolbar">
+    <ion-buttons class="div-pular-button" slot="end">
+      <ion-button id="pular-button" style="transition: all 0.3s ease-in-out;" *ngIf="currentIndex !== 6" (click)="pularHome()">Pular</ion-button>
+    </ion-buttons>
     <ion-title>
       <img src="../../../../assets/icons/filamed-azul-sf.png" alt="FilaMed Logo" id="filamed-logo">
       <img src="../../../../assets/icons/filamed-sem-fundo.png" alt="FilaMed Logo" id="filamed-logo-1">
     </ion-title>
+    
+      
+   
   </ion-toolbar>
 </ion-header>
 
@@ -37,7 +43,7 @@
           </div>
 
         </div>
-
+       
 
         <div class="indicators-container">
           <div class="indicators">
@@ -45,6 +51,9 @@
             </div>
           </div>
         </div>
+
+        
+
       </div>
 
       <!-- Página 2 -->
@@ -104,9 +113,9 @@
 
           <div class="carousel-inner">
             <p class="carousel-title-page-3">
-              A tela de <span>Emergência</span> apresenta à você as 
-              opções de <span>UPAs</span> disponíveis, <span>seu tempo de 
-              distância</span> e <span>seu tempo para atendimento</span>!
+              A tela de <span>Emergência</span> apresenta à você as
+              opções de <span>UPAs</span> disponíveis, <span>seu tempo de
+                distância</span> e <span>seu tempo para atendimento</span>!
             </p>
           </div>
 
@@ -164,24 +173,49 @@
 
           <div class="carousel-inner">
             <p class="carousel-title-page-4">
-              Encontre a Unidade de Pronto Atendimento
-              que irá lhe atender mais rápido através
-              do tempo e distância apresentados.
+              A tela de <span>Mapa</span> apresenta à você todas as
+              UPAs disponíveis, <span>seu tempo de distância</span> e 
+              <span>seu tempo para atendimento</span>!
             </p>
           </div>
 
           <div class="carousel-inner">
+
+
+            <ion-tab-bar class="tab-bar-swipper">
+              <ion-tab-button tab="home">
+                <i class="bi bi-hospital-fill icons-tab-swipper"></i>
+                Emergência
+              </ion-tab-button>
+              <ion-tab-button tab="mapa" class="tab-selected">
+                <ion-icon name="map" class="icons-tab-swipper"></ion-icon>
+                Mapa
+              </ion-tab-button>
+              <ion-tab-button tab="telefones">
+                <ion-icon name="call" class="icons-tab-swipper"></ion-icon>
+                Telefones
+              </ion-tab-button>
+              <ion-tab-button tab="configuracoes">
+                <ion-icon name="settings" class="icons-tab-swipper"></ion-icon>
+                Configurações
+              </ion-tab-button>
+            </ion-tab-bar>
+
+
 
           </div>
 
           <div class="carousel-inner">
             <p class="carousel-footer-page-4">
-              Entenda como nosso <span>APP</span> funciona
-              nas próximas páginas!
+              Para ver <span>geograficamente</span> a distância de
+               cada hospital, <span>utilize essa página</span>!
             </p>
           </div>
 
+        </div>
 
+        <div class="dedo-apontado-4">
+          <i class="bi bi-hand-index"></i>
         </div>
 
         <div class="indicators-container">
@@ -199,24 +233,51 @@
 
           <div class="carousel-inner">
             <p class="carousel-title-page-5">
-              Encontre a Unidade de Pronto Atendimento
-              que irá lhe atender mais rápido através
-              do tempo e distância apresentados.
+              A tela de <span>Telefones</span> apresenta à você
+              <span>todos os contatos de emergência</span>
+              caso perceba que precisa de <span>suporte</span>
+              no <span>deslocamento</span>!
             </p>
           </div>
 
           <div class="carousel-inner">
+
+
+            <ion-tab-bar class="tab-bar-swipper">
+              <ion-tab-button tab="home">
+                <i class="bi bi-hospital-fill icons-tab-swipper"></i>
+                Emergência
+              </ion-tab-button>
+              <ion-tab-button tab="mapa">
+                <ion-icon name="map" class="icons-tab-swipper"></ion-icon>
+                Mapa
+              </ion-tab-button>
+              <ion-tab-button tab="telefones" class="tab-selected">
+                <ion-icon name="call" class="icons-tab-swipper"></ion-icon>
+                Telefones
+              </ion-tab-button>
+              <ion-tab-button tab="configuracoes">
+                <ion-icon name="settings" class="icons-tab-swipper"></ion-icon>
+                Configurações
+              </ion-tab-button>
+            </ion-tab-bar>
+
+
 
           </div>
 
           <div class="carousel-inner">
             <p class="carousel-footer-page-5">
-              Entenda como nosso <span>APP</span> funciona
-              nas próximas páginas!
+              Todos os contatos direcionam aos <span>orgãos
+                oficiais responsáveis por atendimento e
+                encaminhamento rápido ao hospital</span>.
             </p>
           </div>
 
+        </div>
 
+        <div class="dedo-apontado-5">
+          <i class="bi bi-hand-index"></i>
         </div>
 
         <div class="indicators-container">
@@ -234,24 +295,49 @@
 
           <div class="carousel-inner">
             <p class="carousel-title-page-6">
-              Encontre a Unidade de Pronto Atendimento
-              que irá lhe atender mais rápido através
-              do tempo e distância apresentados.
+              A tela de <span>Configurações</span> apresenta à
+              você <span>todos os dados do seu aplicativo</span>, 
+              personalizados para o seu <span>conforto</span>!
             </p>
           </div>
 
           <div class="carousel-inner">
+
+
+            <ion-tab-bar class="tab-bar-swipper">
+              <ion-tab-button tab="home">
+                <i class="bi bi-hospital-fill icons-tab-swipper"></i>
+                Emergência
+              </ion-tab-button>
+              <ion-tab-button tab="mapa">
+                <ion-icon name="map" class="icons-tab-swipper"></ion-icon>
+                Mapa
+              </ion-tab-button>
+              <ion-tab-button tab="telefones">
+                <ion-icon name="call" class="icons-tab-swipper"></ion-icon>
+                Telefones
+              </ion-tab-button>
+              <ion-tab-button tab="configuracoes" class="tab-selected">
+                <ion-icon name="settings" class="icons-tab-swipper"></ion-icon>
+                Configurações
+              </ion-tab-button>
+            </ion-tab-bar>
+
+
 
           </div>
 
           <div class="carousel-inner">
             <p class="carousel-footer-page-6">
-              Entenda como nosso <span>APP</span> funciona
-              nas próximas páginas!
+              Caso precise de algum <span>ajuste</span>, 
+              acesse essa tela.
             </p>
           </div>
 
+        </div>
 
+        <div class="dedo-apontado-6">
+          <i class="bi bi-hand-index"></i>
         </div>
 
         <div class="indicators-container">
@@ -267,23 +353,17 @@
 
         <div class="carousel-content">
 
-          <div class="carousel-inner">
+          <div class="carousel-inner-page-7">
             <p class="carousel-title-page-7">
-              Encontre a Unidade de Pronto Atendimento
-              que irá lhe atender mais rápido através
-              do tempo e distância apresentados.
+              Por aqui,<br>
+              <span>tudo pronto!</span><br>
+              Vamos <span>começar</span>?
             </p>
           </div>
 
-          <div class="carousel-inner">
-
-          </div>
-
-          <div class="carousel-inner">
-            <p class="carousel-footer-page-7">
-              Entenda como nosso <span>APP</span> funciona
-              nas próximas páginas!
-            </p>
+          <div class="carousel-inner-page-7" id="pageBotoes">
+            <ion-button id="btIniciarApp" (click)="irHome()">Iniciar</ion-button>
+            <ion-button id="btSairApp" >Sair</ion-button>
           </div>
 
 

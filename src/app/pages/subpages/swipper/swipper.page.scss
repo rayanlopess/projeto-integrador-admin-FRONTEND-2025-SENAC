@@ -14,9 +14,7 @@ ion-toolbar {
     box-shadow: none !important;
 }
 
-ion-button {
-    position: absolute;
-}
+
 
 .carousel-content {
     width: 75%;
@@ -39,4 +37,16 @@ ion-button {
   align-items: center;     /* Centraliza horizontalmente */
   /* Remove padding-bottom se existir */
 
+}
+.carousel-inner-page-7{
+    width: 100%;
+    height: 100%;           /* Ocupa 100% da altura */
+    display: flex;
+    flex-direction: column; /* Conteúdo em coluna */
+    justify-content: center; /* Centraliza verticalmente */
+       /* Centraliza horizontalmente */
+    /* Remove padding-bottom se existir */
+}
+#pageBotoes{
+    align-items: center;
 }
