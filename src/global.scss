@@ -360,6 +360,7 @@ ion-card {
   align-items: flex-end;
   position: relative;
   padding-bottom: 40px;
+  color: #0e2b52;
 }
 //fim da config carrossel
 
@@ -451,19 +452,28 @@ ion-button,
     width: 290px;
     height: 290px;
     height: max-content;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+ 
 }
 #enf-img-1 {
     width: 0;
     height: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
+
+//letreiros
+.carousel-title-page-1{
+  font-size: 24px;
+  span{
+    font-weight: 800;
+  }
+}
+.carousel-footer-page-1{
+    font-size: 18px;
+    text-align: center;
+    span{
+    font-weight: 800;
+  }
+}
+//fim dos letreiros 
 
 //fim da page1
 
@@ -476,6 +486,67 @@ ion-button,
   background-color: #fff;
 }
 
+//estilização do card de example
+.swipper-card {
+  scale: (0.9);
+  width: 115%;
+  background-color: #fff;
+  border: 3px solid #0e2b52;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+
+  .swipper-card-content{
+    padding: 4px 10px 4px 10px !important; 
+  }
+  .informacoes-div-swipper > p{
+    margin: 0;
+    padding: 0;
+    font-size: 17px;
+    color: #0e2b52;
+  }
+  .informacoes-div-swipper > p > span{
+    font-weight: 600;
+  }
+  .informacoes-div-swipper > h1{
+    margin: 0;
+    padding: 0;
+    margin: 0 0 2px 0;
+    font-size: 20px;
+    color: #0e2b52;
+    font-weight: 800;
+  }
+  .icon-text-swipper{
+    color: #a4071a;
+    font-size: 16px;
+  }
+  .swipper-card-thumbnail{
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  } 
+}
+
+//letreiros
+.carousel-title-page-2{
+  font-size: 20px;
+  text-align: center;
+  span{
+    font-weight: 800;
+  }
+  padding-top: 20%;
+}
+.carousel-footer-page-2{
+    font-size: 20px;
+    text-align: center;
+    span{
+    font-weight: 800;
+  }
+  padding-bottom: 20%;
+}
+//fim dos letreiros 
+
 //fim da page2
 
 //------------//
@@ -486,6 +557,52 @@ ion-button,
 .carousel-page:nth-child(3) {
   background-color: #fff;
 }
+
+//
+.tab-bar-swipper{
+  position: relative !important;
+  bottom: auto !important;
+  width: 100%;
+  border-radius: 10px;
+  width: 110%;
+  height: 33%;
+  scale: (0.9);
+  
+}
+.icons-tab-swipper{
+    font-size: 24px;
+}
+.dedo-apontado-3{
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: 52%;
+  left: 22%;
+  transform: translate(-50%, -50%);
+  transform: rotate(-20deg);
+  z-index:2; /* Número MAIOR que o pai */
+  font-size: 48px;
+  color: #0e2b52;
+}
+
+//letreiros
+.carousel-title-page-3{
+  font-size: 20px;
+  text-align: center;
+  span{
+    font-weight: 800;
+  }
+  
+}
+.carousel-footer-page-3{
+    font-size: 20px;
+    text-align: center;
+    span{
+    font-weight: 800;
+  }
+ 
+}
+//fim dos letreiros
 
 //fim da page3
 
