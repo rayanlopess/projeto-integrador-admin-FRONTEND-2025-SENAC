@@ -1,7 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    
+    <ion-buttons slot="end">
+
+      <ion-button id="button-profile">
+        <ion-icon name="ellipsis-vertical" id="icon-profile" (click)="presentPopover()"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <div class="titulos-container">
+
+      <ion-title>Olá</ion-title>
+
+
+
+    </div>
+  </ion-toolbar>
+</ion-header>
+
 <ion-tabs>
-  <ion-tab-bar slot="bottom" >
+  <ion-tab-bar slot="bottom">
     <ion-tab-button tab="home">
-      <i class="bi bi-hospital-fill icons-tab" ></i>
+      <i class="bi bi-hospital-fill icons-tab"></i>
       Emergência
     </ion-tab-button>
     <ion-tab-button tab="mapa">
@@ -11,10 +31,6 @@
     <ion-tab-button tab="telefones">
       <ion-icon name="call" class="icons-tab"></ion-icon>
       Telefones
-    </ion-tab-button>
-    <ion-tab-button tab="configuracoes">
-      <ion-icon name="settings" class="icons-tab"></ion-icon>
-      Configurações
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
-import { ThemeActionService } from '../../services/theme/theme-action';
-import { ThemeService, ThemeMode } from '../../services/theme/theme';
+import { ThemeActionService } from '../../../services/theme/theme-action';
+import { ThemeService, ThemeMode } from '../../../services/theme/theme';
 
 import { addIcons } from 'ionicons';
 import { sunny, moon, phonePortrait, close } from 'ionicons/icons';

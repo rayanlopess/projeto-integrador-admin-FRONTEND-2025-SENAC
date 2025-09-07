@@ -149,7 +149,6 @@ ion-tab-bar {
 
 //cards tela principal
 #titulo-cards-home{
-
   margin: auto;
   text-align: center;
   width: 95%;
@@ -473,12 +472,7 @@ ion-button,
     font-weight: 800;
   }
 }
-//fim dos letreiros 
-
-.div-pular-button{
-  
-}
-
+//fim dos letreiros
 
 //fim da page1
 
@@ -763,7 +757,7 @@ ion-button,
   --background: #0e2b52;
   --color: #fff;
   --border-radius: 20px;
-  border-radius: 20px;
+  border-radius: 22px;
   border: 3px solid #d9d9d9;
   width: 250px;
   height: 50px;
@@ -776,7 +770,7 @@ ion-button,
   --background: transparent;
   --color: #0e2b52;
   --border-radius: 20px;
-  border-radius: 20px;
+  border-radius: 22px;
   border: 3px solid #d9d9d9;
   width: 250px;
   height: 50px;
@@ -882,6 +876,9 @@ body.dark .confirmarAction{
 //fim do action-sheets
 
 //cards tela principal
+body.dark #titulo-cards-home{
+  color: #fff;
+}
 body.dark ion-card {
   background-color: #1a1a1a;
   border: 3px solid #fff;
@@ -994,18 +991,28 @@ body.dark .carousel-control:active .butao-icon {
 
 //coloração
 body.dark .carousel-page:nth-child(1) {
-  background-color: #1a1a1a;
+  background-color: #121212;
 }
 
-body.dark #enf-img {
-    width: 0;
-    height: 0;
-}
+//enfermeira e paciente
 body.dark #enf-img-1 {
     width: 290px;
     height: 290px;
-
+    height: max-content; 
 }
+body.dark #enf-img{
+    width: 0;
+    height: 0;
+}
+
+//letreiros
+body.dark .carousel-title-page-1{
+  color: #fff;
+}
+.carousel-footer-page-1{
+    color: #fff;
+}
+//fim dos letreiros 
 
 //fim da page1
 
@@ -1015,9 +1022,41 @@ body.dark #enf-img-1 {
 
 //coloração
 body.dark .carousel-page:nth-child(2) {
-  background-color: #1a1a1a;
+  background-color: #121212;
 }
 
+//estilização do card de example
+body.dark .swipper-card {
+  scale: (0.9);
+  width: 115%;
+  background-color: #1a1a1a;
+  border: 3px solid #fff;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+
+  .informacoes-div-swipper > p{
+    color: #fff;
+  }
+  .informacoes-div-swipper > p > span{
+    color: #fff;
+  }
+  .informacoes-div-swipper > h1{
+    color: #fff;
+  }
+  .icon-text-swipper{
+    color: #a4071a;
+    font-size: 16px;
+  }
+}
+
+//letreiros
+body.dark .carousel-title-page-2{
+  color: #fff;
+}
+body.dark .carousel-footer-page-2{
+  color: #fff;
+}
+//fim dos letreiros 
 
 //fim da page2
 
@@ -1027,8 +1066,25 @@ body.dark .carousel-page:nth-child(2) {
 
 //coloração
 body.dark .carousel-page:nth-child(3) {
-  background-color: #1a1a1a;
+  background-color: #121212;
 }
+
+//
+body.dark .tab-bar-swipper{
+  background-color: #1e1e1e;
+}
+body.dark .dedo-apontado-3{
+  color: #fff;
+}
+
+//letreiros
+body.dark .carousel-title-page-3{
+  color: #fff;
+}
+body.dark .carousel-footer-page-3{
+  color: #fff;
+}
+//fim dos letreiros
 
 //fim da page3
 
@@ -1038,8 +1094,21 @@ body.dark .carousel-page:nth-child(3) {
 
 //coloração
 body.dark .carousel-page:nth-child(4) {
-  background-color: #1a1a1a;
+  background-color: #121212;
 }
+
+body.dark .dedo-apontado-4{
+  color: #fff;
+}
+
+//letreiros
+body.dark .carousel-title-page-4{
+  color: #fff;
+}
+body.dark .carousel-footer-page-4{
+  color: #fff;
+}
+//fim dos letreiros
 
 //fim da page4
 
@@ -1049,8 +1118,22 @@ body.dark .carousel-page:nth-child(4) {
 
 //coloração
 body.dark .carousel-page:nth-child(5) {
-  background-color: #1a1a1a;
+  background-color: #121212;
 }
+
+//
+body.dark .dedo-apontado-5{
+  color: #fff;
+}
+
+//letreiros
+body.dark .carousel-title-page-5{
+  color: #fff;  
+}
+body.dark .carousel-footer-page-5{
+  color: #fff;
+}
+//fim dos letreiros
 
 //fim da page5
 
@@ -1060,8 +1143,22 @@ body.dark .carousel-page:nth-child(5) {
 
 //coloração
 body.dark .carousel-page:nth-child(6) {
-  background-color: #1a1a1a;
+  background-color: #121212;
 }
+
+//
+body.dark .dedo-apontado-6{
+  color: #fff;
+}
+
+//letreiros
+body.dark .carousel-title-page-6{
+  color: #fff;
+}
+body.dark .carousel-footer-page-6{
+  color: #fff;
+}
+//fim dos letreiros
 
 //fim da page6
 
@@ -1071,8 +1168,22 @@ body.dark .carousel-page:nth-child(6) {
 
 //coloração
 body.dark .carousel-page:nth-child(7) {
-  background-color: #1a1a1a;
+  background-color: #121212;
 }
+
+//letreiros
+body.dark .carousel-title-page-7{
+  color: #fff;
+}
+body.dark #btIniciarApp{
+  --background: #fff;
+  --color: #121212;
+}
+body.dark #btSairApp{
+  --background: transparent;
+  --color: #fff;
+}
+//fim dos letreiros 
 
 //fim da page7
 

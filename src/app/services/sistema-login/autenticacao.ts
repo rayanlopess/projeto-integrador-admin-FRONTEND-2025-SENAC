@@ -9,7 +9,7 @@ export class AutenticacaoService {
     
   constructor(public rs: RequiemDosDeusesService) { }
 
-  logar(login: string, senha: string): Observable<any> {
+  logar(login: string, senha: string) {
     // Opção 1: Usando FormData (como você estava fazendo)
     const fd = new FormData();
     fd.append('login', login);
@@ -22,7 +22,7 @@ export class AutenticacaoService {
     // return this.rs.post('/auth/login', dados);
   }
 
-  validarToken(token: string): Observable<any> {
+  validarToken(token: string) {
   
   }
 
