@@ -1,8 +1,21 @@
 <ion-header>
   <ion-toolbar>
-    
+    <ion-buttons slot="end">
+      <ion-button (click)="presentPopover($event)">
+        <ion-icon 
+          name="ellipsis-vertical" 
+          >
+        </ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <div class="titulos-container">
+      <ion-title id="home-title">Mapa de Hospitais</ion-title>
+     
+    </div>
   </ion-toolbar>
 </ion-header>
+
 
 <ion-content [fullscreen]="true">
   <capacitor-google-map class="mapa-container" #map></capacitor-google-map>

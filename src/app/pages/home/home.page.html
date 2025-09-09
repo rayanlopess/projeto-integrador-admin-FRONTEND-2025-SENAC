@@ -1,19 +1,29 @@
 <ion-header>
   <ion-toolbar>
-  
+    <ion-buttons slot="end">
+      <ion-button (click)="presentPopover($event)">
+        <ion-icon 
+          name="ellipsis-vertical" 
+          >
+        </ion-icon>
+      </ion-button>
+    </ion-buttons>
 
+    <div class="titulos-container">
+      <ion-title id="home-title">Bem-vindo ao Filamed</ion-title>
+      <span id="home-title">{{data}}</span>
+     
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-grid>
-
     <ion-row>
       <ion-col>
         <p id="titulo-cards-home">Encontre a Unidade de Pronto Atendimento que irá lhe <br> atender mais rápido!</p>
       </ion-col>
     </ion-row>
-
     <ion-row>
       <ion-col>
         <ion-card (click)="irHospital()">
@@ -33,14 +43,8 @@
           </ion-card-content>
         </ion-card>
       </ion-col>
-
     </ion-row>
-
-
-
   </ion-grid>
-
-
 
 
 </ion-content>

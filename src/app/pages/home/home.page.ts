@@ -6,12 +6,12 @@ import { IonicModule } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { home, map, call, settings, personCircle } from 'ionicons/icons';
 import { Router, RouterLink } from '@angular/router';
-import { AlertController } from '@ionic/angular/standalone';
+import { AlertController, PopoverController} from '@ionic/angular/standalone';
 
 import { Title } from '@angular/platform-browser';
 
 import { DateService } from '../../services/datetime-service/date-service';
-
+import { SimplePopoverComponent } from '../../components/simple-popover/simple-popover.component';
 
 @Component({
   selector: 'app-home',
@@ -31,7 +31,8 @@ export class HomePage implements OnInit {
     private router: Router,
     public titleService: Title,
     private dateService: DateService,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private popoverCtrl: PopoverController
   ) {
     addIcons({ home, map, call, settings, personCircle });
   }
@@ -39,6 +40,15 @@ export class HomePage implements OnInit {
   ngOnInit() {
 
   }
+
+  async presentPopover(event: Event){
+    const popover = await this.popoverCtrl.create({
+      component: SimplePopoverComponent,
+      event
+    })
+    await popover.present();
+  }
+
 
 
   async irHospital() {

@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
@@ -6,12 +7,19 @@ import { IonicModule } from '@ionic/angular';
 
 import { addIcons } from 'ionicons';
 import { home, map, call, settings, ellipsisVertical } from 'ionicons/icons';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { PopoverController, NavController } from '@ionic/angular/standalone';
 
 import { Title } from '@angular/platform-browser';
 
+import { DateService } from '../../services/datetime-service/date-service'
 
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+
+import { SimplePopoverComponent } from '../../components/simple-popover/simple-popover.component';
+
+import { Popover } from '../../services/popover/popover';
 
 
 @Component({
@@ -22,84 +30,32 @@ import { Title } from '@angular/platform-browser';
   imports: [ IonicModule, CommonModule, FormsModule], 
 
 })
-export class PathsPage implements OnInit {
+export class PathsPage implements OnInit, OnDestroy{
+
   activeTab: string = 'home';
+
   constructor(
     private router: Router,
     public titleService: Title,
     private navCtrl: NavController, 
-    private popoverCtrl: PopoverController
+    private popoverCtrl: PopoverController,
+    private date: DateService
   ) {
     addIcons({ home, map, call, settings, ellipsisVertical });
 
-    
+  
+  }
+   ngOnInit() {
+   
   }
 
-  ngOnInit() {
+
+
+  ngOnDestroy() {
+   
   
   }
 
-   async presentPopover() {
-    const popover = await this.popoverCtrl.create({
-      translucent: true,
-      side: 'bottom',
-      alignment: 'end',
-      cssClass: 'custom-popover',
-      componentProps: {
-        onActionClick: (action: string) => {
-          this.handleMenuAction(action);
-          popover.dismiss();
-        }
-      },
-      component: null
-    });
 
-    // Adiciona o conteúdo diretamente como no AlertController
-    Object.assign(popover, {
-      header: 'Menu',
-      buttons: [
-        {
-          text: 'Configurações',
-          icon: 'settings',
-          handler: () => {
-            this.handleMenuAction('config');
-          }
-        },
-        {
-          text: 'Perfil',
-          icon: 'person',
-          handler: () => {
-            this.handleMenuAction('profile');
-          }
-        },
-        {
-          text: 'Sair',
-          icon: 'log-out',
-          role: 'destructive',
-          handler: () => {
-            this.handleMenuAction('logout');
-          }
-        }
-      ]
-    });
-
-    await popover.present();
-  }
-
-  handleMenuAction(action: string) {
-    console.log('Ação selecionada:', action);
-    
-    switch (action) {
-      case 'config':
-        console.log('Abrindo configurações...');
-        break;
-      case 'profile':
-        console.log('Abrindo perfil...');
-        break;
-      case 'logout':
-        console.log('Fazendo logout...');
-        break;
-    }
-  }
-
+  
 }
