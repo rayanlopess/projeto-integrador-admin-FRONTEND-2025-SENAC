@@ -54,6 +54,7 @@
 ion-header ion-toolbar {
   padding-top: constant(safe-area-inset-top);
   padding-top: env(safe-area-inset-top);
+  height: 70px !important;
 }
 
 //corpo principal de texto
@@ -77,6 +78,7 @@ ion-tab-bar {
   --background: #d8dde3 !important;
   --color: #0e2b52 !important;
   --color-selected: #a4071a;
+
 }
 //FIM DO HTML GERAL
 
@@ -95,8 +97,14 @@ ion-tab-bar {
   left: 50%;
   transform: translate(-50%, -50%);
   color: #0e2b52;
+  margin-top: 2%;
 }
-
+#botao-toolbar{
+  margin-top: 30%;
+  width: 40px;
+  height: 40px;
+  font-size: 28px;
+}
 //footer do paths.scss
 .footer-paths {
   position: fixed;
