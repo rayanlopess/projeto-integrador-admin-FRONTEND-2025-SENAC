@@ -15,93 +15,6 @@ import { Subscription } from 'rxjs';
 
 const apiKey = "AIzaSyDvQ8YamcGrMBGAp0cslVWSRhS5NXNEDcI";
 
-// Estilos para o modo claro
-const lightStyle = [
-  {
-    featureType: 'all',
-    elementType: 'geometry',
-    stylers: [{ color: '#f5f5f5' }]
-  },
-  {
-    featureType: 'water',
-    elementType: 'geometry',
-    stylers: [{ color: '#c5e3f6' }]
-  },
-  {
-    featureType: 'road',
-    elementType: 'geometry',
-    stylers: [{ color: '#ffffff' }]
-  },
-  {
-    featureType: 'road',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#7c7c7c' }]
-  },
-  {
-    featureType: 'poi',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#747474' }]
-  },
-  {
-    featureType: 'administrative',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#616161' }]
-  }
-];
-
-// Estilos para o modo escuro
-const darkStyle = [
-  {
-    featureType: 'all',
-    elementType: 'geometry',
-    stylers: [{ color: '#242f3e' }]
-  },
-  {
-    featureType: 'water',
-    elementType: 'geometry',
-    stylers: [{ color: '#17263c' }]
-  },
-  {
-    featureType: 'road',
-    elementType: 'geometry',
-    stylers: [{ color: '#38414e' }]
-  },
-  {
-    featureType: 'road',
-    elementType: 'geometry.stroke',
-    stylers: [{ color: '#212a37' }]
-  },
-  {
-    featureType: 'road',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#9ca5b3' }]
-  },
-  {
-    featureType: 'road',
-    elementType: 'labels.text.stroke',
-    stylers: [{ color: '#1f2a38' }]
-  },
-  {
-    featureType: 'poi',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#d59563' }]
-  },
-  {
-    featureType: 'transit',
-    elementType: 'geometry',
-    stylers: [{ color: '#2f3948' }]
-  },
-  {
-    featureType: 'administrative',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#cdccd6' }]
-  },
-  {
-    featureType: 'landscape',
-    elementType: 'geometry',
-    stylers: [{ color: '#2c3748' }]
-  }
-];
 
 @Component({
   selector: 'app-mapa',
@@ -217,8 +130,7 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
           streetViewControl: false,
           rotateControl: false,
           fullscreenControl: false,
-          mapId: "16abc58f124f6eeb3b852ceb",
-          styles: this.currentTheme === 'dark' ? darkStyle : lightStyle
+          mapId: this.currentTheme === 'dark' ? "6fbe87b38800cc70488f7956" : "6fbe87b38800cc70bd62cb93",
         },
       });
 
