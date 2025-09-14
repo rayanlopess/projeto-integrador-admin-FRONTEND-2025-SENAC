@@ -7,10 +7,12 @@ import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
+
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [IonApp, IonRouterOutlet, GoogleMapsModule],
+  imports: [IonApp, IonRouterOutlet, GoogleMapsModule,],
     providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     // Forneça a chave da API

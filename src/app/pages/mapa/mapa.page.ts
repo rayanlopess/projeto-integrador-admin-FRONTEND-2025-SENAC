@@ -1,10 +1,10 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, AfterViewInit, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, AfterViewInit, ViewChild, OnInit, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { addIcons } from 'ionicons';
-import { home, map, call, settings, personCircle } from 'ionicons/icons';
+import { home, map, call, settings, personCircle, invertMode } from 'ionicons/icons';
 import { GoogleMap } from '@capacitor/google-maps';
 import { Geolocation } from '@capacitor/geolocation';
 
@@ -14,7 +14,6 @@ import { ThemeService, ThemeMode } from '../../services//theme/theme';
 import { Subscription } from 'rxjs';
 
 const apiKey = "AIzaSyDvQ8YamcGrMBGAp0cslVWSRhS5NXNEDcI";
-
 
 @Component({
   selector: 'app-mapa',
@@ -33,12 +32,16 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
   currentTheme: 'light' | 'dark' = 'light';
   private isMapInitialized = false;
 
+  // Signal para controlar o estado de carregamento
+  isLoading = signal(true);
+  loadError = signal(false);
+
   constructor(
     public alertController: AlertController,
     private popoverCtrl: PopoverController,
     private themeService: ThemeService
   ) {
-    addIcons({ home, map, call, settings, personCircle });
+    addIcons({ home, map, call, settings, personCircle, invertMode });
   }
 
   ngOnInit() {
@@ -78,9 +81,17 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
   }
 
   async ngAfterViewInit() {
-    await this.getCurrentLocation();
-    await this.createMap();
-    this.isMapInitialized = true;
+    try {
+      this.isLoading.set(true);
+      await this.getCurrentLocation();
+      await this.createMap();
+      this.isMapInitialized = true;
+      this.isLoading.set(false);
+    } catch (error) {
+      console.error('Erro durante inicialização do mapa:', error);
+      this.loadError.set(true);
+      this.isLoading.set(false);
+    }
   }
 
   // Método usando Capacitor Geolocation
@@ -99,16 +110,14 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
     } catch (error) {
       console.error('Erro ao obter localização:', error);
       // Fallback para coordenadas padrão
-      this.userLocation = {
-        lat: -28.593127928435898,
-        lng: -49.428683971705595
-      };
+      
     }
   }
 
   async createMap() {
     if (!this.mapRef?.nativeElement) {
       console.error('Map container not found');
+      this.loadError.set(true);
       return;
     }
 
@@ -139,12 +148,20 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
 
     } catch (error) {
       console.error('Error creating map:', error);
+      throw error; // Propaga o erro para ser tratado no ngAfterViewInit
     }
   }
 
   async recreateMapWithNewTheme() {
     console.log('Recriando mapa com novo tema:', this.currentTheme);
-    await this.createMap();
+    this.isLoading.set(true);
+    try {
+      await this.createMap();
+      this.isLoading.set(false);
+    } catch (error) {
+      console.error('Erro ao recriar mapa:', error);
+      this.isLoading.set(false);
+    }
   }
 
   async destroyMap() {
@@ -170,6 +187,22 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
       });
     } catch (error) {
       console.error('Error adding marker:', error);
+    }
+  }
+
+  // Método para tentar recarregar em caso de erro
+  async retryLoadMap() {
+    this.loadError.set(false);
+    this.isLoading.set(true);
+    try {
+      await this.getCurrentLocation();
+      await this.createMap();
+      this.isMapInitialized = true;
+      this.isLoading.set(false);
+    } catch (error) {
+      console.error('Erro ao recarregar mapa:', error);
+      this.loadError.set(true);
+      this.isLoading.set(false);
     }
   }
 }

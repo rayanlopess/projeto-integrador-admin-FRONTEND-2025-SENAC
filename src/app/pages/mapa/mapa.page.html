@@ -18,5 +18,11 @@
 
 
 <ion-content [fullscreen]="true">
-  <capacitor-google-map class="mapa-container" #map></capacitor-google-map>
+  @if (isLoading()) {
+    <div class="loading-container">
+      <ion-spinner></ion-spinner>
+    </div>
+  }
+
+  <capacitor-google-map [class.hidden]="isLoading() || loadError()" id="map" class="mapa-container" #map></capacitor-google-map>
 </ion-content>

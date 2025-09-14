@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { addIcons } from 'ionicons';
-import { home, map, call, settings, personCircle } from 'ionicons/icons';
+import { home, map, call, settings, personCircle, invertMode } from 'ionicons/icons';
 import { Router, RouterLink } from '@angular/router';
 import { AlertController, PopoverController} from '@ionic/angular/standalone';
 
@@ -34,7 +34,7 @@ export class HomePage implements OnInit {
     public alertController: AlertController,
     private popoverCtrl: PopoverController
   ) {
-    addIcons({ home, map, call, settings, personCircle });
+    addIcons({ home, map, call, settings, personCircle, invertMode });
   }
 
   ngOnInit() {

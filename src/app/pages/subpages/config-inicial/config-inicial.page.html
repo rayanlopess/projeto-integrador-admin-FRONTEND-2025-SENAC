@@ -1,0 +1,116 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="transparent-toolbar">
+    <ion-title>
+      <img src="../../../../assets/icons/filamed-azul-sf.png" alt="FilaMed Logo" id="filamed-logo">
+      <img src="../../../../assets/icons/filamed-sem-fundo.png" alt="FilaMed Logo" id="filamed-logo-1">
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+
+    <ion-row>
+      <ion-col>
+        <p id="titulo-config-inicial">CONFIGURAÇÕES INICIAIS</p>
+        <p id="subtitulo-config-inicial">personalize sua busca por atendimentos!</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div class="div-btLocalizacao">
+          <div class="separacao">
+            <div class="div-botoes">
+              <ion-button id="btLocalizacao">
+                <i class="bi bi-geo-alt-fill" id="icon-localizacao"></i>
+              </ion-button>
+            </div>
+            <div class="div-span">
+              <span id="letreiro-btLocalizacao">Usar minha localização atual<a id="asterisco">*</a></span>
+            </div>
+          </div>
+        </div>
+
+        <p id="text-entre-2">ou</p>
+        <div class="input-barra">
+          <div class="input-texto">
+            <div class="icon-search">
+              <ion-buttons>
+                <ion-button disabled>
+                  <ion-icon class="icon" name="search"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </div>
+            <div class="wave-group">
+              <input required="" type="text" class="input-tecido" placeholder="Ex.: Rua da Alegria, 123">
+              <label class="label">
+                <span class="label-char" style="--index: 0">P</span>
+                <span class="label-char" style="--index: 1">e</span>
+                <span class="label-char" style="--index: 2">s</span>
+                <span class="label-char" style="--index: 3">q</span>
+                <span class="label-char" style="--index: 5">u</span>
+                <span class="label-char" style="--index: 6">i</span>
+                <span class="label-char" style="--index: 7">s</span>
+                <span class="label-char" style="--index: 8">e</span>
+                <span class="label-char" style="--index: 9">&nbsp;</span>
+                <span class="label-char" style="--index: 10">o</span>
+                <span class="label-char" style="--index: 11">&nbsp;</span>
+                <span class="label-char" style="--index: 12">e</span>
+                <span class="label-char" style="--index: 13">n</span>
+                <span class="label-char" style="--index: 14">d</span>
+                <span class="label-char" style="--index: 15">e</span>
+                <span class="label-char" style="--index: 16">r</span>
+                <span class="label-char" style="--index: 17">e</span>
+                <span class="label-char" style="--index: 18">ç</span>
+                <span class="label-char" style="--index: 19">o</span>
+                <span class="label-char" id="asterisco" style="--index: 20">*</span>
+              </label>
+            </div>
+          </div>
+          <span class="bar"></span>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <p id="titulo-distancia-inicial">
+          Distância máxima que você <br>
+          está disposto(a) a se deslocar:
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-range aria-label="Custom range" [min]="10" [max]="100" [step]="10" [pin]="true" [ticks]="true"
+          [(ngModel)]="range" [snaps]="true" [pinFormatter]="pinFormatter">
+          <p slot="start" id="text-10km">10km</p>
+          <p slot="end" id="text-100km">100km</p>
+        </ion-range>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <div class="div-btSalvarConfig">
+          <ion-button id="btSalvarConfig" (click)="salvarConfig()">
+            Salvar e Continuar
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <div>
+          <p id="nota-config-inicial">
+            *Você poderá alterar essas preferências depois, nas configurações.
+          </p>
+        </div>
+      </ion-col>
+    </ion-row>
+
+
+  </ion-grid>
+</ion-content>

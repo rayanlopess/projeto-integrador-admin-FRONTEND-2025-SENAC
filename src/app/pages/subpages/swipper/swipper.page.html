@@ -1,15 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar class="transparent-toolbar">
     <ion-buttons class="div-pular-button" slot="end">
-      <ion-button id="pular-button" style="transition: all 0.3s ease-in-out;" *ngIf="currentIndex !== 6" (click)="pularHome()">Pular</ion-button>
+      <ion-button id="pular-button" style="transition: all 0.3s ease-in-out;" *ngIf="currentIndex !== 6"
+        (click)="pularHome()">Pular</ion-button>
     </ion-buttons>
     <ion-title>
       <img src="../../../../assets/icons/filamed-azul-sf.png" alt="FilaMed Logo" id="filamed-logo">
       <img src="../../../../assets/icons/filamed-sem-fundo.png" alt="FilaMed Logo" id="filamed-logo-1">
     </ion-title>
-    
-      
-   
   </ion-toolbar>
 </ion-header>
 
@@ -43,7 +41,7 @@
           </div>
 
         </div>
-       
+
 
         <div class="indicators-container">
           <div class="indicators">
@@ -52,7 +50,7 @@
           </div>
         </div>
 
-        
+
 
       </div>
 
@@ -135,10 +133,7 @@
                 <ion-icon name="call" class="icons-tab-swipper"></ion-icon>
                 Telefones
               </ion-tab-button>
-              <ion-tab-button tab="configuracoes">
-                <ion-icon name="settings" class="icons-tab-swipper"></ion-icon>
-                Configurações
-              </ion-tab-button>
+
             </ion-tab-bar>
 
 
@@ -174,7 +169,7 @@
           <div class="carousel-inner">
             <p class="carousel-title-page-4">
               A tela de <span>Mapa</span> apresenta à você todas as
-              UPAs disponíveis, <span>seu tempo de distância</span> e 
+              UPAs disponíveis, <span>seu tempo de distância</span> e
               <span>seu tempo para atendimento</span>!
             </p>
           </div>
@@ -195,10 +190,7 @@
                 <ion-icon name="call" class="icons-tab-swipper"></ion-icon>
                 Telefones
               </ion-tab-button>
-              <ion-tab-button tab="configuracoes">
-                <ion-icon name="settings" class="icons-tab-swipper"></ion-icon>
-                Configurações
-              </ion-tab-button>
+
             </ion-tab-bar>
 
 
@@ -208,7 +200,7 @@
           <div class="carousel-inner">
             <p class="carousel-footer-page-4">
               Para ver <span>geograficamente</span> a distância de
-               cada hospital, <span>utilize essa página</span>!
+              cada hospital, <span>utilize essa página</span>!
             </p>
           </div>
 
@@ -256,10 +248,7 @@
                 <ion-icon name="call" class="icons-tab-swipper"></ion-icon>
                 Telefones
               </ion-tab-button>
-              <ion-tab-button tab="configuracoes">
-                <ion-icon name="settings" class="icons-tab-swipper"></ion-icon>
-                Configurações
-              </ion-tab-button>
+
             </ion-tab-bar>
 
 
@@ -295,49 +284,62 @@
 
           <div class="carousel-inner">
             <p class="carousel-title-page-6">
-              A tela de <span>Configurações</span> apresenta à
-              você <span>todos os dados do seu aplicativo</span>, 
-              personalizados para o seu <span>conforto</span>!
+              Em nosso <span>menu</span>, localizado a direita,
+              você tem acesso à <span>todas
+                as suas Configurações</span>.
             </p>
           </div>
 
           <div class="carousel-inner">
-
-
-            <ion-tab-bar class="tab-bar-swipper">
-              <ion-tab-button tab="home">
-                <i class="bi bi-hospital-fill icons-tab-swipper"></i>
-                Emergência
-              </ion-tab-button>
-              <ion-tab-button tab="mapa">
-                <ion-icon name="map" class="icons-tab-swipper"></ion-icon>
-                Mapa
-              </ion-tab-button>
-              <ion-tab-button tab="telefones">
-                <ion-icon name="call" class="icons-tab-swipper"></ion-icon>
-                Telefones
-              </ion-tab-button>
-              <ion-tab-button tab="configuracoes" class="tab-selected">
-                <ion-icon name="settings" class="icons-tab-swipper"></ion-icon>
-                Configurações
-              </ion-tab-button>
-            </ion-tab-bar>
-
-
+            <div class="ion-toolbar-swipper" slot="start">
+              <div class="titulos-container-swipper">
+                <ion-title id="welcome-filamed">Bem-vindo ao Filamed</ion-title>
+                <span id="span-filamed">{{data}}</span>
+              </div>
+              <ion-buttons slot="end">
+                <ion-button>
+                  <ion-icon id="botao-toolbar-swipper" name="ellipsis-vertical"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </div>
 
           </div>
 
-          <div class="carousel-inner">
+          <div class="carousel-inner-page-6">
+
+            <img src="../../../../assets/images/swipper/seta-light.png" alt="Seta apontando no light mode"
+              id="seta-light">
+            <img src="../../../../assets/images/swipper/seta-dark.png" alt="Seta apontando no dark mode" id="seta-dark">
+
+
             <p class="carousel-footer-page-6">
-              Caso precise de algum <span>ajuste</span>, 
-              acesse essa tela.
+              Para alterar o raio de distância
+              utilizado em seu aplicativo,
+              acesse o menu e ajuste!
             </p>
           </div>
 
         </div>
 
-        <div class="dedo-apontado-6">
-          <i class="bi bi-hand-index"></i>
+        <div class="popover-swipper">
+          <ion-list>
+            <ion-item>
+              <ion-label>Opções de Distância</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Tema</ion-label>
+              <ion-note slot="end"></ion-note>
+            </ion-item>
+            <ion-item>
+              <ion-label>Termos de Uso</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Privacidade e Segurança</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Central de Ajuda</ion-label>
+            </ion-item>
+          </ion-list>
         </div>
 
         <div class="indicators-container">
@@ -355,15 +357,22 @@
 
           <div class="carousel-inner-page-7">
             <p class="carousel-title-page-7">
-              Por aqui,<br>
-              <span>tudo pronto!</span><br>
-              Vamos <span>começar</span>?
+              Antes de começar,
+              precisamos de <span>você</span>!
+
             </p>
           </div>
 
           <div class="carousel-inner-page-7" id="pageBotoes">
+            <ion-checkbox labelPlacement="end" [(ngModel)]="checkbox" required
+              [class]="isCheckboxInvalid ? class_error : ''" errorText="Você deve aceitar os termos para continuar">
+              Li e aceito os <a>Termos de Uso</a> <ion-text color="danger">*</ion-text>
+            </ion-checkbox>
+          </div>
+
+          <div class="carousel-inner-page-7" id="pageBotoes">
             <ion-button id="btIniciarApp" (click)="irHome()">Iniciar</ion-button>
-            <ion-button id="btSairApp" >Sair</ion-button>
+            <ion-button id="btSairApp">Sair</ion-button>
           </div>
 
 
@@ -376,6 +385,7 @@
           </div>
         </div>
       </div>
+
     </div>
 
     <!-- Botões de controle -->

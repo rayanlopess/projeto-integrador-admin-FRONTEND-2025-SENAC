@@ -2,25 +2,139 @@
   <ion-toolbar>
     <ion-buttons slot="end">
       <ion-button id="botao-toolbar" (click)="presentPopover($event)">
-        <ion-icon id="icon-toolbar"
-          name="ellipsis-vertical" 
-          >
+        <ion-icon id="icon-toolbar" name="ellipsis-vertical">
         </ion-icon>
       </ion-button>
     </ion-buttons>
-
     <div class="titulos-container">
       <ion-title id="home-title">Telefones de Emergência:</ion-title>
-     
     </div>
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">telefones</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+  <div class="aviso-telefones">
+
+    <div class="div-titulo-telefones">
+      <span>Use esses números apenas em caso de emergência real.</span>
+    </div>
+
+    <div class="div-warning-triangle">
+      <ion-icon name="warning-outline"></ion-icon>
+    </div>
+
+  </div>
+
+  <ion-grid>
+
+    <ion-row>
+      <ion-col>
+        <p id="titulo-telefones">
+          CONTATOS DE EMERGÊNCIA:
+        </p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-card class="card-telefones" button>
+
+          <ion-card-content >
+
+            <ion-list>
+
+              <ion-item>
+
+                <ion-thumbnail slot="start">
+                  <img alt="FilaMed Logo" src="../../../assets/images/telefones/ambulancia-light.png" id="ambulancia-light" />
+                  <img alt="FilaMed Logo" src="../../../assets/images/telefones/ambulancia-dark.png" id="ambulancia-dark" />
+                </ion-thumbnail>
+
+                <div class="informacoes-div">
+                  <h1>SAMU - 192</h1>
+                  <p>Atendimento médico de urgência</p>
+                </div>
+
+              </ion-item>
+
+            </ion-list>
+
+          </ion-card-content>
+
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-card class="card-telefones" button>
+
+          <ion-card-content>
+
+            <ion-list>
+
+              <ion-item>
+
+                <ion-thumbnail slot="start">
+                  <img alt="FilaMed Logo" src="../../../assets/images/telefones/bombeiro-light.png" id="bombeiro-light" />
+                  <img alt="FilaMed Logo" src="../../../assets/images/telefones/bombeiro-dark.png" id="bombeiro-dark"/>
+                </ion-thumbnail>
+
+                <div class="informacoes-div">
+                  <h1>Bombeiros - 193</h1>
+                  <p>Incêndios, resgates e acidentes.</p>
+                </div>
+
+              </ion-item>
+
+            </ion-list>
+
+          </ion-card-content>
+
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-card class="card-telefones" button>
+
+          <ion-card-content>
+
+            <ion-list>
+
+              <ion-item>
+
+                <ion-thumbnail slot="start">
+                  <img alt="FilaMed Logo" src="../../../assets/images/telefones/policia-light.png" id="policia-light" />
+                  <img alt="FilaMed Logo" src="../../../assets/images/telefones/policia-dark.png" id="policia-dark" />
+                </ion-thumbnail>
+
+                <div class="informacoes-div">
+                  <h1>Polícia Militar - 190</h1>
+                  <p>Situações de emergência e segurança</p>
+                </div>
+
+              </ion-item>
+
+            </ion-list>
+
+          </ion-card-content>
+
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <div>
+          <p id="nota-config-inicial">
+            *Para ir direto ao aplicativo "telefone" do seu dispositivo, apenas clique em cima do card do serviço desejado.
+          </p>
+        </div>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
 </ion-content>

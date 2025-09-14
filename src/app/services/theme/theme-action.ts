@@ -23,7 +23,7 @@ export class ThemeActionService {
       buttons: [
         {
           text: `Automático ${currentMode === 'auto' ? '✓' : ''}`,
-          icon: 'phone-portrait',
+          icon: 'invert-mode',
           data: 'auto',
           role: currentMode === 'auto' ? 'selected' : undefined,
           handler: () => {

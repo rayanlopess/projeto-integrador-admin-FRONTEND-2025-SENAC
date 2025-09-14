@@ -19,8 +19,9 @@ import { Subscription } from 'rxjs';
   template: `
     <ion-list>
    
-    <ion-item>
+    <ion-item button>
     <ion-label>Opções de Distância</ion-label>
+    <ion-note slot="end">50km</ion-note>
   </ion-item>
 
       <ion-item button (click)="openThemeSelector()">

@@ -1,0 +1,27 @@
+.transparent-toolbar {
+    --background: transparent;
+    --ion-color-base: transparent !important;
+    --border-width: 0 !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+ion-toolbar {
+    box-shadow: none !important;
+}
+.div-images-aviso-dados{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+.textos{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

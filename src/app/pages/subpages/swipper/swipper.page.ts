@@ -1,14 +1,17 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { addIcons } from 'ionicons';
-import { home, map, call, settings, personCircle, chevronBack, chevronForward } from 'ionicons/icons';
+import { home, map, call, settings, personCircle, chevronBack, chevronForward, ellipsisVertical } from 'ionicons/icons';
 
 import { ThemeService, ThemeMode } from '../../../services/theme/theme';
 import { AlertController } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
+
+import { DateService } from '../../../services/datetime-service/date-service';
+
 
 
 @Component({
@@ -21,21 +24,31 @@ import { Router } from '@angular/router';
 })
 export class SwipperPage implements OnInit {
 
+  public data: string = this.dateService.getFormattedDate();
+
+
 
   constructor(
-        private themeService: ThemeService,
-        public alertController: AlertController,
-        private rt: Router
+    private themeService: ThemeService,
+    public alertController: AlertController,
+    private rt: Router,
+    private dateService: DateService,
   ) {
-    addIcons({ home, map, call, settings, personCircle, chevronBack, chevronForward });
-   }
-  
-   public temaAtual:string = this.themeService.getCurrentTheme()
-
-  ngOnInit() {
-    
+    addIcons({ home, map, call, settings, personCircle, chevronBack, chevronForward, ellipsisVertical });
   }
 
+
+
+  ngOnInit() {
+
+  }
+
+  onSubmit() {
+
+  }
+
+  //
+  public temaAtual: string = this.themeService.getCurrentTheme()
   currentIndex = 0;
   pages = Array(7).fill(0); // 7 páginas
 
@@ -51,9 +64,21 @@ export class SwipperPage implements OnInit {
     }
   }
 
-  irHome(){
-    this.rt.navigate(['/path/home']);
+  public checkbox: boolean = false;
+  public class_error: string = 'ion-touched ion-invalid';
+  public isCheckboxInvalid: boolean = false; // Nova variável para controle
+  irHome() {
+    if (!this.checkbox) {
+      this.isCheckboxInvalid = true; // Marca como inválido
+      return;
+    }
+
+    // Se chegou aqui, checkbox está marcado
+    this.isCheckboxInvalid = false; // Remove o erro
+    localStorage.setItem("isFirstTime", "false")
+    this.rt.navigate(['/config-inicial']);
   }
+
 
   async pularHome() {
 
@@ -80,11 +105,11 @@ export class SwipperPage implements OnInit {
       ],
     });
 
-    await alert.present(); 
+    await alert.present();
   }
 
-  sairApp(){
-   
+  sairApp() {
+
   }
 
 }

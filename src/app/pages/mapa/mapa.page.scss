@@ -1,24 +1,49 @@
 .mapa-container {
-    width: 100%;
-    height: 93%;
-    position: absolute;
-    transition: filter 0.3s ease;
-  }
+  width: 100%;
+  height: 94%;
+  position: absolute;
+  transition: filter 0.3s ease;
   
-  // Ajustes específicos para o tema escuro
-  .dark {
-    .mapa-container {
-      filter: brightness(0.9) contrast(1.1);
-    }
-    
-    // Ajustes para a toolbar no modo escuro
-    ion-toolbar {
-      --background: var(--ion-color-dark);
-      --color: var(--ion-color-dark-contrast);
-    }
+  /* MATA O SCROLL DE UMA VEZ POR TODAS */
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
+
+/* MATA QUALQUER ELEMENTO INTERNO QUE CRIE SCROLL */
+.mapa-container * {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
+/* REMOVE SCROLLBARS NO WEBKIT (CHROME/SAFARI) */
+.mapa-container::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* BLOQUEIA SCROLL VIA JAVASCRIPT (SE PRECISAR) */
+.mapa-container {
+  pointer-events: auto;
+}
+
+// Ajustes específicos para o tema escuro
+.dark {
+  .mapa-container {
+    filter: brightness(0.9) contrast(1.1);
   }
-  
-  // Ajustes para a toolbar no modo claro
+
+  // Ajustes para a toolbar no modo escuro
   ion-toolbar {
-    transition: --background 0.3s ease, --color 0.3s ease;
+    --background: var(--ion-color-dark);
+    --color: var(--ion-color-dark-contrast);
   }
+}
+
+// Ajustes para a toolbar no modo claro
+ion-toolbar {
+  transition: --background 0.3s ease, --color 0.3s ease;
+}
+

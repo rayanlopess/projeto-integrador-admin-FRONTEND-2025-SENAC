@@ -1,12 +1,192 @@
+ion-content{
+    --overflow: hidden;
+    overflow: hidden;
+     &::part(scroll) {
+        overflow: hidden !important;
+    }
+}
 .div-img{
     width: 100%;
     height: 100%;
-    background-color: #0e2b52;
+    background-color: #0e2b52; // Mantém a cor original
     position: absolute;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    // ADICIONA ISSO PARA GARANTIR
+    overflow-y: hidden !important;
+    overflow-x: hidden !important;
+    --overflow: hidden;
+
+    // Efeito de pulso suave no background
+    &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+        animation: healthPulse 4s ease-in-out infinite;
+        z-index: 1;
+    }
 }
+
 img{
     width: 250px;
+    z-index: 2;
+    position: relative;
+    
+    // Animação principal - suave e profissional
+    animation: 
+        healthEntrance 2s cubic-bezier(0.28, 0.84, 0.42, 1) forwards,
+        gentleBreath 6s ease-in-out infinite 2s;
+    
+    // Sombra suave para dar profundidade
+    filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.2));
+}
+
+// KEYFRAMES PROFISSIONAIS PARA SAÚDE
+@keyframes healthEntrance {
+    0% {
+        opacity: 0;
+        transform: 
+            scale(0.8) 
+            translateY(60px);
+        filter: blur(8px);
+    }
+    40% {
+        opacity: 0.7;
+        transform: 
+            scale(1.05) 
+            translateY(-8px);
+        filter: blur(3px);
+    }
+    60% {
+        transform: 
+            scale(0.98) 
+            translateY(4px);
+    }
+    80% {
+        opacity: 0.9;
+        transform: 
+            scale(1.01) 
+            translateY(-2px);
+    }
+    100% {
+        opacity: 1;
+        transform: 
+            scale(1) 
+            translateY(0);
+        filter: blur(0);
+    }
+}
+
+@keyframes gentleBreath {
+    0%, 100% {
+        transform: 
+            scale(1) 
+            translateY(0);
+        filter: 
+            drop-shadow(0 3px 10px rgba(0, 0, 0, 0.2)) 
+            brightness(1);
+    }
+    50% {
+        transform: 
+            scale(1.02) 
+            translateY(-3px);
+        filter: 
+            drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25)) 
+            brightness(1.03);
+    }
+}
+
+@keyframes healthPulse {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.02);
+    }
+}
+
+// Efeitos discretos de "batimento cardíaco"
+.heartbeat {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    animation: heartbeatPulse 3s ease-out infinite;
+    z-index: 1;
+    opacity: 0;
+}
+
+@keyframes heartbeatPulse {
+    0% {
+        transform: scale(0);
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 0.3;
+    }
+    100% {
+        transform: scale(3);
+        opacity: 0;
+    }
+}
+
+// ANIMAÇÃO DE SAÍDA ATUALIZADA - SEM TELA PRETA
+.div-img.exiting {
+    // Remove a opacidade do background para não ficar preto
+    animation: healthExit 1s ease-in-out forwards;
+    
+    img {
+        animation: logoExit 0.8s ease-in-out forwards;
+    }
+    
+    // Para os efeitos de heartbeat
+    .heartbeat {
+        animation: none;
+        opacity: 0;
+    }
+}
+
+@keyframes healthExit {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    80% {
+        opacity: 1; // Mantém visível até o final
+        transform: scale(1.02);
+    }
+    100% {
+        opacity: 1; // Não deixa transparente!
+        transform: scale(1.02);
+        visibility: hidden; // Esconde sem afetar opacidade
+    }
+}
+
+@keyframes logoExit {
+    0% {
+        transform: 
+            scale(1) 
+            translateY(0);
+        opacity: 1;
+    }
+    60% {
+        transform: 
+            scale(1.1) 
+            translateY(-40px);
+        opacity: 0.7;
+    }
+    100% {
+        transform: 
+            scale(0.9) 
+            translateY(80px);
+        opacity: 0; // Só a logo some, o background fica
+        filter: blur(6px);
+    }
 }
