@@ -2,16 +2,16 @@ import { Component, OnInit, OnDestroy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/c
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 import { addIcons } from 'ionicons';
-import { home, map, call, settings, personCircle, invertMode } from 'ionicons/icons';
-import { Router, RouterLink } from '@angular/router';
-import { AlertController, PopoverController} from '@ionic/angular/standalone';
-
-import { Title } from '@angular/platform-browser';
+import { home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline } from 'ionicons/icons';
+import { AlertController, PopoverController, LoadingController } from '@ionic/angular/standalone';
 
 import { DateService } from '../../services/datetime-service/date-service';
 import { SimplePopoverComponent } from '../../components/simple-popover/simple-popover.component';
+import { HospitalService, Hospital } from '../../services/sistema-hospital/hospital';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -22,39 +22,92 @@ import { SimplePopoverComponent } from '../../components/simple-popover/simple-p
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePage implements OnInit {
-  public upa:string = 'UPA Rio Maina'
-  public usuario: string = "Julia";
-  public tempo:string = "10 min";
+
+  public hospitais: Hospital[] = [];
+  public carregando: boolean = true;
+  public erroCarregamento: boolean = false;
+  public mensagemErro: string = '';
   public data: string = this.dateService.getFormattedDate();
+
+  private subscription!: Subscription;
 
   constructor(
     private router: Router,
-    public titleService: Title,
     private dateService: DateService,
     public alertController: AlertController,
-    private popoverCtrl: PopoverController
+    private popoverCtrl: PopoverController,
+    private hospitalService: HospitalService,
+    private loadingController: LoadingController
   ) {
-    addIcons({ home, map, call, settings, personCircle, invertMode });
+    addIcons({ home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline });
   }
 
-  ngOnInit() {
-
+  async ngOnInit() {
+    await this.carregarHospitais();
   }
 
-  async presentPopover(event: Event){
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  async carregarHospitais() {
+    this.carregando = true;
+    this.erroCarregamento = false;
+
+    try {
+      // Verifica se tem configurações salvas
+      if (this.hospitalService.temConfiguracoesSalvas()) {
+        await this.hospitalService.carregarHospitaisComConfiguracoesSalvas();
+      } else {
+        // Se não tem configurações, redireciona para configuração inicial
+        this.router.navigate(['/config-inicial']);
+        return;
+      }
+
+      // Se inscreve para receber os hospitais
+      this.subscription = this.hospitalService.hospitaisFiltrados$.subscribe({
+        next: (hospitais) => {
+          this.hospitais = hospitais;
+          this.carregando = false;
+        },
+        error: (error) => {
+          console.error('Erro ao carregar hospitais:', error);
+          this.mensagemErro = 'Erro ao carregar hospitais. Verifique sua conexão.';
+          this.erroCarregamento = true;
+          this.carregando = false;
+        }
+      });
+
+    } catch (error: any) {
+      console.error('Erro:', error);
+      this.mensagemErro = error.message || 'Erro ao carregar hospitais';
+      this.erroCarregamento = true;
+      this.carregando = false;
+    }
+  }
+
+  async tentarNovamente() {
+    await this.carregarHospitais();
+  }
+
+  irParaConfiguracao() {
+    this.router.navigate(['/config-inicial']);
+  }
+
+  async presentPopover(event: Event) {
     const popover = await this.popoverCtrl.create({
       component: SimplePopoverComponent,
       event
-    })
+    });
     await popover.present();
   }
 
-
-
-  async irHospital() {
-
+  async irHospital(hospital: Hospital) {
     const alert = await this.alertController.create({
-      header: `Deseja realmente ir até ${this.upa}`,
+      header: `Deseja realmente ir até ${hospital.nome}?`,
+      message: `Tempo estimado: ${hospital.tempo_fila || '?'} minutos\nDistância: ${hospital.distanciaRota || hospital.distancia} km`,
       cssClass: 'container-alert',
       buttons: [
         {
@@ -70,16 +123,29 @@ export class HomePage implements OnInit {
           role: 'confirm',
           cssClass: 'confirmarAction',
           handler: async () => {
-            
+            // Aqui você pode implementar a navegação para o mapa ou abrir o GPS
+            this.abrirNoMapa(hospital);
           },
         },
       ],
     });
 
     await alert.present();
-
-    
   }
 
+  private abrirNoMapa(hospital: Hospital) {
+    // Implementação para abrir no aplicativo de mapas
+    const userLocation = this.hospitalService.getLocalizacaoAtual();
+    
+    if (userLocation) {
+      // URL para abrir no Google Maps com rota
+      const url = `https://www.google.com/maps/dir/?api=1&origin=${userLocation.lat},${userLocation.lng}&destination=${hospital.lati},${hospital.long}&travelmode=driving`;
+      window.open(url, '_system');
+    } else {
+      // URL simples para o hospital
+      const url = `https://www.google.com/maps/search/?api=1&query=${hospital.lati},${hospital.long}`;
+      window.open(url, '_system');
+    }
+  }
 
 }

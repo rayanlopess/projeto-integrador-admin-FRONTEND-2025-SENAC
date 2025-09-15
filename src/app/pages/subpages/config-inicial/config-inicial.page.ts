@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-
 import { AlertController } from '@ionic/angular/standalone';
-
+import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { search } from 'ionicons/icons';
-import { Router } from '@angular/router';
+import { HospitalService } from '../../../services/sistema-hospital/hospital'; // Add this import
 
 @Component({
   selector: 'app-config-inicial',
@@ -22,12 +21,14 @@ export class ConfigInicialPage implements OnInit {
   public class_enderecoManual: string = '';
   public class_error: string = 'ion-touched ion-invalid';
   public usandoLocalizacaoAtual: boolean = false;
+  public carregando: boolean = false; // Added loading state
 
   constructor(
-    public rt: Router,
-    public alertController: AlertController
+    private router: Router, // Changed from public rt to private router
+    private alertController: AlertController,
+    private hospitalService: HospitalService // Added HospitalService
   ) {
-    addIcons({ search })
+    addIcons({ search });
   }
 
   ngOnInit() {
@@ -41,61 +42,72 @@ export class ConfigInicialPage implements OnInit {
     // Verifica se o usuário não forneceu nenhuma forma de localização
     if (!this.usandoLocalizacaoAtual && this.enderecoManual.trim() === '') {
       const alert = await this.alertController.create({
-        header: `Selecione uma Localização ou Digite uma.`,
+        header: 'Localização necessária',
+        message: 'Selecione uma localização ou digite um endereço.',
         cssClass: 'container-alert',
         buttons: [
-          {
-            text: 'Cancelar',
-            role: 'cancel',
-            cssClass: 'cancelarAction',
-            handler: () => {
-              console.log('Operação cancelada.');
-            },
-          },
           {
             text: 'OK',
             role: 'confirm',
             cssClass: 'confirmarAction',
-            handler: async () => {
-
-            },
           },
         ],
       });
 
       await alert.present();
-
+      return;
     }
-    else {
-      console.log('Configurações salvas:');
-      localStorage.setItem("Distancia", `${this.range}`)
 
+    this.carregando = true;
+
+    try {
+      const config = {
+        Distancia: this.range,
+        EnderecoManual: this.usandoLocalizacaoAtual ? "false" : this.enderecoManual,
+        LocalizacaoAtual: this.usandoLocalizacaoAtual ? "true" : "false"
+      };
+
+      localStorage.setItem('configuracoesUsuario', JSON.stringify(config));
+
+      // Continua com a inicialização do serviço...
       if (this.usandoLocalizacaoAtual) {
-        localStorage.setItem("LocalizacaoAtual", `true`);
-        localStorage.setItem("EnderecoManual", "false")
-        this.rt.navigate(['/aviso-dados']);
+        await this.hospitalService.inicializarComLocalizacaoAtual();
       } else {
-        localStorage.setItem("LocalizacaoAtual", `false`);
-        localStorage.setItem("EnderecoManual", `${this.enderecoManual}`)
-        this.rt.navigate(['/aviso-dados']);
+        await this.hospitalService.inicializarComEndereco(this.enderecoManual);
       }
+
+      await this.hospitalService.carregarHospitaisProximos(this.range);
+      this.router.navigate(['/home']);
+
+    } catch (error: any) {
+      console.error('Erro ao salvar configuração:', error);
+      
+      const alert = await this.alertController.create({
+        header: 'Erro',
+        message: error.message || 'Erro ao processar localização. Tente novamente.',
+        buttons: ['OK']
+      });
+      
+      await alert.present();
+    } finally {
+      this.carregando = false;
     }
-    // Se chegou aqui, pode salvar as configurações
-
-
   }
 
   usarLocalizacaoAtual() {
     this.usandoLocalizacaoAtual = true;
     this.class_enderecoManual = ''; // Remove qualquer erro do campo de endereço manual
+  }
 
-    // Aqui você implementaria a lógica para obter a localização atual
-    // Por enquanto, vamos apenas simular
-    console.log('Obtendo localização atual...');
+  // Added method to handle manual address input
+  onEnderecoManualChange() {
+    if (this.enderecoManual.trim() !== '') {
+      this.usandoLocalizacaoAtual = false;
+    }
+  }
 
-    // Simulação de obtenção de localização
-    setTimeout(() => {
-      console.log('Localização obtida com sucesso!');
-    }, 1000);
+  // Added getter for template
+  get usandoEnderecoManual(): boolean {
+    return !this.usandoLocalizacaoAtual && this.enderecoManual.trim() !== '';
   }
 }

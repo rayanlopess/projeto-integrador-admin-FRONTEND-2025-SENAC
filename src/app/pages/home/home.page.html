@@ -2,10 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="end">
       <ion-button id="botao-toolbar" (click)="presentPopover($event)">
-        <ion-icon id="icon-toolbar"
-          name="ellipsis-vertical" 
-          >
-        </ion-icon>
+        <ion-icon id="icon-toolbar" name="ellipsis-vertical"></ion-icon>
       </ion-button>
     </ion-buttons>
 
@@ -23,19 +20,81 @@
         <p id="titulo-cards-home">Encontre a Unidade de Pronto Atendimento que irá lhe <br> atender mais rápido!</p>
       </ion-col>
     </ion-row>
-    <ion-row>
+
+    <!-- Loading enquanto carrega -->
+    <ion-row *ngIf="carregando">
       <ion-col>
-        <ion-card (click)="irHospital()" class="card-home">
+        <div class="loading-container">
+          <ion-spinner></ion-spinner>
+          <p>Carregando hospitais próximos...</p>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <!-- Mensagem de erro -->
+    <ion-row *ngIf="erroCarregamento">
+      <ion-col>
+        <div class="error-container">
+          <ion-icon name="warning-outline"></ion-icon>
+          <p>{{mensagemErro}}</p>
+          <ion-button (click)="tentarNovamente()">Tentar Novamente</ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <!-- Lista de hospitais -->
+    <ion-row *ngIf="!carregando && !erroCarregamento">
+      <ion-col>
+        <!-- Card vazio se não houver hospitais -->
+        <div *ngIf="hospitais.length === 0" class="empty-state">
+          <ion-icon name="medical-outline"></ion-icon>
+          <p>Nenhum hospital encontrado no raio selecionado.</p>
+          <ion-button (click)="irParaConfiguracao()">Alterar Configurações</ion-button>
+        </div>
+
+        <!-- Cards dos hospitais -->
+        <ion-card 
+          *ngFor="let hospital of hospitais" 
+          (click)="irHospital(hospital)" 
+          class="card-home"
+          [class.hospital-proximo]="hospital.distancia && hospital.distancia < 5">
+          
           <ion-card-content>
             <ion-list>
               <ion-item>
                 <ion-thumbnail slot="end">
-                  <img alt="FilaMed Logo" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+                  <img alt="Hospital" src="assets/icons/hospital-icon.png" />
                 </ion-thumbnail>
                 <div class="informacoes-div">
-                  <h1>UPA Exemplo - 3,5 km </h1>
-                  <p><i class="bi bi-geo-alt-fill icon-text"></i>&nbsp; Tempo Ida: <span>{{tempo}}</span></p>
-                  <p><i class="bi bi-clock-fill icon-text"></i>&nbsp; Fila Espera: <span>{{tempo}}</span></p>
+                  <h1>{{hospital.nome}} - {{hospital.distancia | number:'1.1-1'}}km</h1>
+                  
+                  <!-- Tempo de deslocamento (se disponível) -->
+                  <p *ngIf="hospital.tempoDeslocamento">
+                    <i class="bi bi-car-front-fill icon-text"></i>&nbsp; 
+                    Tempo Ida: <span>{{hospital.tempoDeslocamento}} min</span>
+                  </p>
+                  <p *ngIf="!hospital.tempoDeslocamento && hospital.distancia">
+                    <i class="bi bi-geo-alt-fill icon-text"></i>&nbsp; 
+                    Distância: <span>{{hospital.distancia | number:'1.1-1'}} km</span>
+                  </p>
+                  
+                  <!-- Fila de espera -->
+                  <p>
+                    <i class="bi bi-clock-fill icon-text"></i>&nbsp; 
+                    Fila Espera: <span>{{hospital.tempo_fila}} min</span>
+                  </p>
+                  
+                  <!-- Quantidade de pacientes -->
+                  <p *ngIf="hospital.qtd_pacientes > 0">
+                    <i class="bi bi-people-fill icon-text"></i>&nbsp; 
+                    Pacientes na fila: <span>{{hospital.qtd_pacientes}}</span>
+                  </p>
+                  
+                  <!-- Endereço resumido -->
+                  <p class="endereco-resumido">
+                    <i class="bi bi-geo-fill icon-text"></i>&nbsp; 
+                    {{hospital.cidade}} - {{hospital.uf}}
+                  </p>
                 </div>
               </ion-item>
             </ion-list>
@@ -44,6 +103,4 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
-
 </ion-content>
