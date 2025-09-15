@@ -75,7 +75,6 @@ export class SwipperPage implements OnInit {
 
     // Se chegou aqui, checkbox está marcado
     this.isCheckboxInvalid = false; // Remove o erro
-    localStorage.setItem("isFirstTime", "false")
     this.rt.navigate(['/config-inicial']);
   }
 

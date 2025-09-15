@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { addIcons } from 'ionicons';
 import { search } from 'ionicons/icons';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-aviso-dados',
@@ -15,11 +16,16 @@ import { search } from 'ionicons/icons';
 })
 export class AvisoDadosPage implements OnInit {
 
-  constructor() {
+  constructor(
+    public rt: Router
+  ) {
     addIcons({ search })
   }
 
   ngOnInit() {
   }
-
+  irHome(){
+    localStorage.setItem("isFirstTime", "false")
+    this.rt.navigate(['/path/home']);
+  }
 }

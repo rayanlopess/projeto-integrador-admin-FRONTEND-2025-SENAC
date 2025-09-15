@@ -53,7 +53,7 @@ export class TelaLogoPage implements AfterViewInit {
   }
 
   private async navigateToHome() {
-    const container = document.querySelector('.div-img');
+    const container = document.querySelector('.div-img-tela-logo');
     if (container) {
       container.classList.add('exiting');
 
