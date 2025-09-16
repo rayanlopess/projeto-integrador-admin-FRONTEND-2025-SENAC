@@ -10,7 +10,7 @@ import { AlertController, PopoverController, LoadingController } from '@ionic/an
 
 import { DateService } from '../../services/datetime-service/date-service';
 import { SimplePopoverComponent } from '../../components/simple-popover/simple-popover.component';
-import { HospitalService, Hospital } from '../../services/sistema-hospital/hospital';
+import { HospitalService, HospitalProcessado } from '../../services/sistema-hospital/hospital';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -23,7 +23,7 @@ import { Subscription } from 'rxjs';
 })
 export class HomePage implements OnInit {
 
-  public hospitais: Hospital[] = [];
+  public hospitais: HospitalProcessado[] = [];
   public carregando: boolean = true;
   public erroCarregamento: boolean = false;
   public mensagemErro: string = '';
@@ -62,8 +62,7 @@ export class HomePage implements OnInit {
         await this.hospitalService.carregarHospitaisComConfiguracoesSalvas();
       } else {
         // Se não tem configurações, redireciona para configuração inicial
-        this.router.navigate(['/config-inicial']);
-        return;
+        
       }
 
       // Se inscreve para receber os hospitais
@@ -104,10 +103,10 @@ export class HomePage implements OnInit {
     await popover.present();
   }
 
-  async irHospital(hospital: Hospital) {
+  async irHospital(hospital: HospitalProcessado) {
     const alert = await this.alertController.create({
       header: `Deseja realmente ir até ${hospital.nome}?`,
-      message: `Tempo estimado: ${hospital.tempo_fila || '?'} minutos\nDistância: ${hospital.distanciaRota || hospital.distancia} km`,
+      message: `Tempo estimado: ${hospital.tempo_fila || '?'} minutos\nDistância: ${hospital.distancia} km`,
       cssClass: 'container-alert',
       buttons: [
         {
@@ -133,7 +132,7 @@ export class HomePage implements OnInit {
     await alert.present();
   }
 
-  private abrirNoMapa(hospital: Hospital) {
+  private abrirNoMapa(hospital: HospitalProcessado) {
     // Implementação para abrir no aplicativo de mapas
     const userLocation = this.hospitalService.getLocalizacaoAtual();
     

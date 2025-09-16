@@ -224,7 +224,7 @@ export class HospitalService {
     try {
       // 1. Busca TODOS os hospitais do backend
       const todosHospitais = await this.requisicaoService.get(
-        '/hospitais', 
+        '/hospital', 
         {}
       ).toPromise() as Hospital[];
 
