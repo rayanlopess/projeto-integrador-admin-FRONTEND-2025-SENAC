@@ -61,34 +61,33 @@ export class ConfigInicialPage implements OnInit {
     this.carregando = true;
 
     try {
+      // Altere o JSON para salvar apenas as configurações de localização
       const config = {
-        Distancia: this.range,
+        Distancia: this.range, // Manter o valor no JSON para referência futura, se necessário
         EnderecoManual: this.usandoLocalizacaoAtual ? "false" : this.enderecoManual,
         LocalizacaoAtual: this.usandoLocalizacaoAtual ? "true" : "false"
       };
-
+  
       localStorage.setItem('configuracoesUsuario', JSON.stringify(config));
-
-      // Continua com a inicialização do serviço...
+  
+      // AQUI É O PONTO CRÍTICO: Chame o método do serviço para salvar e emitir o novo raio
+      this.hospitalService.setRaioConfigurado(this.range);
+  
+      // O método carregarHospitaisProximos não precisa do `this.range` como parâmetro,
+      // pois ele já pegará o raio do `BehaviorSubject`
       if (this.usandoLocalizacaoAtual) {
         await this.hospitalService.inicializarComLocalizacaoAtual();
       } else {
         await this.hospitalService.inicializarComEndereco(this.enderecoManual);
       }
-
-      await this.hospitalService.carregarHospitaisProximos(this.range);
-      this.router.navigate(['/home']);
-
+      
+      // Altere a chamada para carregarHospitaisProximos para que ele use o valor salvo
+      await this.hospitalService.carregarHospitaisComConfiguracoesSalvas();
+  
+      this.router.navigate(['/aviso-dados']);
+  
     } catch (error: any) {
-      console.error('Erro ao salvar configuração:', error);
-      
-      const alert = await this.alertController.create({
-        header: 'Erro',
-        message: error.message || 'Erro ao processar localização. Tente novamente.',
-        buttons: ['OK']
-      });
-      
-      await alert.present();
+      // ...
     } finally {
       this.carregando = false;
     }

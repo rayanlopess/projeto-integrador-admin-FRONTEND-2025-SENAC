@@ -1,7 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { RequiemDosDeusesService } from '../requisicao-HTTP/requisicao';
 import { BehaviorSubject } from 'rxjs';
-import { Geolocation } from '@capacitor/geolocation'; 
+import { Geolocation } from '@capacitor/geolocation';
 
 declare var google: any;
 
@@ -13,9 +13,9 @@ export interface Hospital {
   logradouro: string;
   bairro: string;
   lati: number;
-  long: number;
-  tempo_fila: number;
+  longi: number; // Changed to match backend
   qtd_pacientes: number;
+  tempo_espera: number; // Changed to match backend
 }
 
 export interface HospitalProcessado extends Hospital {
@@ -51,7 +51,94 @@ export class HospitalService {
   constructor(
     private requisicaoService: RequiemDosDeusesService,
     private ngZone: NgZone
-  ) {}
+  ) { }
+
+
+  // No HospitalService
+  private raioChangedSubject = new BehaviorSubject<number>(this.getRaioConfigurado());
+  public raioChanged$ = this.raioChangedSubject.asObservable();
+
+  // Método para atualizar o raio e notificar os subscribers
+  setRaioConfigurado(raio: number) {
+    localStorage.setItem('raioKm', raio.toString());
+    this.raioChangedSubject.next(raio);
+  }
+
+  getRaioConfigurado(): number {
+    const raio = localStorage.getItem('raioKm');
+
+    return raio ? parseInt(raio, 10) : 10;
+  }
+
+  getConfiguracoes(): ConfiguracoesUsuario | null {
+    try {
+      const configStr = localStorage.getItem('configuracoesUsuario');
+      if (configStr) {
+        return JSON.parse(configStr);
+      }
+      return null;
+    } catch (error) {
+      return null;
+    }
+  }
+  
+  async inicializarAppComConfiguracoesSalvas(): Promise<void> {
+    try {
+      // 1. Obtém as configurações de localização salvas
+      const config = await this.obterConfiguracoesLocalStorage();
+
+      // 2. Inicializa a localização do usuário com base nas configurações
+      if (config.LocalizacaoAtual === 'true') {
+        await this.inicializarComLocalizacaoAtual();
+      } else if (config.EnderecoManual && config.EnderecoManual !== 'false') {
+        await this.inicializarComEndereco(config.EnderecoManual);
+      } else {
+        throw new Error('Nenhuma configuração de localização válida encontrada.');
+      }
+
+      // 3. Salva e emite o raio para todos os ouvintes
+      // Usamos o raio salvo nas configurações, que é o valor correto.
+      this.setRaioConfigurado(config.Distancia);
+
+      // 4. Carrega os hospitais com o raio que acabou de ser definido
+      await this.carregarHospitaisProximos(config.Distancia);
+      
+    } catch (error) {
+      console.error('Erro ao inicializar o aplicativo com configurações salvas:', error);
+      throw error;
+    }
+  }
+
+  // Método para obter hospitais processados
+  getHospitaisProcessados(): HospitalProcessado[] {
+    return this.hospitaisFiltradosSource.value;
+  }
+
+  // Método para obter hospitais básicos (sem processamento)
+  async getTodosHospitais(): Promise<Hospital[]> {
+    try {
+      const todosHospitais = await this.requisicaoService.get(
+        '/hospital',
+        {}
+      ).toPromise() as any[];
+
+      return todosHospitais.map(hospital => ({
+        id: hospital.id,
+        nome: hospital.nome,
+        uf: hospital.uf,
+        cidade: hospital.cidade,
+        logradouro: hospital.logradouro,
+        bairro: hospital.bairro,
+        lati: parseFloat(hospital.lati),
+        longi: parseFloat(hospital.longi),
+        qtd_pacientes: hospital.qtd_pacientes,
+        tempo_espera: hospital.tempo_espera
+      }));
+    } catch (error) {
+      console.error('Erro ao buscar hospitais:', error);
+      return [];
+    }
+  }
 
   // ================== MÉTODOS PRINCIPAIS ================== //
 
@@ -59,7 +146,7 @@ export class HospitalService {
     try {
       // Busca as configurações do localStorage
       const config = await this.obterConfiguracoesLocalStorage();
-      
+
       if (config.LocalizacaoAtual === 'true') {
         // Usa geolocalização
         return await this.inicializarComLocalizacaoAtual();
@@ -80,10 +167,10 @@ export class HospitalService {
       // Obtém configurações e inicializa localização
       const config = await this.obterConfiguracoesLocalStorage();
       await this.inicializarComConfiguracoesSalvas();
-      
+
       // Carrega hospitais com o raio salvo
       await this.carregarHospitaisProximos(config.Distancia);
-      
+
     } catch (error) {
       console.error('Erro ao carregar com configurações salvas:', error);
       throw error;
@@ -139,11 +226,11 @@ export class HospitalService {
     try {
       // Verifica se já tem permissão
       const permissionStatus = await Geolocation.checkPermissions();
-      
+
       if (permissionStatus.location !== 'granted') {
         // Solicita permissão
         const requestStatus = await Geolocation.requestPermissions();
-        
+
         if (requestStatus.location !== 'granted') {
           throw new Error('Permissão de localização negada pelo usuário');
         }
@@ -156,29 +243,29 @@ export class HospitalService {
 
   private tratarErroGeolocalizacao(error: any): string {
     const errorCode = error.code || error.message;
-    
+
     switch (errorCode) {
       case 1: // PERMISSION_DENIED
       case 'PERMISSION_DENIED':
         return 'Permissão de localização negada. Ative nas configurações do seu dispositivo.';
-      
+
       case 2: // POSITION_UNAVAILABLE
       case 'POSITION_UNAVAILABLE':
         return 'Localização indisponível. Verifique se o GPS está ativado.';
-      
+
       case 3: // TIMEOUT
       case 'TIMEOUT':
         return 'Tempo esgotado para obter localização. Tente novamente.';
-      
+
       default:
-        return 'Erro ao obter localização. Tente novamente.';
+        return 'Erro ao obter localização. Trente novamente.';
     }
   }
 
   async inicializarComEndereco(endereco: string): Promise<LocalizacaoUsuario> {
     return new Promise((resolve, reject) => {
       const geocoder = new google.maps.Geocoder();
-      
+
       geocoder.geocode({ address: endereco, componentRestrictions: { country: 'BR' } }, (results: any[], status: string) => {
         this.ngZone.run(() => {
           if (status === 'OK' && results[0]) {
@@ -188,7 +275,7 @@ export class HospitalService {
               lng: location.lng(),
               endereco: results[0].formatted_address
             };
-            
+
             this.localizacaoUsuarioSource.next(loc);
             resolve(loc);
           } else {
@@ -216,63 +303,77 @@ export class HospitalService {
 
   async carregarHospitaisProximos(raioKm: number = 10): Promise<void> {
     const localizacao = this.localizacaoUsuarioSource.value;
-    
+  
     if (!localizacao) {
       throw new Error('Localização do usuário não definida');
     }
-
+  
     try {
-      // 1. Busca TODOS os hospitais do backend
-      const todosHospitais = await this.requisicaoService.get(
-        '/hospital', 
-        {}
-      ).toPromise() as Hospital[];
-
-      // 2. Formata endereço completo e calcula distância em linha reta
-      const hospitaisComDistancia = todosHospitais.map(hospital => {
-        const enderecoCompleto = this.formatarEndereco(hospital);
+      const todosHospitais = await this.requisicaoService.get('/hospital', {}).toPromise() as any[];
+  
+      const hospitaisMapeados: Hospital[] = todosHospitais.map(hospital => ({
+        id: hospital.id,
+        nome: hospital.nome,
+        uf: hospital.uf,
+        cidade: hospital.cidade,
+        logradouro: hospital.logradouro,
+        bairro: hospital.bairro,
+        lati: parseFloat(hospital.lati),
+        longi: parseFloat(hospital.longi),
+        qtd_pacientes: hospital.qtd_pacientes,
+        tempo_espera: hospital.tempo_espera
+      }));
+  
+      // Passo 1: Filtra com uma margem de 20% sobre o raio
+      const margemRaio = raioKm * 1.2;
+      const hospitaisComDistanciaInicial = hospitaisMapeados.map(hospital => {
         const distancia = this.calcularDistancia(
-          localizacao.lat, localizacao.lng, 
-          hospital.lati, hospital.long
+          localizacao.lat, localizacao.lng,
+          hospital.lati, hospital.longi
         );
-        
-        return { 
-          ...hospital, 
+        return {
+          ...hospital,
           distancia,
-          enderecoCompleto
         } as HospitalProcessado;
-      }).filter(hospital => (hospital.distancia ?? Infinity) <= raioKm);
-
-      // 3. Calcula rotas e tempos reais (máximo 10 hospitais para não sobrecarregar)
-      const hospitaisParaCalcularRota = hospitaisComDistancia.slice(0, 10);
+      }).filter(hospital => (hospital.distancia ?? Infinity) <= margemRaio);
+  
+      // Passo 2: Calcula rotas apenas para os mais próximos (limite de 10)
+      const hospitaisParaCalcularRota = hospitaisComDistanciaInicial.slice(0, 10);
       const hospitaisComRota = await this.calcularRotasETempos(
-        hospitaisParaCalcularRota, 
-        localizacao.lat, 
+        hospitaisParaCalcularRota,
+        localizacao.lat,
         localizacao.lng
       );
-
-      // 4. Adiciona os hospitais restantes sem cálculo de rota
+  
+      // Passo 3: Mescla os hospitais com rota e os restantes
       const todosHospitaisProcessados = [
         ...hospitaisComRota,
-        ...hospitaisComDistancia.slice(10).map(h => ({ ...h, tempoDeslocamento: undefined, distanciaRota: undefined }))
+        ...hospitaisComDistanciaInicial.slice(10).map(h => ({ 
+          ...h, 
+          tempoDeslocamento: undefined, 
+          distanciaRota: undefined 
+        }))
       ];
-
-      // 5. Ordena por proximidade (distância em linha reta) e depois por tempo de fila
-      todosHospitaisProcessados.sort((a, b) => {
-        // Primeiro por distância - trata valores undefined como infinito
+  
+      // Passo 4: Filtra a lista final com base na distância de rota OU na distância em linha reta
+      const hospitaisFinais = todosHospitaisProcessados.filter(h => {
+        // Se tiver distância de rota, usa ela. Senão, usa a distância em linha reta.
+        const distanciaFinal = h.distanciaRota ?? h.distancia;
+        return (distanciaFinal ?? Infinity) <= raioKm;
+      });
+  
+      // Passo 5: Ordena a lista filtrada
+      hospitaisFinais.sort((a, b) => {
         const distA = a.distancia ?? Infinity;
         const distB = b.distancia ?? Infinity;
-        
         if (distA !== distB) {
           return distA - distB;
         }
-        // Depois por tempo de fila se as distâncias forem iguais
-        return a.tempo_fila - b.tempo_fila;
+        return a.tempo_espera - b.tempo_espera;
       });
-
-      // 6. Emite os dados processados
-      this.hospitaisFiltradosSource.next(todosHospitaisProcessados);
-
+  
+      this.hospitaisFiltradosSource.next(hospitaisFinais);
+  
     } catch (error) {
       console.error('Erro ao carregar hospitais:', error);
       this.hospitaisFiltradosSource.next([]);
@@ -306,11 +407,11 @@ export class HospitalService {
   private async calcularRotasETempos(hospitais: HospitalProcessado[], latOrigem: number, lngOrigem: number): Promise<HospitalProcessado[]> {
     const origem = new google.maps.LatLng(latOrigem, lngOrigem);
     const directionsService = new google.maps.DirectionsService();
-    
+
     const promises = hospitais.map(async (hospital) => {
       try {
-        const destino = new google.maps.LatLng(hospital.lati, hospital.long);
-        
+        const destino = new google.maps.LatLng(hospital.lati, hospital.longi); // Use longi here
+
         const result = await new Promise<any>((resolve, reject) => {
           directionsService.route({
             origin: origem,

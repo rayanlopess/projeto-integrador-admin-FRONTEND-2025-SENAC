@@ -63,38 +63,37 @@
             <ion-list>
               <ion-item>
                 <ion-thumbnail slot="end">
-                  <img alt="Hospital" src="assets/icons/hospital-icon.png" />
+                  <img alt="Hospital" src="../../../assets/icons/filamed-icon-azul.png" />
                 </ion-thumbnail>
                 <div class="informacoes-div">
-                  <h1>{{hospital.nome}} - {{hospital.distancia | number:'1.1-1'}}km</h1>
+                  <h1>{{hospital.nome}} - {{getDistanciaDisplay(hospital)}}</h1>
                   
                   <!-- Tempo de deslocamento (se disponível) -->
                   <p *ngIf="hospital.tempoDeslocamento">
-                    <i class="bi bi-car-front-fill icon-text"></i>&nbsp; 
+                    <ion-icon name="car"></ion-icon>&nbsp; 
                     Tempo Ida: <span>{{hospital.tempoDeslocamento}} min</span>
                   </p>
-                  <p *ngIf="!hospital.tempoDeslocamento && hospital.distancia">
-                    <i class="bi bi-geo-alt-fill icon-text"></i>&nbsp; 
-                    Distância: <span>{{hospital.distancia | number:'1.1-1'}} km</span>
-                  </p>
+                  
                   
                   <!-- Fila de espera -->
                   <p>
-                    <i class="bi bi-clock-fill icon-text"></i>&nbsp; 
-                    Fila Espera: <span>{{hospital.tempo_fila}} min</span>
+                    <ion-icon name="time"></ion-icon>&nbsp; 
+                    Fila Espera: <span>{{getTempoEsperaDisplay(hospital)}}</span>
                   </p>
                   
                   <!-- Quantidade de pacientes -->
                   <p *ngIf="hospital.qtd_pacientes > 0">
-                    <i class="bi bi-people-fill icon-text"></i>&nbsp; 
+                    <ion-icon name="people"></ion-icon>&nbsp; 
                     Pacientes na fila: <span>{{hospital.qtd_pacientes}}</span>
                   </p>
                   
                   <!-- Endereço resumido -->
                   <p class="endereco-resumido">
-                    <i class="bi bi-geo-fill icon-text"></i>&nbsp; 
+                    <ion-icon name="location"></ion-icon>&nbsp; 
                     {{hospital.cidade}} - {{hospital.uf}}
                   </p>
+
+                
                 </div>
               </ion-item>
             </ion-list>

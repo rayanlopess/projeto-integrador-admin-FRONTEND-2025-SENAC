@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 import { addIcons } from 'ionicons';
-import { home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline } from 'ionicons/icons';
+import { home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location} from 'ionicons/icons';
 import { AlertController, PopoverController, LoadingController } from '@ionic/angular/standalone';
 
 import { DateService } from '../../services/datetime-service/date-service';
@@ -18,10 +18,9 @@ import { Subscription } from 'rxjs';
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [IonicModule, CommonModule, FormsModule]
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
 
   public hospitais: HospitalProcessado[] = [];
   public carregando: boolean = true;
@@ -39,7 +38,7 @@ export class HomePage implements OnInit {
     private hospitalService: HospitalService,
     private loadingController: LoadingController
   ) {
-    addIcons({ home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline });
+    addIcons({ home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location});
   }
 
   async ngOnInit() {
@@ -62,7 +61,8 @@ export class HomePage implements OnInit {
         await this.hospitalService.carregarHospitaisComConfiguracoesSalvas();
       } else {
         // Se não tem configurações, redireciona para configuração inicial
-        
+        this.router.navigate(['/config-inicial']);
+        return;
       }
 
       // Se inscreve para receber os hospitais
@@ -70,6 +70,7 @@ export class HomePage implements OnInit {
         next: (hospitais) => {
           this.hospitais = hospitais;
           this.carregando = false;
+          console.log('Hospitais carregados:', this.hospitais);
         },
         error: (error) => {
           console.error('Erro ao carregar hospitais:', error);
@@ -104,9 +105,13 @@ export class HomePage implements OnInit {
   }
 
   async irHospital(hospital: HospitalProcessado) {
+    // Use route distance if available, otherwise use straight line distance
+    const distancia = hospital.distanciaRota ?? hospital.distancia;
+    const tempoDeslocamento = hospital.tempoDeslocamento ? `${hospital.tempoDeslocamento} min` : '?';
+    
     const alert = await this.alertController.create({
       header: `Deseja realmente ir até ${hospital.nome}?`,
-      message: `Tempo estimado: ${hospital.tempo_fila || '?'} minutos\nDistância: ${hospital.distancia} km`,
+      message: `Tempo de fila: ${hospital.tempo_espera || '?'} minutos\nTempo de deslocamento: ${tempoDeslocamento}\nDistância: ${distancia ? distancia.toFixed(1) + 'km' : '?'}`,
       cssClass: 'container-alert',
       buttons: [
         {
@@ -122,7 +127,6 @@ export class HomePage implements OnInit {
           role: 'confirm',
           cssClass: 'confirmarAction',
           handler: async () => {
-            // Aqui você pode implementar a navegação para o mapa ou abrir o GPS
             this.abrirNoMapa(hospital);
           },
         },
@@ -133,18 +137,43 @@ export class HomePage implements OnInit {
   }
 
   private abrirNoMapa(hospital: HospitalProcessado) {
-    // Implementação para abrir no aplicativo de mapas
     const userLocation = this.hospitalService.getLocalizacaoAtual();
     
     if (userLocation) {
-      // URL para abrir no Google Maps com rota
-      const url = `https://www.google.com/maps/dir/?api=1&origin=${userLocation.lat},${userLocation.lng}&destination=${hospital.lati},${hospital.long}&travelmode=driving`;
-      window.open(url, '_system');
+      const url = `https://www.google.com/maps/dir/?api=1&origin=${userLocation.lat},${userLocation.lng}&destination=${hospital.lati},${hospital.longi}&travelmode=driving`;
+      window.open(url, '_blank');
     } else {
-      // URL simples para o hospital
-      const url = `https://www.google.com/maps/search/?api=1&query=${hospital.lati},${hospital.long}`;
-      window.open(url, '_system');
+      const url = `https://www.google.com/maps/search/?api=1&query=${hospital.lati},${hospital.longi}`;
+      window.open(url, '_blank');
     }
   }
 
+  // Helper methods for template - use these in your HTML to display the correct values
+  getDistanciaDisplay(hospital: HospitalProcessado): string {
+    // Prefer route distance, fall back to straight line distance
+    const distancia = hospital.distanciaRota ?? hospital.distancia;
+    return distancia ? this.formatarDistancia(distancia) : '?';
+  }
+
+  getTempoDeslocamentoDisplay(hospital: HospitalProcessado): string {
+    return hospital.tempoDeslocamento ? `${hospital.tempoDeslocamento} min` : 'Calculando...';
+  }
+
+  getTempoEsperaDisplay(hospital: HospitalProcessado): string {
+    return hospital.tempo_espera ? this.formatarTempo(hospital.tempo_espera) : '?';
+  }
+
+  formatarTempo(minutos: number): string {
+    if (minutos < 60) {
+      return `${minutos} min`;
+    } else {
+      const horas = Math.floor(minutos / 60);
+      const mins = minutos % 60;
+      return mins > 0 ? `${horas}h ${mins}min` : `${horas}h`;
+    }
+  }
+
+  formatarDistancia(km: number): string {
+    return km < 1 ? `${(km * 1000).toFixed(0)}m` : `${km.toFixed(1)}km`;
+  }
 }

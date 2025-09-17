@@ -4,13 +4,18 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { addIcons } from 'ionicons';
-import { home, map, call, settings, personCircle, invertMode } from 'ionicons/icons';
+import { home, map, call, settings, personCircle, invertMode, medical, locate } from 'ionicons/icons';
 import { GoogleMap } from '@capacitor/google-maps';
-import { Geolocation } from '@capacitor/geolocation';
 
 import { SimplePopoverComponent } from '../../components/simple-popover/simple-popover.component';
 import { AlertController, PopoverController} from '@ionic/angular/standalone';
-import { ThemeService, ThemeMode } from '../../services//theme/theme';
+import { ThemeService, ThemeMode } from '../../services/theme/theme';
+import { HospitalService, Hospital, HospitalProcessado, LocalizacaoUsuario } from '../../services/sistema-hospital/hospital';
+
+import { point, featureCollection } from '@turf/helpers';
+import buffer from '@turf/buffer';
+import { circle } from '@turf/circle';
+
 import { Subscription } from 'rxjs';
 
 const apiKey = "AIzaSyDvQ8YamcGrMBGAp0cslVWSRhS5NXNEDcI";
@@ -27,32 +32,37 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild('map')
   mapRef!: ElementRef<HTMLElement>;
   newMap?: GoogleMap;
-  userLocation?: { lat: number; lng: number };
+  userLocation?: { lat: number; lng: number }; 
   private themeSubscription?: Subscription;
+  private raioSubscription?: Subscription;
+  private hospitaisSubscription?: Subscription; // Adicione esta linha
   currentTheme: 'light' | 'dark' = 'light';
   private isMapInitialized = false;
+  private hospitalMarkers: string[] = [];
+  private circleId?: string;
+  private raioKm: number = 10;
+  
+  // Adicione uma propriedade para armazenar os hospitais filtrados
+  private hospitaisFiltrados: HospitalProcessado[] = [];
 
-  // Signal para controlar o estado de carregamento
   isLoading = signal(true);
   loadError = signal(false);
 
   constructor(
     public alertController: AlertController,
     private popoverCtrl: PopoverController,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private hospitalService: HospitalService
   ) {
-    addIcons({ home, map, call, settings, personCircle, invertMode });
+    addIcons({ home, map, call, settings, personCircle, invertMode, medical, locate });
   }
 
   ngOnInit() {
-    // Obter o tema atual
     this.currentTheme = this.themeService.getCurrentTheme();
     
-    // Inscrever-se nas mudanças de tema
+
     this.themeSubscription = this.themeService.themeChanged$.subscribe((mode: ThemeMode) => {
       const newTheme = this.themeService.getCurrentTheme();
-      
-      // Só recriar o mapa se o tema realmente mudou e o mapa já foi inicializado
       if (newTheme !== this.currentTheme && this.isMapInitialized) {
         this.currentTheme = newTheme;
         this.recreateMapWithNewTheme();
@@ -60,15 +70,35 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
         this.currentTheme = newTheme;
       }
     });
+
+    this.raioSubscription = this.hospitalService.raioChanged$.subscribe((novoRaio: number) => {
+      // Apenas atualiza o valor e, se o mapa estiver pronto, atualiza o mapa
+      this.raioKm = novoRaio;
+      if (this.isMapInitialized) {
+        this.atualizarMapaComNovoRaio();
+      }
+    });
+
+    // Adicione a inscrição para a lista de hospitais filtrados
+    this.hospitaisSubscription = this.hospitalService.hospitaisFiltrados$.subscribe(hospitais => {
+      this.hospitaisFiltrados = hospitais;
+      if (this.isMapInitialized) {
+        this.addHospitalMarkers(this.hospitaisFiltrados);
+        this.addRadiusCircle();
+      }
+    });
   }
 
   ngOnDestroy() {
-    // Cancelar a inscrição para evitar vazamentos de memória
     if (this.themeSubscription) {
       this.themeSubscription.unsubscribe();
     }
-    
-    // Limpar o mapa
+    if (this.raioSubscription) {
+      this.raioSubscription.unsubscribe();
+    }
+    if (this.hospitaisSubscription) {
+      this.hospitaisSubscription.unsubscribe();
+    }
     this.destroyMap();
   }
 
@@ -83,35 +113,49 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
   async ngAfterViewInit() {
     try {
       this.isLoading.set(true);
-      await this.getCurrentLocation();
+      
+      let localizacaoUsuario: LocalizacaoUsuario | null = null;
+      
+      try {
+        localizacaoUsuario = await this.hospitalService.inicializarComConfiguracoesSalvas();
+      } catch (error) {
+        console.warn('Não foi possível inicializar com configurações salvas, usando a localização atual como fallback.', error);
+        localizacaoUsuario = await this.hospitalService.inicializarComLocalizacaoAtual();
+      }
+      
+      if (localizacaoUsuario) {
+        this.userLocation = {
+          lat: localizacaoUsuario.lat,
+          lng: localizacaoUsuario.lng
+        };
+      } else {
+        throw new Error('Não foi possível obter a localização do usuário.');
+      }
+
       await this.createMap();
       this.isMapInitialized = true;
       this.isLoading.set(false);
-    } catch (error) {
+      
+      // Chame a atualização inicial dos marcadores e do círculo
+      this.raioKm = this.hospitalService.getRaioConfigurado();
+      this.addHospitalMarkers(this.hospitaisFiltrados);
+      this.addRadiusCircle();
+
+    } catch (error: any) {
       console.error('Erro durante inicialização do mapa:', error);
       this.loadError.set(true);
       this.isLoading.set(false);
+      this.presentAlert('Erro de Localização', error.message || 'Não foi possível carregar o mapa. Por favor, verifique suas configurações de localização.');
     }
   }
 
-  // Método usando Capacitor Geolocation
-  async getCurrentLocation(): Promise<void> {
-    try {
-      const position = await Geolocation.getCurrentPosition({
-        enableHighAccuracy: true,
-        timeout: 10000
-      });
-
-      this.userLocation = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-      console.log('Localização do usuário:', this.userLocation);
-    } catch (error) {
-      console.error('Erro ao obter localização:', error);
-      // Fallback para coordenadas padrão
-      
-    }
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 
   async createMap() {
@@ -121,19 +165,26 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
       return;
     }
 
+    if (!this.userLocation) {
+      console.error('User location not defined before map creation.');
+      this.loadError.set(true);
+      return;
+    }
+
     try {
-      // Destruir mapa existente se houver
       await this.destroyMap();
+
+      const zoomLevel = this.calculateZoomLevel(this.raioKm);
 
       this.newMap = await GoogleMap.create({
         id: 'my-map',
         element: this.mapRef.nativeElement,
         apiKey: apiKey,
         config: {
-          center: this.userLocation!,
-          zoom: 14,
+          center: this.userLocation,
+          zoom: zoomLevel,
           disableDefaultUI: true,
-          zoomControl: false,
+          zoomControl: true,
           mapTypeControl: false,
           scaleControl: true,
           streetViewControl: false,
@@ -143,12 +194,201 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
         },
       });
 
-      console.log('Mapa criado com sucesso! Tema:', this.currentTheme);
-      await this.addUserMarker();
+      await this.newMap.setOnMarkerClickListener(async (event) => {
+        await this.showHospitalInfo(event.markerId);
+      });
+
+      await this.addUserMarker(); 
 
     } catch (error) {
       console.error('Error creating map:', error);
-      throw error; // Propaga o erro para ser tratado no ngAfterViewInit
+      throw error;
+    }
+  }
+
+  private calculateZoomLevel(radiusKm: number): number {
+    if (radiusKm <= 10) return 11.3;
+    if (radiusKm <= 20) return 10.3;
+    if (radiusKm <= 30) return 9.7;
+    if (radiusKm <= 40) return 9.3;
+    if (radiusKm <= 50) return 9;
+    if (radiusKm <= 60) return 8.7;
+    if (radiusKm <= 70) return 8.5;
+    if (radiusKm <= 80) return 8.3;
+    if (radiusKm <= 90) return 8.1;
+    if (radiusKm <= 100) return 8;
+    return 11.3;
+  }
+
+  async addUserMarker() {
+    if (!this.newMap || !this.userLocation) return;
+    try {
+      await this.newMap.addMarker({
+        coordinate: this.userLocation,
+        title: 'Sua localização',
+        snippet: 'Você está aqui!',
+        iconUrl: '../../../assets/icons/snippet-user.png',
+        iconSize: { width: 40, height: 40 }
+      });
+    } catch (error) {
+      console.error('Error adding user marker:', error);
+    }
+  }
+
+  // Refatorado para receber a lista de hospitais como parâmetro
+  async addHospitalMarkers(hospitais: (Hospital | HospitalProcessado)[]) {
+    if (!this.newMap) return;
+    try {
+      await this.clearHospitalMarkers();
+      
+      for (const hospital of hospitais) {
+        try {
+          const markerId = await this.newMap.addMarker({
+            coordinate: {
+              lat: hospital.lati,
+              lng: hospital.longi
+            },
+            title: hospital.nome,
+            snippet: this.createHospitalSnippet(hospital),
+            iconUrl: '../../../assets/icons/snippet-hospital.png',
+            iconSize: { width: 40, height: 40 }
+          });
+          this.hospitalMarkers.push(markerId);
+        } catch (error) {
+          console.error(`Erro ao adicionar marcador para ${hospital.nome}:`, error);
+        }
+      }
+    } catch (error) {
+      console.error('Erro ao adicionar marcadores dos hospitais:', error);
+    }
+  }
+
+
+  async addRadiusCircle() {
+    if (!this.newMap || !this.userLocation) {
+      console.error('Mapa ou localização não definidos para adicionar o círculo.');
+      return;
+    }
+    console.log('Valor de raioKm:', this.raioKm);
+
+
+
+    try {
+      if (this.circleId) {
+        await this.newMap.removeCircles([this.circleId]);
+        this.circleId = undefined;
+      }
+  
+      const centerPoint = point([this.userLocation.lng, this.userLocation.lat]);
+  
+      // Usamos 'as any' para contornar o erro de tipagem.
+      // Isso informa ao TypeScript para não verificar os tipos neste objeto.
+      const options = { steps: 64, units: 'kilometers' } as any; 
+      const circlePolygon = circle(centerPoint, this.raioKm, options);
+      
+      console.log(`Desenhando círculo com raio de ${this.raioKm}km`);
+  
+      const polygonIds = await this.newMap.addPolygons([{
+        paths: circlePolygon.geometry.coordinates[0].map(coord => ({
+          lat: coord[1], 
+          lng: coord[0]
+        })),
+        strokeColor: '#3880ff',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#3880ff',
+        fillOpacity: 0.2
+      }]);
+  
+      this.circleId = polygonIds[0];
+    } catch (error) {
+      console.error('Erro ao adicionar círculo do raio:', error);
+    }
+  }
+  
+
+
+  async showHospitalInfo(markerId: string) {
+    try {
+      const hospital = await this.findHospitalByMarkerId(markerId);
+      if (!hospital) return;
+      const message = `
+        <strong>${hospital.nome}</strong><br>
+        <strong>Endereço:</strong> ${hospital.logradouro}, ${hospital.bairro}<br>
+        <strong>Cidade:</strong> ${hospital.cidade} - ${hospital.uf}<br>
+        ${'tempo_espera' in hospital ? `<strong>Tempo de espera:</strong> ${hospital.tempo_espera} min<br>` : ''}
+        ${hospital.qtd_pacientes > 0 ? `<strong>Pacientes na fila:</strong> ${hospital.qtd_pacientes}<br>` : ''}
+        ${'distancia' in hospital && hospital.distancia ? `<strong>Distância:</strong> ${hospital.distancia.toFixed(1)} km<br>` : ''}
+        ${'tempoDeslocamento' in hospital && hospital.tempoDeslocamento ? `<strong>Tempo de deslocamento:</strong> ${hospital.tempoDeslocamento} min<br>` : ''}
+      `;
+      const alert = await this.alertController.create({
+        header: 'Informações do Hospital',
+        message: message,
+        buttons: ['Fechar']
+      });
+      await alert.present();
+    } catch (error) {
+      console.error('Erro ao mostrar informações do hospital:', error);
+    }
+  }
+
+  private async findHospitalByMarkerId(markerId: string): Promise<Hospital | HospitalProcessado | null> {
+    // Agora busca na lista filtrada, que está em this.hospitaisFiltrados
+    const markerIndex = this.hospitalMarkers.indexOf(markerId);
+    if (markerIndex !== -1 && markerIndex < this.hospitaisFiltrados.length) {
+      return this.hospitaisFiltrados[markerIndex];
+    }
+    return null;
+  }
+
+  private createHospitalSnippet(hospital: Hospital | HospitalProcessado): string {
+    let snippet = '';
+    snippet += `Cidade: ${hospital.cidade} - ${hospital.uf}\n`;
+    snippet += `Bairro: ${hospital.bairro}\n`;
+    if ('tempo_espera' in hospital) {
+      snippet += `Tempo de espera: ${hospital.tempo_espera} min\n`;
+    }
+    if (hospital.qtd_pacientes > 0) {
+      snippet += `Pacientes na fila: ${hospital.qtd_pacientes}\n`;
+    }
+    if ('distancia' in hospital && hospital.distancia) {
+      snippet += `Distância: ${hospital.distancia.toFixed(1)} km\n`;
+    }
+    if ('tempoDeslocamento' in hospital && hospital.tempoDeslocamento) {
+      snippet += `Tempo de deslocamento: ${hospital.tempoDeslocamento} min\n`;
+    }
+    return snippet;
+  }
+
+  async clearHospitalMarkers() {
+    if (!this.newMap || this.hospitalMarkers.length === 0) return;
+    try {
+      await this.newMap.removeMarkers(this.hospitalMarkers);
+      this.hospitalMarkers = [];
+    } catch (error) {
+      console.error('Erro ao limpar marcadores:', error);
+    }
+  }
+
+  async atualizarMapaComNovoRaio() {
+    console.log('Atualizando mapa com novo raio:', this.raioKm);
+    this.isLoading.set(true);
+    try {
+      // Destrói o mapa atual antes de recriá-lo
+      await this.destroyMap();
+
+      // Recria o mapa com a nova configuração de zoom
+      await this.createMap();
+
+      // Adiciona novamente os marcadores de hospital e o círculo com o novo raio
+      await this.addHospitalMarkers(this.hospitaisFiltrados);
+      await this.addRadiusCircle();
+
+      this.isMapInitialized = true;
+      this.isLoading.set(false);
+    } catch (error) {
+      console.error('Erro ao atualizar mapa com novo raio:', error);
+      this.isLoading.set(false);
     }
   }
 
@@ -157,6 +397,8 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
     this.isLoading.set(true);
     try {
       await this.createMap();
+      await this.addHospitalMarkers(this.hospitaisFiltrados); // Adicionar await
+      await this.addRadiusCircle(); // Adicionar await
       this.isLoading.set(false);
     } catch (error) {
       console.error('Erro ao recriar mapa:', error);
@@ -167,6 +409,11 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
   async destroyMap() {
     if (this.newMap) {
       try {
+        await this.clearHospitalMarkers();
+        if (this.circleId) {
+          await this.newMap.removeCircles([this.circleId]);
+          this.circleId = undefined;
+        }
         await this.newMap.destroy();
         this.newMap = undefined;
       } catch (error) {
@@ -175,34 +422,29 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
     }
   }
 
-  async addUserMarker() {
-    if (!this.newMap || !this.userLocation) return;
-
-    try {
-      await this.newMap.addMarker({
-        coordinate: this.userLocation!,
-        title: 'Sua localização',
-        snippet: 'Você está aqui!'
-        // iconUrl: 'assets/icon/user-marker.png' // Opcional: ícone personalizado
-      });
-    } catch (error) {
-      console.error('Error adding marker:', error);
-    }
-  }
-
-  // Método para tentar recarregar em caso de erro
   async retryLoadMap() {
     this.loadError.set(false);
     this.isLoading.set(true);
     try {
-      await this.getCurrentLocation();
+      const localizacaoUsuario = await this.hospitalService.inicializarComConfiguracoesSalvas();
+      if (localizacaoUsuario) {
+        this.userLocation = {
+          lat: localizacaoUsuario.lat,
+          lng: localizacaoUsuario.lng
+        };
+      } else {
+        throw new Error('Não foi possível obter a localização do usuário.');
+      }
       await this.createMap();
+      this.addHospitalMarkers(this.hospitaisFiltrados);
+      this.addRadiusCircle();
       this.isMapInitialized = true;
       this.isLoading.set(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao recarregar mapa:', error);
       this.loadError.set(true);
       this.isLoading.set(false);
+      this.presentAlert('Erro ao Recarregar', error.message || 'Não foi possível carregar o mapa. Tente novamente mais tarde.');
     }
   }
 }

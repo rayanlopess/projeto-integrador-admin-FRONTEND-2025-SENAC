@@ -31,6 +31,7 @@
     "@capacitor/keyboard": "7.0.2",
     "@capacitor/status-bar": "7.0.2",
     "@ionic/angular": "^8.0.0",
+    "@turf/turf": "^7.2.0",
     "ionicons": "^7.0.0",
     "rxjs": "^6.6.7",
     "tslib": "^2.3.0",
