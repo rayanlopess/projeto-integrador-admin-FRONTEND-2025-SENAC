@@ -10,6 +10,9 @@ import { addIcons } from 'ionicons';
 import { sunny, moon, phonePortrait, close, arrowBackOutline} from 'ionicons/icons';
 
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { PopoverController } from '@ionic/angular/standalone';
+
 
 
 @Component({
@@ -19,7 +22,7 @@ import { Subscription } from 'rxjs';
   template: `
     <ion-list>
       
-      <ion-item button>
+      <ion-item button (click)="irConfig()">
         <ion-label>Opções de Distância</ion-label>
         <ion-note slot="end">{{raioDistancia()}}km</ion-note>
       </ion-item>
@@ -60,7 +63,7 @@ import { Subscription } from 'rxjs';
 
         <div class="titulos-container">
           <ion-title id="home-title">Termos de Uso</ion-title>
-          <span id="home-title"></span>
+
         </div>
 
       </ion-toolbar>
@@ -89,7 +92,7 @@ import { Subscription } from 'rxjs';
 
         <div class="titulos-container">
           <ion-title id="home-title">Privacidade e Segurança</ion-title>
-          <span id="home-title"></span>
+        
         </div>
 
       </ion-toolbar>
@@ -125,7 +128,9 @@ export class SimplePopoverComponent {
 
   constructor(
     private themeActionService: ThemeActionService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private router: Router, 
+    private popoverCtrl: PopoverController // Adicione esta linha
   ) {
     addIcons({ sunny, moon, phonePortrait, close, arrowBackOutline});
   }
@@ -164,6 +169,13 @@ export class SimplePopoverComponent {
     const raio = JSON.parse(this.config);
     const distancia = raio.Distancia
     return distancia;
+  }
+  async irConfig() {
+    // Fecha o popover atual antes de navegar
+    await this.popoverCtrl.dismiss();
+  
+    // Navega para a página de configuração
+    this.router.navigate(['/config-user']);
   }
 
   async openThemeSelector() {

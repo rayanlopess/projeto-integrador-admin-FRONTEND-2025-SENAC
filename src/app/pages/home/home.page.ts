@@ -57,7 +57,7 @@ export class HomePage implements OnInit, OnDestroy {
     setTimeout(() => {
       this.carregarHospitais()
       event.target.complete();
-    }, 1000);
+    }, 2000);
   }
 
   isModalOpen = false;
@@ -126,7 +126,6 @@ export class HomePage implements OnInit, OnDestroy {
     
     const alert = await this.alertController.create({
       header: `Deseja realmente ir até ${hospital.nome}?`,
-      message: `Tempo de fila: ${hospital.tempo_espera || '?'} minutos\nTempo de deslocamento: ${tempoDeslocamento}\nDistância: ${distancia ? distancia.toFixed(1) + 'km' : '?'}`,
       cssClass: 'container-alert',
       buttons: [
         {

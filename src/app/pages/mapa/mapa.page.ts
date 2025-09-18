@@ -312,19 +312,28 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
     try {
       const hospital = await this.findHospitalByMarkerId(markerId);
       if (!hospital) return;
-      const message = `
-        <strong>${hospital.nome}</strong><br>
-        <strong>Endereço:</strong> ${hospital.logradouro}, ${hospital.bairro}<br>
-        <strong>Cidade:</strong> ${hospital.cidade} - ${hospital.uf}<br>
-        ${'tempo_espera' in hospital ? `<strong>Tempo de espera:</strong> ${hospital.tempo_espera} min<br>` : ''}
-        ${hospital.qtd_pacientes > 0 ? `<strong>Pacientes na fila:</strong> ${hospital.qtd_pacientes}<br>` : ''}
-        ${'distancia' in hospital && hospital.distancia ? `<strong>Distância:</strong> ${hospital.distancia.toFixed(1)} km<br>` : ''}
-        ${'tempoDeslocamento' in hospital && hospital.tempoDeslocamento ? `<strong>Tempo de deslocamento:</strong> ${hospital.tempoDeslocamento} min<br>` : ''}
-      `;
+      
       const alert = await this.alertController.create({
-        header: 'Informações do Hospital',
-        message: message,
-        buttons: ['Fechar']
+        header: `Deseja realmente ir até ${hospital.nome}?`,
+        cssClass: 'container-alert',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'cancelarAction',
+          handler: () => {
+            console.log('Operação cancelada.');
+          },
+        },
+        {
+          text: 'OK',
+          role: 'confirm',
+          cssClass: 'confirmarAction',
+          handler: async () => {
+            
+          },
+        },
+      ],
       });
       await alert.present();
     } catch (error) {

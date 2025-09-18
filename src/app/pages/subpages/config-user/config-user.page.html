@@ -1,6 +1,14 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>config-user</ion-title>
+    <ion-buttons slot="start">
+      <ion-button id="botao-toolbar" (click)="voltar()">
+        <ion-icon id="icon-toolbar" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <div class="titulos-container">
+      <ion-title id="home-title">Endereços</ion-title>
+    </div>
   </ion-toolbar>
 </ion-header>
 
