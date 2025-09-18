@@ -14,20 +14,28 @@
 </ion-header>
 
 <ion-content>
+  
+  <div *ngIf="carregando" class="loading-container">
+    <ion-spinner></ion-spinner>
+    <p>Carregando hospitais próximos...</p>
+  </div>
+
+  
+
+
+
   <ion-grid>
-    <ion-row>
+
+    <ion-row *ngIf="!carregando">
       <ion-col>
         <p id="titulo-cards-home">Encontre a Unidade de Pronto Atendimento que irá lhe <br> atender mais rápido!</p>
       </ion-col>
     </ion-row>
 
     <!-- Loading enquanto carrega -->
-    <ion-row *ngIf="carregando">
+    <ion-row >
       <ion-col>
-        <div class="loading-container">
-          <ion-spinner></ion-spinner>
-          <p>Carregando hospitais próximos...</p>
-        </div>
+        
       </ion-col>
     </ion-row>
 
@@ -36,7 +44,7 @@
       <ion-col>
         <div class="error-container">
           <ion-icon name="warning-outline"></ion-icon>
-          <p>{{mensagemErro}}</p>
+          <p>Erro ao carregar os Hospitais</p>
           <ion-button (click)="tentarNovamente()">Tentar Novamente</ion-button>
         </div>
       </ion-col>

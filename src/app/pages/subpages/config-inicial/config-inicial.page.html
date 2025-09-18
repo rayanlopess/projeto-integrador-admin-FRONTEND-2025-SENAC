@@ -45,7 +45,7 @@
             <div class="wave-group">
               <input required type="text" class="input-tecido" placeholder="Ex.: Rua da Alegria, 123"
                 [(ngModel)]="enderecoManual" [class]="class_enderecoManual" errorText="Preencha os campos corretamente"
-                (focus)="usandoLocalizacaoAtual = false">
+                (focus)="usandoLocalizacaoAtual = false" (input)="onAddressInput($event)">
               <label class="label">
                 <span class="label-char" style="--index: 0">P</span>
                 <span class="label-char" style="--index: 1">e</span>
@@ -66,12 +66,19 @@
                 <span class="label-char" style="--index: 17">e</span>
                 <span class="label-char" style="--index: 18">ç</span>
                 <span class="label-char" style="--index: 19">o</span>
-
               </label>
             </div>
           </div>
           <span class="bar"></span>
         </div>
+
+        <!-- CORREÇÃO: Substituído @if e @for pela sintaxe *ngIf e *ngFor -->
+        <ion-list *ngIf="predictions.length > 0" class="autocomplete-list">
+          <ion-item *ngFor="let prediction of predictions" (click)="selectPrediction(prediction)" button>
+            <ion-label>{{ prediction.description }}</ion-label>
+          </ion-item>
+        </ion-list>
+        
       </ion-col>
     </ion-row>
 
@@ -113,6 +120,6 @@
       </ion-col>
     </ion-row>
 
-
   </ion-grid>
 </ion-content>
+

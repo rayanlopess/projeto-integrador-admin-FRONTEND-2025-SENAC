@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 import { addIcons } from 'ionicons';
 import { home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location} from 'ionicons/icons';
-import { AlertController, PopoverController, LoadingController } from '@ionic/angular/standalone';
+import { AlertController, PopoverController, LoadingController, RefresherCustomEvent } from '@ionic/angular/standalone';
 
 import { DateService } from '../../services/datetime-service/date-service';
 import { SimplePopoverComponent } from '../../components/simple-popover/simple-popover.component';
@@ -30,6 +30,8 @@ export class HomePage implements OnInit, OnDestroy {
 
   private subscription!: Subscription;
 
+
+
   constructor(
     private router: Router,
     private dateService: DateService,
@@ -49,6 +51,19 @@ export class HomePage implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  handleRefresh(event: RefresherCustomEvent) {
+    setTimeout(() => {
+      this.carregarHospitais()
+      event.target.complete();
+    }, 1000);
+  }
+
+  isModalOpen = false;
+
+  setOpen(isOpen: boolean) {
+    this.isModalOpen = isOpen;
   }
 
   async carregarHospitais() {

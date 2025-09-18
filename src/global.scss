@@ -80,16 +80,24 @@ ion-tab-bar {
   --background: #ccd5df !important;
   --color: #0e2b5288 !important;
   --color-selected: #0e2b52;
-
 }
 
 //spinner de carregamento
 .loading-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  background: rgba(0, 0, 0, 0.2);
+  color: #0e2b52;
+  z-index: 1000;
+  padding: 20px;
+  text-align: center;
   ion-spinner {
     width: 64px;
     height: 64px;
@@ -1381,6 +1389,18 @@ body.dark .ion-page ion-tab-bar {
   --background: #1e1e1e !important;
   --color: #ffffff66 !important;
   --color-selected: #fff;
+}
+body.dark .loading-container {
+  background: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  z-index: 1000;
+  padding: 20px;
+  text-align: center;
+  ion-spinner {
+    width: 64px;
+    height: 64px;
+    color: #fff;
+  }
 }
 
 //titulos do header

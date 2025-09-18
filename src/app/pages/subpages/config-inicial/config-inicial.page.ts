@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { search } from 'ionicons/icons';
 import { HospitalService } from '../../../services/sistema-hospital/hospital'; // Add this import
+import { BuscarLocalizacao } from '../../../services/maps/buscar-localizacao';
 
 @Component({
   selector: 'app-config-inicial',
@@ -23,10 +24,14 @@ export class ConfigInicialPage implements OnInit {
   public usandoLocalizacaoAtual: boolean = false;
   public carregando: boolean = false; // Added loading state
 
+  public predictions: any[] = [];
+
+
   constructor(
     private router: Router, // Changed from public rt to private router
     private alertController: AlertController,
-    private hospitalService: HospitalService // Added HospitalService
+    private hospitalService: HospitalService, // Added HospitalService
+    private buscarLocalizacaoService: BuscarLocalizacao
   ) {
     addIcons({ search });
   }
@@ -36,6 +41,29 @@ export class ConfigInicialPage implements OnInit {
 
   pinFormatter(value: number) {
     return `${value}km`;
+  }
+  
+  onAddressInput(event: any) {
+    const query = event.target.value;
+    if (query && query.length > 2) {
+      this.buscarLocalizacaoService.getAddresses(query).subscribe(
+        (data) => {
+          this.predictions = data.predictions || [];
+        },
+        (error) => {
+          console.error('Erro ao buscar endereços:', error);
+          this.predictions = [];
+        }
+      );
+    } else {
+      this.predictions = [];
+    }
+  }
+
+  selectPrediction(prediction: any) {
+    this.enderecoManual = prediction.description;
+    this.predictions = [];
+    this.usandoLocalizacaoAtual = false;
   }
 
   async salvarConfig() {

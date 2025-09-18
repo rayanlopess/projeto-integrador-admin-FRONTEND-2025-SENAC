@@ -22,7 +22,7 @@
 
   <!-- Loading overlay -->
   @if (isLoading()) {
-    <div class="loading-overlay">
+    <div class="loading-container">
       <ion-spinner></ion-spinner>
       <p>Carregando mapa...</p>
     </div>
@@ -41,10 +41,4 @@
     </div>
   }
 
-  <!-- Floating action button -->
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button>
-      <ion-icon name="locate"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-</ion-content>
+  
