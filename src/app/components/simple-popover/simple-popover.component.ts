@@ -7,7 +7,7 @@ import { ThemeActionService } from '../../services/theme/theme-action';
 import { ThemeService, ThemeMode } from '../../services/theme/theme';
 
 import { addIcons } from 'ionicons';
-import { sunny, moon, phonePortrait, close, arrowBackOutline} from 'ionicons/icons';
+import { sunny, moon, phonePortrait, close, arrowBackOutline } from 'ionicons/icons';
 
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -51,27 +51,82 @@ import { PopoverController } from '@ionic/angular/standalone';
 
   <ion-modal [isOpen]="isModalOpen">
     <ng-template>
-
       <ion-header>
-      <ion-toolbar>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button id="botao-toolbar" (click)="setOpenModalTerm(false)">
+              <ion-icon name="arrow-back-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <div class="titulos-container">
+            <ion-title id="home-title">Termos de Uso</ion-title>
+          </div>
+        </ion-toolbar>
+      </ion-header>
 
-        <ion-buttons slot="start">
-          <ion-button id="botao-toolbar" (click)="setOpenModalTerm(false)">
-            <ion-icon name="arrow-back-outline"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-
-        <div class="titulos-container">
-          <ion-title id="home-title">Termos de Uso</ion-title>
-
-        </div>
-
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content class="ion-padding">
-      
-    </ion-content>
+      <ion-content [fullscreen]="true">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <h1 id="titulo-termos-uso">
+                TERMOS DE USO – FILAMED
+              </h1>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <p id="texto-termos-uso">
+                <span>1. Aceitação dos Termos:</span> <br><br>
+                Ao utilizar o aplicativo <a>FilaMed</a>, o usuário declara que leu, compreendeu e concorda integralmente com os
+                presentes <a>Termos de Uso</a>. Caso não concorde, deve interromper imediatamente o uso do aplicativo. <br><br>
+                <span>2. Informações sobre o Aplicativo:</span> <br><br>
+                O <a>FilaMed</a> é um aplicativo desenvolvido pela empresa <a>FilaMed</a>, com o objetivo de contribuir para a saúde
+                pública. Sua função é calcular, em tempo real, a fila de hospitais e <a>Unidades de Pronto Atendimento (UPAs)</a>,
+                auxiliando o usuário a decidir entre a unidade mais próxima ou outra com menor tempo de espera. <br><br>
+                <span>3. Público-Alvo:</span> <br><br>
+                O aplicativo é destinado ao <a>público em geral</a>, desde que alfabetizado, não havendo restrição de idade
+                específica. <br> <br>
+                <span>4. Cadastro e Acesso:</span> <br> <br>
+                O aplicativo não exige <a>cadastro</a> ou <a>login</a> para utilização de suas funcionalidades.<br> <br>
+                <span>5. Uso Permitido e Proibido</span> <br><br>
+                O usuário se compromete a utilizar o aplicativo de forma <a>lícita</a> e <a>responsável</a>. <a>É expressamente proibido</a>:<br><br>
+                <a id="lista-termos-uso">5.1 Utilizar os contatos de emergência disponibilizados no app para efetuar ligações falsas ou indevidas;</a> <br><br>
+                <a id="lista-termos-uso">5.2 Utilizar o aplicativo para fins ilegais, imorais ou que possam causar prejuízo a terceiros.</a> <br> <br>
+                <span>6. Interação entre Usuários:</span> <br><br>
+                O <a>FilaMed</a> não possui recursos de interação entre usuários (como chats, comentários ou postagens).<br> <br>
+                <span>7. Propriedade Intelectual:</span> <br><br>
+                Todos os direitos relacionados ao aplicativo, incluindo <a>marca, design, código-fonte, layout, funcionalidades e
+                conteúdos</a>, pertencem exclusivamente à empresa <a>FilaMed</a>. É vedada qualquer <a>reprodução, modificação, distribuição
+                ou utilização</a> não autorizada do conteúdo do aplicativo. <br> <br>
+                <span>8. Conteúdo de Usuários:</span> <br><br>
+                O aplicativo não permite o envio de conteúdos por parte dos usuários. <br> <br>
+                <span>9. Coleta e Uso de Dados:</span> <br> <br>
+                O Filamed coleta apenas dados de localização, necessários para o correto funcionamento do aplicativo. O app
+                também integra recursos de terceiros, como:<br><br>
+                <a id="lista-termos-uso">9.1 API de dados hospitalares;</a><br><br>
+                <a id="lista-termos-uso">9.2 Aplicativo de telefone (para realizar chamadas diretamente do celular);</a><br><br>
+                <a id="lista-termos-uso">9.3 Google Maps (para exibição de rotas e mapas).</a><br><br>
+                O usuário, ao aceitar os Termos, autoriza o uso dessas integrações. <br> <br>
+                <span>10. Limitação de Responsabilidade:</span> <br><br>
+                O Filamed se destina apenas a fornecer informações estimadas sobre filas em UPAs. A empresa não se
+                responsabiliza por: <br><br>
+                <a id="lista-termos-uso">10.1 Eventuais erros, desatualizações ou indisponibilidade de dados;</a><br><br>
+                <a id="lista-termos-uso">10.2 Decisões tomadas pelo usuário com base nas informações do aplicativo;</a><br><br>
+                <a id="lista-termos-uso">10.3 Danos diretos ou indiretos decorrentes do uso inadequado do app.</a> <br> <br>
+                <span>11. Alterações nos Termos:</span> <br> <br>
+                Os presentes Termos não possuem previsão de alteração frequente. Contudo, caso seja necessário, a empresa
+                poderá revisar este documento, e a versão atualizada será disponibilizada no próprio aplicativo. <br> <br>
+                <span>12. Foro e Legislação Aplicável:</span> <br><br> 
+                Os presentes Termos serão regidos pelas leis da <a>República Federativa do Brasil</a>. Fica eleito o foro da comarca
+                de <a>Criciúma/SC</a> para resolver quaisquer disputas oriundas destes Termos. <br> <br>
+                <span>13. Contato:</span> <br> <br>
+                Em caso de dúvidas, o usuário pode entrar em contato com a empresa por meio do e-mail:
+                <a>noreplyfilamedpi@gmail.com</a> <br> <br>
+              </p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-content>
 
     </ng-template>
   </ion-modal>
@@ -129,17 +184,17 @@ export class SimplePopoverComponent {
   constructor(
     private themeActionService: ThemeActionService,
     private themeService: ThemeService,
-    private router: Router, 
+    private router: Router,
     private popoverCtrl: PopoverController // Adicione esta linha
   ) {
-    addIcons({ sunny, moon, phonePortrait, close, arrowBackOutline});
+    addIcons({ sunny, moon, phonePortrait, close, arrowBackOutline });
   }
 
-  
+
   setOpenModalTerm(isOpen: boolean) {
     this.isModalOpen = isOpen;
   }
-  setOpenModalPriv(isOpen: boolean){
+  setOpenModalPriv(isOpen: boolean) {
     this.isModalOpen1 = isOpen;
   }
 
@@ -173,7 +228,7 @@ export class SimplePopoverComponent {
   async irConfig() {
     // Fecha o popover atual antes de navegar
     await this.popoverCtrl.dismiss();
-  
+
     // Navega para a página de configuração
     this.router.navigate(['/config-user']);
   }

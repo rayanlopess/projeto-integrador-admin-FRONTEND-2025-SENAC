@@ -211,7 +211,7 @@ ion-tab-bar {
   .informacoes-div > p{
     margin: 0;
     padding: 0;
-    font-size: 17px;
+    font-size: 16px;
     color: #0e2b52;
   }
   .informacoes-div > p > span{
@@ -238,126 +238,6 @@ ion-tab-bar {
   } 
 }
 //fim do cards tela principal
-
-//search bar
-.container-search {
-  position: relative;
-  display: flex;
-  justify-content: flex-end;
-  margin-left: auto;
-  margin-right: 20px;
-}
-
-.search {
-  position: absolute;
-  margin: auto;
-  top: 0px;
-  right: 0;
-  /* Alterado de left para right */
-  bottom: 0;
-  width: 35px;
-  height: 35px;
-  background: #0e2b52;
-  border-radius: 50%;
-  transition: all 1s;
-  z-index: 4;
-  cursor: pointer;
-}
-
-// perninha do Lupa
-.search::before {
-  content: "";
-  position: absolute;
-  margin: auto;
-  top: 20px;
-  right: 7px;
-  /* Alterado de left para right */
-  width: 10px;
-  height: 2px;
-  background: #d8dde3;
-  transform: rotate(45deg);
-  transition: all 0.4s;
-}
-
-// bolinha do Lupa
-.search::after {
-  content: "";
-  position: absolute;
-  margin: auto;
-  top: 7px;
-  right: 13px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  border: 2px solid #d8dde3;
-  transition: all 0.3s;
-}
-
-.container-search input {
-  position: absolute;
-  margin: auto;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 0px;
-  height: 30px;
-  outline: none;
-  border: none;
-  background: #d8dde3;
-  color: #0e2b52;
-  padding: 16px 10px 16px 10px;
-  border-radius: 30px;
-  transition: all 1s;
-  opacity: 0;
-  z-index: 5;
-  border: 2px solid #0e2b52;
-}
-
-.container-search input:hover {
-  cursor: pointer;
-}
-
-.container-search input:focus {
-  width: 250px;
-  opacity: 1;
-  cursor: text;
-  padding: 16px 20px 16px 20px;
-  /* Ajuste no padding quando expandido */
-}
-
-.container-search input:focus~.search {
-  right: 0px;
-  /* Posição ajustada para a esquerda */
-  background: #0e2b52;
-  z-index: 6;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-}
-
-//perninha do X
-.container-search input:focus~.search::before {
-  top: 16px;
-  right: 4px;
-  /* Alterado de left para right */
-  width: 25px;
-  background-color: #d8dde3;
-}
-
-.container-search input:focus~.search::after {
-  top: 16px;
-  right: 4px;
-  width: 25px;
-  height: 2px;
-  border: none;
-  background: #d8dde3;
-  border-radius: 0%;
-  transform: rotate(-45deg);
-
-}
-
-.container-search input::placeholder {
-  color: #0e2b52;
-}
-//fim da search bar
 
 //FIM DO PATHS.SCSS
 
@@ -742,7 +622,7 @@ ion-button,
   background-color: #fff;
 }
 
-//
+// letreiros
 .ion-toolbar-swipper{
   width: 100%;
   height: 60px;
@@ -1370,6 +1250,37 @@ ion-range::part(bar-active) {
 }
 
 //FIM DO TELEFONES.SCSS
+
+//-----------------------------------------------//
+
+//TERMOS-USO.SCSS (MODAL)
+#titulo-termos-uso{
+  color: #0e2b52;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+}
+#texto-termos-uso{
+  color: #0e2b52;
+  text-align: justify;
+  padding: 0px 10px;
+  span{
+    font-size: 18px;
+    font-weight: 800;
+  }
+  #lista-termos-uso{
+    font-size: 14px;
+    
+    font-weight: 700;
+    
+  }
+  a{
+    font-weight: 800;
+    color: #0e2b52;
+  }
+  
+}
+//FIM DO TERMOS-USO.SCSS
 
 //-----------------------------------------------//
 
@@ -2003,5 +1914,20 @@ body.dark .card-telefones{
 //FIM DO TELEFONES.SCSS
 
 //-----------------------------------------------//
+
+//TERMOS-USO.SCSS (MODAL)
+body.dark #titulo-termos-uso{
+  color: #f5f5f5;
+}
+body.dark #texto-termos-uso{
+  color: #f5f5f5;
+  a{
+    color: #f5f5f5;
+  }
+}
+//FIM DO TERMOS-USO.SCSS
+
+//-----------------------------------------------//
+
 
 /* ------------ FIM DO DARK MODE ------------ */

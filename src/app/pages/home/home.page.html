@@ -81,30 +81,22 @@
                   
                   <!-- Tempo de deslocamento (se disponível) -->
                   <p *ngIf="hospital.tempoDeslocamento">
-                    <ion-icon name="car"></ion-icon>&nbsp; 
+                    <ion-icon class="icon-text" name="car"></ion-icon>&nbsp; 
                     Tempo Ida: <span>{{hospital.tempoDeslocamento}} min</span>
                   </p>
                   
                   
                   <!-- Fila de espera -->
                   <p>
-                    <ion-icon name="time"></ion-icon>&nbsp; 
+                    <ion-icon class="icon-text" name="time"></ion-icon>&nbsp; 
                     Fila Espera: <span>{{getTempoEsperaDisplay(hospital)}}</span>
                   </p>
                   
                   <!-- Quantidade de pacientes -->
                   <p *ngIf="hospital.qtd_pacientes > 0">
-                    <ion-icon name="people"></ion-icon>&nbsp; 
+                    <ion-icon class="icon-text" name="people"></ion-icon>&nbsp; 
                     Pacientes na fila: <span>{{hospital.qtd_pacientes}}</span>
                   </p>
-                  
-                  <!-- Endereço resumido -->
-                  <p class="endereco-resumido">
-                    <ion-icon name="location"></ion-icon>&nbsp; 
-                    {{hospital.cidade}} - {{hospital.uf}}
-                  </p>
-
-                
                 </div>
               </ion-item>
             </ion-list>
