@@ -22,25 +22,25 @@ import { PopoverController } from '@ionic/angular/standalone';
   template: `
     <ion-list>
       
-      <ion-item button (click)="irConfig()">
-        <ion-label>Opções de Distância</ion-label>
-        <ion-note slot="end">{{raioDistancia()}}km</ion-note>
+      <ion-item lines="none" button (click)="irConfig()">
+        <ion-label>Localização</ion-label>
+        <ion-note slot="end">Raio: {{raioDistancia()}}km</ion-note>
       </ion-item>
 
-      <ion-item button (click)="openThemeSelector()">
+      <ion-item lines="none" button (click)="openThemeSelector()">
         <ion-label>Tema</ion-label>
         <ion-note slot="end">{{ getCurrentStatus() }}</ion-note>
       </ion-item>
      
-      <ion-item button (click)="setOpenModalTerm(true)">
+      <ion-item lines="none" button (click)="setOpenModalTerm(true)">
         <ion-label >Termos de Uso</ion-label>
       </ion-item>
 
-      <ion-item button (click)="setOpenModalPriv(true)">
+      <ion-item lines="none" button (click)="setOpenModalPriv(true)">
         <ion-label>Privacidade e Segurança</ion-label>
       </ion-item>
 
-      <ion-item button (click)="abrirWhatsApp()">
+      <ion-item lines="none" button (click)="abrirWhatsApp()">
         <ion-label>Central de Ajuda</ion-label>
       </ion-item>
     </ion-list>

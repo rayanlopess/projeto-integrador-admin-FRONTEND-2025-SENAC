@@ -180,6 +180,7 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
         id: 'my-map',
         element: this.mapRef.nativeElement,
         apiKey: apiKey,
+  
         config: {
           center: this.userLocation,
           zoom: zoomLevel,
@@ -190,6 +191,7 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
           streetViewControl: false,
           rotateControl: false,
           fullscreenControl: false,
+          
           mapId: this.currentTheme === 'dark' ? "6fbe87b38800cc70488f7956" : "6fbe87b38800cc70bd62cb93",
         },
       });

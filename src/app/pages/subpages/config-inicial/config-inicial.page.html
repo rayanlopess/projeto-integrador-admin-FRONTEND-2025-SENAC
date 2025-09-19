@@ -17,6 +17,7 @@
         <p id="subtitulo-config-inicial">personalize sua busca por atendimentos!</p>
       </ion-col>
     </ion-row>
+
     <ion-row>
       <ion-col>
         <div class="div-btLocalizacao">
@@ -73,11 +74,13 @@
         </div>
 
         <!-- CORREÇÃO: Substituído @if e @for pela sintaxe *ngIf e *ngFor -->
-        <ion-list *ngIf="predictions.length > 0" class="autocomplete-list">
-          <ion-item *ngFor="let prediction of predictions" (click)="selectPrediction(prediction)" button>
+        <div class="prediction-div">
+          <ion-list *ngIf="predictions.length > 0" class="autocomplete-list">
+          <ion-item lines="none" id="item-prediction" *ngFor="let prediction of predictions" (click)="selectPrediction(prediction)" button>
             <ion-label>{{ prediction.description }}</ion-label>
           </ion-item>
         </ion-list>
+        </div>
         
       </ion-col>
     </ion-row>

@@ -111,4 +111,17 @@ export class SwipperPage implements OnInit {
 
   }
 
+  getCurrentStatus(): string {
+
+    const temaAtual = this.themeService.getCurrentTheme() === 'dark' ? 'Escuro' : 'Claro';
+
+    const mode = this.themeService.getCurrentMode();
+    switch (mode) {
+      case 'auto': return `Auto (${temaAtual})`;
+      case 'light': return 'Claro';
+      case 'dark': return 'Escuro';
+      default: return 'Automático';
+    }
+  }
+
 }
