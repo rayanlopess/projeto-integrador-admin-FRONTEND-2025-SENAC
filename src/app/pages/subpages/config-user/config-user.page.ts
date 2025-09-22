@@ -224,13 +224,8 @@ export class ConfigUserPage implements OnInit {
   }
 
   voltar() {
-    // Navega para a página anterior no histórico do navegador
-    this.location.back();
-
-    // Usa um pequeno atraso para dar tempo ao Angular de processar a navegação
-    // antes de forçar o recarregamento.
-    setTimeout(() => {
+    this.router.navigate(['/path/home']).then(() => {
       window.location.reload();
-    }, 100);
+    });
   }
 }

@@ -46,9 +46,11 @@
     <ion-row *ngIf="erroCarregamento">
       <ion-col>
         <div class="error-container">
-          <ion-icon name="warning-outline"></ion-icon>
-          <p>Erro ao carregar os Hospitais</p>
-          <ion-button (click)="tentarNovamente()">Tentar Novamente</ion-button>
+          <img src="../../../assets/images/home/error-light.png" id="" alt="" srcset="">
+          <img src="../../../assets/images/home/error-dark.png" alt="" srcset="">
+          <div class="div-btSalvarConfig">
+            <ion-button (click)="tentarNovamente()">Tentar Novamente</ion-button>
+          </div>   
         </div>
       </ion-col>
     </ion-row>
@@ -58,9 +60,12 @@
       <ion-col>
         <!-- Card vazio se não houver hospitais -->
         <div *ngIf="hospitais.length === 0" class="empty-state">
-          <ion-icon name="medical-outline"></ion-icon>
-          <p>Nenhum hospital encontrado no raio selecionado.</p>
-          <ion-button (click)="irParaConfiguracao()">Alterar Configurações</ion-button>
+          <img src="../../../assets/images/home/error-light.png" alt="" srcset="">
+          <img src="../../../assets/images/home/error-dark.png" alt="" srcset="">
+          <div class="div-btSalvarConfig">
+            <ion-button (click)="irParaConfiguracao()" id="btAlterarConfig">Alterar Configurações</ion-button>
+          </div>
+          
         </div>
 
         <!-- Cards dos hospitais -->
@@ -89,7 +94,7 @@
                   <!-- Fila de espera -->
                   <p>
                     <ion-icon class="icon-text" name="time"></ion-icon>&nbsp; 
-                    Fila Espera: <span>{{getTempoEsperaDisplay(hospital)}} </span>
+                    Fila Espera: <span>{{hospital.tempo_espera}} min</span>
                   </p>
                   
                   
