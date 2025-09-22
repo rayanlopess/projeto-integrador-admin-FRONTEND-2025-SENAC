@@ -55,8 +55,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   handleRefresh(event: RefresherCustomEvent) {
     setTimeout(() => {
-      this.carregarHospitais()
-      event.target.complete();
+      window.location.reload();
     }, 2000);
   }
 

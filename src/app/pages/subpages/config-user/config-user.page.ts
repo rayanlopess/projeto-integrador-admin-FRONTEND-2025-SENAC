@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, AlertController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { sunny, moon, phonePortrait, close, arrowBackOutline, search} from 'ionicons/icons';
-import { Location } from '@angular/common'; 
-import { Router } from '@angular/router';   
+import { sunny, moon, phonePortrait, close, arrowBackOutline, search, trash} from 'ionicons/icons';
+import { Router } from '@angular/router';
 
-
-
-import { AlertController } from '@ionic/angular/standalone';
-
-import { HospitalService } from '../../../services/sistema-hospital/hospital'; // Add this import
+import { HospitalService } from '../../../services/sistema-hospital/hospital';
 import { BuscarLocalizacao } from '../../../services/maps/buscar-localizacao';
+import { Geolocation } from '@capacitor/geolocation';
+import { GeocodificacaoService } from '../../../services/maps/geocodificacao';
+import { Navigation } from '../../../services/navigation/navigation';
+
 
 @Component({
   selector: 'app-config-user',
@@ -25,30 +24,49 @@ export class ConfigUserPage implements OnInit {
   public range: number = 50;
   public enderecoManual: string = '';
   public class_enderecoManual: string = '';
-  public class_error: string = 'ion-touched ion-invalid';
-  public usandoLocalizacaoAtual: boolean = false;
-  public carregando: boolean = false; // Added loading state
-
   public predictions: any[] = [];
-
+  public enderecosSalvos: any[] = [];
+  public enderecoAtivo: any = null;
+  public usandoLocalizacaoAtual: boolean = false;
 
   constructor(
-    private router: Router, // Changed from public rt to private router
+    private router: Router,
     private alertController: AlertController,
-    private hospitalService: HospitalService, // Added HospitalService
+    private hospitalService: HospitalService,
     private buscarLocalizacaoService: BuscarLocalizacao,
-    private location: Location
+    private geocodificacaoService: GeocodificacaoService,
+    private location: Location,
+    private navigationService: Navigation
   ) {
-    addIcons({ sunny, moon, phonePortrait, close, arrowBackOutline, search});
+    addIcons({ sunny, moon, phonePortrait, close, arrowBackOutline, search, trash });
   }
 
   ngOnInit() {
+    this.carregarConfiguracoes();
+  }
+
+  carregarConfiguracoes() {
+    const configStr = localStorage.getItem('configuracoesUsuario');
+    if (configStr) {
+      const config = JSON.parse(configStr);
+      this.range = config.Distancia || 50;
+      this.usandoLocalizacaoAtual = config.LocalizacaoAtual === 'true';
+      if (config.EnderecoManual !== 'false') {
+        this.enderecoManual = config.EnderecoManual;
+      }
+    }
+
+    const enderecosStr = localStorage.getItem('enderecosSalvos');
+    if (enderecosStr) {
+      this.enderecosSalvos = JSON.parse(enderecosStr);
+      this.selecionarEnderecoAtivo(this.enderecoManual);
+    }
   }
 
   pinFormatter(value: number) {
     return `${value}km`;
   }
-  
+
   onAddressInput(event: any) {
     const query = event.target.value;
     if (query && query.length > 2) {
@@ -66,84 +84,153 @@ export class ConfigUserPage implements OnInit {
     }
   }
 
+  onInputBlur() {
+    setTimeout(() => {
+      this.predictions = [];
+      this.enderecoManual = '';
+    }, 200);
+  }
+
   selectPrediction(prediction: any) {
     this.enderecoManual = prediction.description;
     this.predictions = [];
     this.usandoLocalizacaoAtual = false;
+    this.salvarNovoEndereco(prediction.description, false);
   }
 
-  async salvarConfig() {
-    // Verifica se o usuário não forneceu nenhuma forma de localização
-    if (!this.usandoLocalizacaoAtual && this.enderecoManual.trim() === '') {
-      const alert = await this.alertController.create({
-        header: 'Localização necessária',
-        message: 'Selecione uma localização ou digite um endereço.',
-        cssClass: 'container-alert',
-        buttons: [
-          {
-            text: 'OK',
-            role: 'confirm',
-            cssClass: 'confirmarAction',
-          },
-        ],
-      });
-
-      await alert.present();
-      return;
-    }
-
-    this.carregando = true;
-
+  async usarLocalizacaoAtual() {
     try {
-      // Altere o JSON para salvar apenas as configurações de localização
-      const config = {
-        Distancia: this.range, // Manter o valor no JSON para referência futura, se necessário
-        EnderecoManual: this.usandoLocalizacaoAtual ? "false" : this.enderecoManual,
-        LocalizacaoAtual: this.usandoLocalizacaoAtual ? "true" : "false"
-      };
-  
-      localStorage.setItem('configuracoesUsuario', JSON.stringify(config));
-  
-      // AQUI É O PONTO CRÍTICO: Chame o método do serviço para salvar e emitir o novo raio
-      this.hospitalService.setRaioConfigurado(this.range);
-  
-      // O método carregarHospitaisProximos não precisa do `this.range` como parâmetro,
-      // pois ele já pegará o raio do `BehaviorSubject`
-      if (this.usandoLocalizacaoAtual) {
-        await this.hospitalService.inicializarComLocalizacaoAtual();
-      } else {
-        await this.hospitalService.inicializarComEndereco(this.enderecoManual);
+      const coordinates = await Geolocation.getCurrentPosition();
+      const lat = coordinates.coords.latitude;
+      const lng = coordinates.coords.longitude;
+
+      // Chama o novo serviço para obter o endereço
+      const enderecoEncontrado = await this.geocodificacaoService.getAddressFromCoords(lat, lng).toPromise();
+
+      // Encontra o endereço mais relevante (ex: com nome de rua e número)
+      let descricao = 'Localização Atual';
+      if (enderecoEncontrado.results && enderecoEncontrado.results.length > 0) {
+        const formattedAddress = enderecoEncontrado.results.find((result: any) => result.types.includes('route') || result.types.includes('street_address'));
+        if (formattedAddress) {
+          descricao = formattedAddress.formatted_address;
+        } else {
+          // Se não encontrar uma rua, use o endereço mais geral
+          descricao = enderecoEncontrado.results[0].formatted_address;
+        }
       }
-      
-      // Altere a chamada para carregarHospitaisProximos para que ele use o valor salvo
-      await this.hospitalService.carregarHospitaisComConfiguracoesSalvas();
-  
-      this.router.navigate(['/aviso-dados']);
-  
-    } catch (error: any) {
-      // ...
-    } finally {
-      this.carregando = false;
+
+      this.salvarNovoEndereco(descricao, true);
+
+    } catch (error) {
+      console.error('Erro ao obter localização ou endereço:', error);
+      const alert = await this.alertController.create({
+        header: 'Erro',
+        message: 'Não foi possível obter sua localização. Verifique as permissões do aplicativo.',
+        buttons: ['OK']
+      });
+      await alert.present();
     }
   }
 
-  usarLocalizacaoAtual() {
-    this.usandoLocalizacaoAtual = true;
-    this.class_enderecoManual = ''; // Remove qualquer erro do campo de endereço manual
-  }
+  salvarNovoEndereco(descricao: string, eLocalizacaoAtual: boolean) {
+    let enderecoExistente = this.enderecosSalvos.find(e => e.descricao === descricao);
 
-  // Added method to handle manual address input
-  onEnderecoManualChange() {
-    if (this.enderecoManual.trim() !== '') {
-      this.usandoLocalizacaoAtual = false;
+    if (enderecoExistente) {
+      this.selecionarEndereco(enderecoExistente);
+    } else {
+      const novoEndereco = {
+        descricao: descricao,
+        eLocalizacaoAtual: eLocalizacaoAtual,
+        selecionado: true
+      };
+
+      this.enderecosSalvos.forEach(e => e.selecionado = false);
+      this.enderecosSalvos.push(novoEndereco);
+      this.enderecoAtivo = novoEndereco;
+
+      localStorage.setItem('enderecosSalvos', JSON.stringify(this.enderecosSalvos));
+      this.salvarConfiguracoesUsuarios(novoEndereco);
     }
   }
 
-  // Added getter for template
-  get usandoEnderecoManual(): boolean {
-    return !this.usandoLocalizacaoAtual && this.enderecoManual.trim() !== '';
+  selecionarEndereco(endereco: any) {
+    this.enderecosSalvos.forEach(e => e.selecionado = (e === endereco));
+    this.enderecoAtivo = endereco;
+    this.salvarConfiguracoesUsuarios(endereco);
   }
+
+  onRangeChange() {
+    this.salvarConfiguracoesUsuarios(this.enderecoAtivo);
+  }
+
+  salvarConfiguracoesUsuarios(enderecoSelecionado: any) {
+    const config = {
+      Distancia: this.range,
+      EnderecoManual: enderecoSelecionado.eLocalizacaoAtual ? "false" : enderecoSelecionado.descricao,
+      LocalizacaoAtual: enderecoSelecionado.eLocalizacaoAtual ? "true" : "false"
+    };
+
+    localStorage.setItem('configuracoesUsuario', JSON.stringify(config));
+    this.hospitalService.setRaioConfigurado(this.range);
+    this.hospitalService.carregarHospitaisComConfiguracoesSalvas();
+  }
+
+  selecionarEnderecoAtivo(enderecoManual: string) {
+    this.enderecoAtivo = this.enderecosSalvos.find(e => e.descricao === enderecoManual || (this.usandoLocalizacaoAtual && e.eLocalizacaoAtual));
+    if (this.enderecoAtivo) {
+      this.selecionarEndereco(this.enderecoAtivo);
+    }
+  }
+
+
+  async removerEndereco(enderecoParaRemover: any, event: MouseEvent) {
+    event.stopPropagation(); // Impede a propagação do clique
+  
+    const alert = await this.alertController.create({
+      header: 'Confirmar exclusão',
+      message: `Tem certeza que deseja remover o endereço "${enderecoParaRemover.descricao}"?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Excluir',
+          handler: () => {
+            // Filtra o array, removendo o endereço selecionado
+            this.enderecosSalvos = this.enderecosSalvos.filter(
+              (e) => e !== enderecoParaRemover
+            );
+  
+            // Se o endereço removido era o selecionado, selecione outro
+            if (enderecoParaRemover.selecionado) {
+              this.enderecoAtivo = null;
+              if (this.enderecosSalvos.length > 0) {
+                this.selecionarEndereco(this.enderecosSalvos[0]);
+              }
+            }
+  
+            // Salva o novo array no localStorage
+            localStorage.setItem(
+              'enderecosSalvos',
+              JSON.stringify(this.enderecosSalvos)
+            );
+          },
+        },
+      ],
+    });
+  
+    await alert.present();
+  }
+
   voltar() {
-    this.location.back(); 
+    // Navega para a página anterior no histórico do navegador
+    this.location.back();
+
+    // Usa um pequeno atraso para dar tempo ao Angular de processar a navegação
+    // antes de forçar o recarregamento.
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   }
 }

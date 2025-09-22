@@ -359,9 +359,6 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
     if ('tempo_espera' in hospital) {
       snippet += `Tempo de espera: ${hospital.tempo_espera} min\n`;
     }
-    if (hospital.qtd_pacientes > 0) {
-      snippet += `Pacientes na fila: ${hospital.qtd_pacientes}\n`;
-    }
     if ('distancia' in hospital && hospital.distancia) {
       snippet += `Distância: ${hospital.distancia.toFixed(1)} km\n`;
     }

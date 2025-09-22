@@ -14,9 +14,6 @@
 
 <ion-content [fullscreen]="true">
   <ion-grid>
-
-    
-
     <ion-row>
       <ion-col>
         <div class="div-btLocalizacao">
@@ -31,8 +28,7 @@
             </div>
           </div>
         </div>
-
-        <p id="text-entre-2">ou</p>
+        <p id="text-entre-2-config-inicial">ou</p>
         <div class="input-barra">
           <div class="input-texto">
             <div class="icon-search">
@@ -44,8 +40,8 @@
             </div>
             <div class="wave-group">
               <input required type="text" class="input-tecido" placeholder="Ex.: Rua da Alegria, 123"
-                [(ngModel)]="enderecoManual" [class]="class_enderecoManual" errorText="Preencha os campos corretamente"
-                (focus)="usandoLocalizacaoAtual = false" (input)="onAddressInput($event)">
+                [(ngModel)]="enderecoManual" [class]="class_enderecoManual" (focus)="usandoLocalizacaoAtual = false"
+                (input)="onAddressInput($event)" (ionBlur)="onInputBlur()">
               <label class="label">
                 <span class="label-char" style="--index: 0">P</span>
                 <span class="label-char" style="--index: 1">e</span>
@@ -73,18 +69,18 @@
         </div>
         <div class="prediction-div">
           <ion-list *ngIf="predictions.length > 0" class="autocomplete-list">
-          <ion-item lines="none" id="item-prediction" *ngFor="let prediction of predictions" (click)="selectPrediction(prediction)" button>
-            <ion-label>{{ prediction.description }}</ion-label>
-          </ion-item>
-        </ion-list>
+            <ion-item lines="none" id="item-prediction" *ngFor="let prediction of predictions"
+              (click)="selectPrediction(prediction)" button>
+              <ion-label>{{ prediction.description }}</ion-label>
+            </ion-item>
+          </ion-list>
         </div>
-        
       </ion-col>
     </ion-row>
 
     <ion-row>
       <ion-col>
-        <p id="titulo-distancia-inicial">
+        <p id="titulo-distancia-user">
           Distância máxima que você <br>
           está disposto(a) a se deslocar:
         </p>
@@ -93,7 +89,7 @@
     <ion-row>
       <ion-col>
         <ion-range aria-label="Custom range" [min]="10" [max]="100" [step]="10" [pin]="true" [ticks]="true"
-          [(ngModel)]="range" [snaps]="true" [pinFormatter]="pinFormatter">
+          [(ngModel)]="range" [snaps]="true" [pinFormatter]="pinFormatter" (ionChange)="onRangeChange()">
           <p slot="start" id="text-10km">10km</p>
           <p slot="end" id="text-100km">100km</p>
         </ion-range>
@@ -102,10 +98,33 @@
 
     <ion-row>
       <ion-col>
-        <p id="titulo-config-inicial">ENDEREÇOS CADASTRADOS:</p>
+        <p id="titulo-enderecos-config-user">ENDEREÇOS CADASTRADOS:</p>
       </ion-col>
     </ion-row>
 
+    <ion-row>
+      <ion-col>
+        <ion-card class="card-config-user" button *ngFor="let endereco of enderecosSalvos"
+          [class.selected]="endereco.selecionado" (click)="selecionarEndereco(endereco)">
+          <ion-card-content>
+            <ion-list>
+              <ion-item lines="none">
+                <div class="informacoes-div">
+                  <h1>{{ endereco.descricao }}</h1>
+                  <p *ngIf="endereco.selecionado" class="selected-indicator">
+                    Selecionado
+                  </p>
+                </div>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+          <ion-buttons slot="">
+            <ion-button class="delete-button" (click)="removerEndereco(endereco, $event)">
+              <ion-icon name="trash" id="delete-icon"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-card>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>
-

@@ -89,14 +89,10 @@
                   <!-- Fila de espera -->
                   <p>
                     <ion-icon class="icon-text" name="time"></ion-icon>&nbsp; 
-                    Fila Espera: <span>{{getTempoEsperaDisplay(hospital)}}</span>
+                    Fila Espera: <span>{{getTempoEsperaDisplay(hospital)}} </span>
                   </p>
                   
-                  <!-- Quantidade de pacientes -->
-                  <p *ngIf="hospital.qtd_pacientes > 0">
-                    <ion-icon class="icon-text" name="people"></ion-icon>&nbsp; 
-                    Pacientes na fila: <span>{{hospital.qtd_pacientes}}</span>
-                  </p>
+                  
                 </div>
               </ion-item>
             </ion-list>
