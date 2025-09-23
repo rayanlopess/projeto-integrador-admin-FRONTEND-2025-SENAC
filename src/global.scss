@@ -46,8 +46,6 @@
 
 //HTML GERAL
 
-
-
 *{
   font-family: "Red Hat Display", sans-serif;
 }
@@ -1248,6 +1246,7 @@ ion-range::part(bar-active) {
 //-----------------------------------------------//
 
 //TELEFONES.SCSS.SCSS
+
 .aviso-telefones{
   width: 100%;
   height: 80px;
@@ -1430,8 +1429,69 @@ ion-range::part(bar-active) {
  
 }
 
-
 //FIM DO CONFIG-USER.SCSS
+
+//-----------------------------------------------//
+
+//CENTRAL-AJUDA.SCSS
+
+#titulo-central-ajuda{
+  margin: auto;
+  text-align: center;
+  width: 95%;
+  font-size: 22px;
+  margin-top: 40px;
+  margin-bottom: 10px;
+  font-weight: 400;
+  color: #0e2b52;
+  a{
+    font-weight: 800;
+    color: #0e2b52;
+  }
+}
+#footer-central-ajuda{
+  font-size: 14px;
+}
+.card-central-ajuda{
+  background: #0e2b52 !important;
+  box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+  --ion-item-background: #0e2b52;
+  --ion-border-color: #0e2b52;
+  ion-card-content{
+    padding: 4px 10px 4px 10px !important; 
+  }
+  i{
+    font-size: 56px;
+    color: #fff;
+  }
+  .informacoes-div > p{
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+    color: #fff;
+  }
+  .informacoes-div > p > span{
+    font-weight: 600;
+  }
+  .informacoes-div > h1{
+    margin: 0;
+    padding: 0;
+    margin: 0 0 2px 0;
+    font-size: 24px;
+    color: #fff;
+    font-weight: 800;
+  }
+  ion-thumbnail{
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  } 
+}
+
+
+//FIM DO CENTRAL-AJUDA.SCSS
 
 //-----------------------------------------------//
 
@@ -1509,6 +1569,14 @@ body.dark .div-img-tela-logo{
   background-color: #121212;
 }
 //FIM DA TELA-LOGO.SCSS
+
+//-----------------------------------------------//
+
+//CENTRAL-AJUDA.SCSS
+body.dark .div-img-tela-logo{
+  background-color: #121212;
+}
+//FIM DA CENTRAL-AJUDA.SCSS
 
 //-----------------------------------------------//
 

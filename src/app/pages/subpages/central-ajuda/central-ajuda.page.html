@@ -1,0 +1,96 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button id="botao-toolbar" (click)="voltar()">
+        <ion-icon id="icon-toolbar" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <div class="titulos-container">
+      <ion-title id="home-title">Central de Ajuda</ion-title>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-row>
+    <ion-col>
+      <p id="titulo-central-ajuda">
+        Estamos aqui para <a>ajudá-lo</a>. Entre em contato para receber o <a>suporte</a> necessário e <a>tirar suas dúvidas</a>!
+      </p>
+    </ion-col>
+  </ion-row>
+
+
+
+  <ion-row>
+    <ion-col>
+      <ion-card class="card-central-ajuda" button href="tel:4899855-7523">
+
+        <ion-card-content>
+
+          <ion-list>
+
+            <ion-item>
+
+              <ion-thumbnail slot="start">
+                <i class="bi bi-telephone-fill"></i>
+              </ion-thumbnail>
+
+              <div class="informacoes-div">
+                <h1>FALE CONOSCO!</h1>
+                <p>48 99855-7523</p>
+              </div>
+
+            </ion-item>
+
+          </ion-list>
+
+        </ion-card-content>
+
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+
+  <ion-row>
+    <ion-col>
+      <ion-card class="card-central-ajuda" button href="tel:190">
+
+        <ion-card-content>
+
+          <ion-list>
+
+            <ion-item>
+
+              <ion-thumbnail slot="start">
+                <i class="bi bi-whatsapp"></i>
+              </ion-thumbnail>
+
+              <div class="informacoes-div">
+                <h1>FALE CONOSCO!</h1>
+                <p>48 99855-7523</p>
+              </div>
+
+            </ion-item>
+
+          </ion-list>
+
+        </ion-card-content>
+
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col>
+      <p id="footer-central-ajuda">
+        A Equipe Filamed agradece seu feedback e contribuição!
+      </p>
+    </ion-col>
+  </ion-row>
+
+  <div class="footer-paths">
+    <img alt="Silhouette of mountains" src="../../../assets/icons/filamed-sem-fundo.png" />
+  </div>
+</ion-content>

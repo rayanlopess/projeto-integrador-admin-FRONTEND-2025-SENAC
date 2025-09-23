@@ -63,7 +63,11 @@ export const routes: Routes = [
   {
     path: 'config-inicial',
     loadComponent: () => import('./pages/subpages/config-inicial/config-inicial.page').then( m => m.ConfigInicialPage)
+  },  {
+    path: 'central-ajuda',
+    loadComponent: () => import('./pages/subpages/central-ajuda/central-ajuda.page').then( m => m.CentralAjudaPage)
   },
+
 
 
 

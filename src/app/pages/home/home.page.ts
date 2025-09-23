@@ -156,7 +156,7 @@ export class HomePage implements OnInit, OnDestroy {
     const userLocation = this.hospitalService.getLocalizacaoAtual();
     
     if (userLocation) {
-      const url = `https://www.google.com/maps/dir/?api=1&origin=${userLocation.lat},${userLocation.lng}&destination=${hospital.lati},${hospital.longi}&travelmode=driving`;
+      const url = `https://www.google.com/maps/dir/?api=1&origin=${userLocation.lat},${userLocation.lng}&destination=${hospital.nome}&travelmode=driving`;
       window.open(url, '_blank');
     } else {
       const url = `https://www.google.com/maps/search/?api=1&query=${hospital.lati},${hospital.longi}`;
