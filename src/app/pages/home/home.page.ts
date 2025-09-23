@@ -13,12 +13,15 @@ import { SimplePopoverComponent } from '../../components/simple-popover/simple-p
 import { HospitalService, HospitalProcessado } from '../../services/sistema-hospital/hospital';
 import { Subscription } from 'rxjs';
 
+import { CookieConsentComponent } from '../../components/cookie-consent/cookie-consent.component';
+
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, CookieConsentComponent]
 })
 export class HomePage implements OnInit, OnDestroy {
 
@@ -75,7 +78,7 @@ export class HomePage implements OnInit, OnDestroy {
         await this.hospitalService.carregarHospitaisComConfiguracoesSalvas();
       } else {
         // Se não tem configurações, redireciona para configuração inicial
-        this.router.navigate(['/config-inicial']);
+        this.router.navigate(['/config-user']);
         return;
       }
 
@@ -107,7 +110,7 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   irParaConfiguracao() {
-    this.router.navigate(['/config-inicial']);
+    this.router.navigate(['/config-user']);
   }
 
   async presentPopover(event: Event) {

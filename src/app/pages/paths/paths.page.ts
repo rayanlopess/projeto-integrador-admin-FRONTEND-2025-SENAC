@@ -21,13 +21,14 @@ import { SimplePopoverComponent } from '../../components/simple-popover/simple-p
 
 import { Popover } from '../../services/popover/popover';
 
+import { CookieConsentComponent } from '../../components/cookie-consent/cookie-consent.component';
 
 @Component({
   selector: 'app-paths',
   templateUrl: './paths.page.html',
   styleUrls: ['./paths.page.scss'],
   standalone: true,
-  imports: [ IonicModule, CommonModule, FormsModule], 
+  imports: [ IonicModule, CommonModule, FormsModule, CookieConsentComponent], 
 
 })
 export class PathsPage implements OnInit, OnDestroy{

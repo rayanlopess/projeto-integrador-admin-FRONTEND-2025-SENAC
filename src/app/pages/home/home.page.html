@@ -1,3 +1,4 @@
+
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="end">
@@ -14,18 +15,17 @@
 </ion-header>
 
 <ion-content>
-  
+
   <div *ngIf="carregando" class="loading-container">
     <ion-spinner></ion-spinner>
     <p>Carregando hospitais próximos...</p>
   </div>
 
-    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-      <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   
-
-
 
   <ion-grid>
 
@@ -35,22 +35,18 @@
       </ion-col>
     </ion-row>
 
-    <!-- Loading enquanto carrega -->
-    <ion-row >
-      <ion-col>
-        
-      </ion-col>
-    </ion-row>
 
     <!-- Mensagem de erro -->
     <ion-row *ngIf="erroCarregamento">
+
+
       <ion-col>
         <div class="error-container">
-          <img src="../../../assets/images/home/error-light.png" id="" alt="" srcset="">
-          <img src="../../../assets/images/home/error-dark.png" alt="" srcset="">
+          <img src="../../../assets/images/home/error2-light.png" alt="Error Image" id="error-img-light2">
+          <img src="../../../assets/images/home/error2-dark.png" alt="Error Image" id="error-img-dark2">
           <div class="div-btSalvarConfig">
-            <ion-button (click)="tentarNovamente()">Tentar Novamente</ion-button>
-          </div>   
+            <ion-button (click)="tentarNovamente()" id="btTentarNovamente">Tentar Novamente</ion-button>
+          </div>
         </div>
       </ion-col>
     </ion-row>
@@ -60,21 +56,18 @@
       <ion-col>
         <!-- Card vazio se não houver hospitais -->
         <div *ngIf="hospitais.length === 0" class="empty-state">
-          <img src="../../../assets/images/home/error-light.png" alt="" srcset="">
-          <img src="../../../assets/images/home/error-dark.png" alt="" srcset="">
+          <img src="../../../assets/images/home/error-light.png" alt="Error Image" id="error-img-light">
+          <img src="../../../assets/images/home/error-dark.png" alt="Error Image" id="error-img-dark">
           <div class="div-btSalvarConfig">
             <ion-button (click)="irParaConfiguracao()" id="btAlterarConfig">Alterar Configurações</ion-button>
           </div>
-          
+
         </div>
 
         <!-- Cards dos hospitais -->
-        <ion-card 
-          *ngFor="let hospital of hospitais" 
-          (click)="irHospital(hospital)" 
-          class="card-home"
+        <ion-card *ngFor="let hospital of hospitais" (click)="irHospital(hospital)" class="card-home"
           [class.hospital-proximo]="hospital.distancia && hospital.distancia < 5">
-          
+
           <ion-card-content>
             <ion-list>
               <ion-item>
@@ -83,21 +76,21 @@
                 </ion-thumbnail>
                 <div class="informacoes-div">
                   <h1>{{hospital.nome}} - {{getDistanciaDisplay(hospital)}}</h1>
-                  
+
                   <!-- Tempo de deslocamento (se disponível) -->
                   <p *ngIf="hospital.tempoDeslocamento">
-                    <ion-icon class="icon-text" name="car"></ion-icon>&nbsp; 
+                    <ion-icon class="icon-text" name="car"></ion-icon>&nbsp;
                     Tempo Ida: <span>{{hospital.tempoDeslocamento}} min</span>
                   </p>
-                  
-                  
+
+
                   <!-- Fila de espera -->
                   <p>
-                    <ion-icon class="icon-text" name="time"></ion-icon>&nbsp; 
+                    <ion-icon class="icon-text" name="time"></ion-icon>&nbsp;
                     Fila Espera: <span>{{hospital.tempo_espera}} min</span>
                   </p>
-                  
-                  
+
+
                 </div>
               </ion-item>
             </ion-list>

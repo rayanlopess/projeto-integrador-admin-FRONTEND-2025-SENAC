@@ -93,7 +93,6 @@ ion-tab-bar {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.2);
   color: #0e2b52;
   z-index: 1000;
   padding: 20px;
@@ -119,6 +118,61 @@ ion-tab-bar {
 //-----------------------------------------------//
 
 //PATHS.SCSS
+
+//cookie-alert
+.cookie-overlay {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+.cookie-banner {
+    background-color: #fff;
+    width: 100%;
+    padding: 25px 20px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transform: translateY(100%);
+    animation: slide-up 0.6s ease-in-out forwards;
+}
+.cookie-text {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 20px;
+}
+.policy-link {
+    color: #0e2b52 !important;
+    text-decoration: none;
+    font-weight: bold;
+}
+.accept-btn {
+    width: 90%;
+    --background: #0e2b52;
+    color: #fff;
+    border: none;
+    --border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+@keyframes slide-up {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+//fim do cookie-alert
 
 //textos da toolbar do paths
 .titulos-container {
@@ -187,6 +241,39 @@ ion-tab-bar {
 //fim dos alerts
 
 //fim do action sheet 
+
+//aviso erro
+#error-img-light{
+  width: 100%;
+}
+#error-img-dark{
+  width: 0px;
+}
+#error-img-light2{
+  width: 100%;
+}
+#error-img-dark2{
+  width: 0px;
+}
+#btAlterarConfig{
+  --background: #0e2b52;
+  --color: #fff;
+  --border-radius: 20px;
+  border-radius: 22px;
+  width: 70%;
+  height: 50px;
+  font-size: 14px;
+}
+#btTentarNovamente{
+  --background: #0e2b52;
+  --color: #fff;
+  --border-radius: 20px;
+  border-radius: 22px;
+  width: 70%;
+  height: 50px;
+  font-size: 14px;
+}
+//fim do aviso erro
 
 //cards tela principal
 #titulo-cards-home{
@@ -1427,6 +1514,24 @@ body.dark .div-img-tela-logo{
 
 //PATHS.SCSS
 
+//cookie-alert
+body.dark .cookie-banner {
+    background-color: #1a1a1a;
+}
+body.dark .cookie-text {
+    color: #d9d9d9;
+}
+body.dark .policy-link {
+    color: #fff !important;
+}
+body.dark .accept-btn {
+    --background: #1a1a1a;
+    color: #fff;
+    border: 3px solid #fff;
+    border-radius: 10px;
+}
+//fim do cookie-alert
+
 //action-sheets
 body.dark .action-sheet-wrapper {
   background-color: #1a1a1a !important;
@@ -1464,6 +1569,32 @@ body.dark .confirmarAction{
 //fim dos alerts
 
 //fim do action-sheets
+
+//aviso erro
+body.dark #error-img-light{
+  width: 0px;
+}
+body.dark #error-img-dark{
+  width: 100%;
+}
+body.dark #error-img-light2{
+  
+  width: 0px;
+}
+body.dark #error-img-dark2{
+  width: 100%;
+}
+body.dark #btAlterarConfig{
+  --background: #121212;
+  --color: #fff;
+  border: 3px solid #fff;
+}
+body.dark #btTentarNovamente{
+  --background: #121212;
+  --color: #fff;
+  border: 3px solid #fff;
+}
+//fim do aviso erro
 
 //cards tela principal
 body.dark #titulo-cards-home{
