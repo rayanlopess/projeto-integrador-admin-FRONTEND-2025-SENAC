@@ -107,18 +107,18 @@
         <ion-card class="card-config-user" button *ngFor="let endereco of enderecosSalvos"
           [class.selected]="endereco.selecionado" (click)="selecionarEndereco(endereco)">
           <ion-card-content>
-
-            <p *ngIf="endereco.selecionado" class="selected-indicator">
+          
+            <a *ngIf="endereco.selecionado" class="selected-indicator">
                 Selecionado
-              </p>
+            </a>
+            
 
-            <ion-list>
-              <ion-item lines="none">
+      
                 <div class="informacoes-div">
                   <h1>{{ endereco.descricao }}</h1>
                 </div>
-              </ion-item>
-            </ion-list>
+           
+
             <div class="selected-trash">
               
               <ion-buttons class="button-remove">
@@ -127,6 +127,8 @@
                 </ion-button>
               </ion-buttons>
             </div>
+
+            
           </ion-card-content>
 
         </ion-card>

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { addIcons } from 'ionicons';
-import { home, map, call, settings, personCircle, chevronBack, chevronForward, ellipsisVertical } from 'ionicons/icons';
+import { home, map, call, settings, personCircle, chevronBack, chevronForward, ellipsisVertical, arrowBackOutline} from 'ionicons/icons';
 
 import { ThemeService, ThemeMode } from '../../../services/theme/theme';
 import { AlertController } from '@ionic/angular/standalone';
@@ -25,6 +25,7 @@ import { DateService } from '../../../services/datetime-service/date-service';
 export class SwipperPage implements OnInit {
 
   public data: string = this.dateService.getFormattedDate();
+  isModalOpen = false;
 
 
 
@@ -34,7 +35,7 @@ export class SwipperPage implements OnInit {
     private rt: Router,
     private dateService: DateService,
   ) {
-    addIcons({ home, map, call, settings, personCircle, chevronBack, chevronForward, ellipsisVertical });
+    addIcons({ home, map, call, settings, personCircle, chevronBack, chevronForward, ellipsisVertical, arrowBackOutline });
   }
 
 
@@ -50,10 +51,10 @@ export class SwipperPage implements OnInit {
   //
   public temaAtual: string = this.themeService.getCurrentTheme()
   currentIndex = 0;
-  pages = Array(7).fill(0); // 7 páginas
+  pages = Array(8).fill(0); // 7 páginas
 
   goToNext() {
-    if (this.currentIndex < 6) {
+    if (this.currentIndex < 7) {
       this.currentIndex++;
     }
   }
@@ -82,7 +83,7 @@ export class SwipperPage implements OnInit {
   async pularHome() {
 
     const alert = await this.alertController.create({
-      header: `Deseja pular a apresentação e ir até a página inicial?`,
+      header: `Deseja pular a apresentação?`,
       cssClass: 'container-alert',
       buttons: [
         {
@@ -98,7 +99,7 @@ export class SwipperPage implements OnInit {
           role: 'confirm',
           cssClass: 'confirmarAction',
           handler: async () => {
-            this.rt.navigate(['/path/home']);
+            this.currentIndex = 6;
           },
         },
       ],
@@ -122,6 +123,10 @@ export class SwipperPage implements OnInit {
       case 'dark': return 'Escuro';
       default: return 'Automático';
     }
+  }
+
+  setOpenModalTerm(isOpen: boolean) {
+    this.isModalOpen = isOpen;
   }
 
 }

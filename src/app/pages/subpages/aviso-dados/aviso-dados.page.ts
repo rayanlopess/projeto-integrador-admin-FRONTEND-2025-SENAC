@@ -24,8 +24,5 @@ export class AvisoDadosPage implements OnInit {
 
   ngOnInit() {
   }
-  irHome(){
-    localStorage.setItem("isFirstTime", "false")
-    this.rt.navigate(['/path/home']);
-  }
+  
 }

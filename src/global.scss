@@ -389,10 +389,12 @@ ion-refresher.refresher-native .refresher-pulling-icon, ion-refresher.refresher-
 
 //indicadores
 .indicators-container {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  padding: 20px;
+   position: fixed; 
+   bottom: 70px;
+   width: 100%;
+   display: flex;
+   justify-content: center;
+   z-index: 100;
 }
 
 .indicators {
@@ -407,12 +409,14 @@ ion-refresher.refresher-native .refresher-pulling-icon, ion-refresher.refresher-
   height: 12px;
   border-radius: 100%;
   background-color: rgba(14, 43, 82, 0.5);
-  transition: all 0.3s ease;
+  transition: all 0.5s ease;
+  
 }
 
 .indicator.active {
-  background-color: #0e2b52;
-  transform: scale(1.2);
+  scale: 1.3;
+  background-color: #0e2b52; /* Change the color for the active dot */
+
 }
 //fim dos indicadores
 
@@ -511,7 +515,7 @@ ion-button,
 
 //estilização do card de example
 .swipper-card {
-  scale: (0.9);
+  scale: (0.85);
   width: 115%;
   background-color: #fff;
   border: 3px solid #0e2b52;
@@ -813,6 +817,45 @@ ion-button,
 //------------//
 
 //page7
+#titulo-aviso-dados{
+  color: #0e2b52;
+  font-size: 18px;
+  font-weight: 800;
+}
+#texto-aviso-dados{
+  color: #0e2b52;
+  font-size: 18px;
+  span{
+    font-weight: 800;
+  }
+}
+#smile-light{
+  width: 300px;
+  height: 300px;
+  margin-left: 20px;
+}
+#smile-dark{
+  width: 0px;
+  height: 0px;
+  margin-left: 0px;
+}
+#btAvancar{
+  --background: #0e2b52;
+  --color: #fff;
+  --border-radius: 20px;
+  border-radius: 22px;
+  border: 3px solid #d9d9d9;
+  width: 200px;
+  height: 40px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 30px;
+}
+//fim da page7
+
+//------------//
+
+//page8
 
 //coloração
 .carousel-page:nth-child(7) {
@@ -866,7 +909,7 @@ ion-checkbox::part(container) {
 }
 //fim dos letreiros 
 
-//fim da page7
+//fim da page8
 
 //------------//
 
@@ -1183,86 +1226,6 @@ ion-range::part(bar-active) {
 
 //-----------------------------------------------//
 
-//AVISO-DADOS.SCSS
-#titulo-aviso-dados{
-  color: #0e2b52;
-  font-size: 22px;
-  font-weight: 800;
-  margin-top: 150px;
-}
-#texto-aviso-dados{
-  color: #0e2b52;
-  font-size: 20px;
-  span{
-    font-weight: 800;
-  }
-}
-#smile-light{
-  width: 300px;
-  height: 300px;
-  margin-left: 20px;
-}
-#smile-dark{
-  width: 0px;
-  height: 0px;
-  margin-left: 0px;
-}
-#btAvancar{
-  --background: #0e2b52;
-  --color: #fff;
-  --border-radius: 20px;
-  border-radius: 22px;
-  border: 3px solid #d9d9d9;
-  width: 200px;
-  height: 40px;
-  font-size: 16px;
-  font-weight: 600;
-  margin-top: 30px;
-}
-//FIM DO AVISO-DADOS.SCSS
-
-//-----------------------------------------------//
-
-//AVISO-DADOS.SCSS
-#titulo-aviso-dados{
-  color: #0e2b52;
-  font-size: 22px;
-  font-weight: 800;
-  margin-top: 150px;
-}
-#texto-aviso-dados{
-  color: #0e2b52;
-  font-size: 20px;
-  span{
-    font-weight: 800;
-  }
-}
-#smile-light{
-  width: 300px;
-  height: 300px;
-  margin-left: 20px;
-}
-#smile-dark{
-  width: 0px;
-  height: 0px;
-  margin-left: 0px;
-}
-#btAvancar{
-  --background: #0e2b52;
-  --color: #fff;
-  --border-radius: 20px;
-  border-radius: 22px;
-  border: 3px solid #d9d9d9;
-  width: 200px;
-  height: 40px;
-  font-size: 16px;
-  font-weight: 600;
-  margin-top: 30px;
-}
-//FIM DO AVISO-DADOS.SCSS
-
-//-----------------------------------------------//
-
 //TELEFONES.SCSS.SCSS
 
 .aviso-telefones{
@@ -1426,17 +1389,23 @@ ion-range::part(bar-active) {
 }
 //fim do letreiro distancia maxima
 
-.card-config-user{
+.card-config-user {
   background: transparent !important;
   box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px !important;
   --ion-item-background: transparent;
   --ion-border-color: transparent;
-  border: 3px solid #0e2b52 !important;
-  ion-card-content{
-    padding: 4px 10px 4px 10px !important; 
-    background: transparent !important;
+  border: 2px solid #787878 !important;
+  height: max-content;
+
+  /* Transições para todas as animações */
+  transition: transform 0.3s ease-in-out, border 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+
+  ion-card-content {
+    padding: 4px 0px 0px 0px !important;
   }
-  .informacoes-div > h1{
+
+  .informacoes-div > h1 {
     margin: 0;
     padding: 0;
     margin: 0 0 2px 0;
@@ -1444,10 +1413,17 @@ ion-range::part(bar-active) {
     color: #0e2b52;
     font-weight: 400;
   }
-  
 }
-.card-config-user.selected{
-  border: 3px solid red !important;
+
+.card-config-user.selected {
+  border: 3px solid #0e2b52 !important;
+  transform: scale(1.03);
+}
+
+.selected-indicator {
+  padding: 5px 0 0 15px;
+  color: #0e2b52;
+  font-weight: bold;
 }
 //FIM DO CONFIG-USER.SCSS
 
@@ -1519,7 +1495,6 @@ ion-range::part(bar-active) {
     justify-content: center;
   } 
 }
-
 
 //FIM DO CENTRAL-AJUDA.SCSS
 
@@ -1980,6 +1955,22 @@ body.dark .carousel-footer-page-6{
 //------------//
 
 //page7
+body.dark #titulo-aviso-dados{
+  color: #fff;
+}
+body.dark #texto-aviso-dados{
+  color: #fff;
+}
+body.dark #smile-dark{
+  width: 300px;
+  height: 300px;
+  margin-left: 20px;
+}
+///fim da page8
+
+//------------//
+
+//page8
 
 //coloração
 body.dark .carousel-page:nth-child(7) {
@@ -2010,7 +2001,7 @@ body.dark #btSairApp{
 }
 //fim dos letreiros 
 
-//fim da page7
+//fim da page8
 
 //------------//
 
@@ -2145,38 +2136,6 @@ body.dark #nota-config-inicial{
 
 //-----------------------------------------------//
 
-//AVISO-DADOS.SCSS
-body.dark #titulo-aviso-dados{
-  color: #fff;
-  font-size: 22px;
-  font-weight: 800;
-  margin-top: 150px;
-}
-body.dark #texto-aviso-dados{
-  color: #fff;
-  font-size: 20px;
-  span{
-    font-weight: 800;
-  }
-}
-body.dark #smile-light{
-  width: 0px;
-  height: 0px;
-  margin-left: 0px;
-}
-body.dark #smile-dark{
-  width: 300px;
-  height: 300px;
-  margin-left: 20px;
-}
-body.dark #btAvancar{
-  --background: #fff;
-  --color: #0e2b52;
-}
-//FIM DO AVISO-DADOS.SCSS
-
-//-----------------------------------------------//
-
 //TELEFONES.SCSS
 body.dark .aviso-telefones{
   width: 100%;
@@ -2239,6 +2198,48 @@ body.dark #texto-termos-uso{
 
 //-----------------------------------------------//
 
+//CONFIG-USER.SCSS
+
+//titulos
+body.dark #titulo-enderecos-config-user{
+  color: #fff;
+}
+//fim dos titulos
+
+//localização
+
+//texto entre button e input
+body.dark #text-entre-2-config-inicial{
+  color: #fff;
+}
+//fim do texto entre button e input
+
+//fim da localização
+
+//letreiro distancia maxima
+body.dark #titulo-distancia-user{
+  color: #fff;
+}
+//fim do letreiro distancia maxima
+
+body.dark .card-config-user{
+  background: #1a1a1a !important;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px !important;
+  --ion-item-background: transparent;
+  --ion-border-color: transparent;
+  border: 2px solid #787878 !important;
+  .informacoes-div > h1{
+    color: #fff;
+  }
+}
+body.dark .card-config-user.selected{
+  border: 3px solid #fff !important;
+}
+body.dark .selected-indicator {
+  color: #fff;
+}
+//FIM DO CONFIG-USER.SCSS
+
 //-----------------------------------------------//
 
 //CENTRAL-AJUDA.SCSS
@@ -2260,7 +2261,6 @@ body.dark .card-central-ajuda{
     color: #fff;
   }
 }
-
 
 //FIM DO CENTRAL-AJUDA.SCSS
 

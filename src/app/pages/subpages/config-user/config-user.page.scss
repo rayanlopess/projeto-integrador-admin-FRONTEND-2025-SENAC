@@ -33,7 +33,13 @@
 
 
 .selected-trash{
-    display: flex;
-    justify-content: space-between;
+    float: right;
+    padding-bottom: 10px;
+    color: #a4071a;
 }
 
+.informacoes-div{
+    width: 90%;
+    margin: auto;
+    margin-top: 10px;
+}

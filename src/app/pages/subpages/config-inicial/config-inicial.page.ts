@@ -17,7 +17,7 @@ import { BuscarLocalizacao } from '../../../services/maps/buscar-localizacao';
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class ConfigInicialPage implements OnInit {
-  public range: number = 50;
+  public range: number = 20;
   public enderecoManual: string = '';
   public class_enderecoManual: string = '';
   public class_error: string = 'ion-touched ion-invalid';
@@ -112,8 +112,9 @@ export class ConfigInicialPage implements OnInit {
       // Altere a chamada para carregarHospitaisProximos para que ele use o valor salvo
       await this.hospitalService.carregarHospitaisComConfiguracoesSalvas();
   
-      this.router.navigate(['/aviso-dados']);
-  
+      this.router.navigate(['/path/home']);
+      localStorage.setItem("isFirstTime", "false");
+
     } catch (error: any) {
       // ...
     } finally {

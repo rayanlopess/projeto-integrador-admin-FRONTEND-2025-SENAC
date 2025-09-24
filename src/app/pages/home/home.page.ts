@@ -13,7 +13,7 @@ import { SimplePopoverComponent } from '../../components/simple-popover/simple-p
 import { HospitalService, HospitalProcessado } from '../../services/sistema-hospital/hospital';
 import { Subscription } from 'rxjs';
 
-import { CookieConsentComponent } from '../../components/cookie-consent/cookie-consent.component';
+
 
 import { RefresherEventDetail } from '@ionic/angular';
 
@@ -22,7 +22,7 @@ import { RefresherEventDetail } from '@ionic/angular';
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, CookieConsentComponent]
+  imports: [IonicModule, CommonModule, FormsModule]
 })
 export class HomePage implements OnInit, OnDestroy {
 
