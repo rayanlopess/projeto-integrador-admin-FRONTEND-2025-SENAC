@@ -112,21 +112,21 @@ export class HospitalService {
   // ================== MÉTODOS PRINCIPAIS ================== //
 
   async inicializarComConfiguracoesSalvas(): Promise<LocalizacaoUsuario> {
-    try {
-      const config = await this.obterConfiguracoesLocalStorage();
+  try {
+    const config = await this.obterConfiguracoesLocalStorage();
 
-      if (config.LocalizacaoAtual === 'true') {
-        return await this.inicializarComLocalizacaoAtual();
-      } else if (config.EnderecoManual && config.EnderecoManual !== 'false') {
-        return await this.inicializarComEndereco(config.EnderecoManual);
-      } else {
-        throw new Error('Nenhuma configuração de localização válida encontrada');
-      }
-    } catch (error) {
-      console.error('Erro ao inicializar com configurações salvas:', error);
-      throw error;
+    if (config.LocalizacaoAtual === 'true') {
+      return await this.inicializarComLocalizacaoAtual();
+    } else if (config.EnderecoManual) { 
+      return await this.inicializarComEndereco(config.EnderecoManual);
+    } else {
+      throw new Error('Nenhuma configuração de localização válida encontrada');
     }
+  } catch (error) {
+    console.error('Erro ao inicializar com configurações salvas:', error);
+    throw error;
   }
+}
 
   // Este é o método que deve ser chamado para carregar todos os dados.
   // Ele agora orquestra a localização e o carregamento dos hospitais.

@@ -33,9 +33,7 @@
     <div class="error-overlay">
       <ion-icon name="warning" size="large"></ion-icon>
       <h3>Erro ao carregar o mapa</h3>
-      <p>Verifique sua conexão com a internet</p>
-      <ion-button (click)="retryLoadMap()">
-        <ion-icon name="refresh" slot="start"></ion-icon>
+      <ion-button (click)="retryLoadMap()" id="btTentarNovamente">
         Tentar Novamente
       </ion-button>
     </div>

@@ -41,7 +41,9 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
   private hospitalMarkers: string[] = [];
   private circleId?: string;
   private raioKm: number = 10;
-  
+  private enderecoManual: string = JSON.parse(localStorage.getItem('configuracoesUsuario') || '{}').EnderecoManual || '';
+    private localizacaoAtual: string = JSON.parse(localStorage.getItem('configuracoesUsuario') || '{}').LocalizacaoAtual || '';
+
   // Adicione uma propriedade para armazenar os hospitais filtrados
   private hospitaisFiltrados: HospitalProcessado[] = [];
 
@@ -171,6 +173,14 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
       return;
     }
 
+    if (this.localizacaoAtual === "false" && this.enderecoManual === "false") {
+      console.error('User location not defined before map creation.');
+      this.loadError.set(true);
+      return;
+    }
+    
+    
+
     try {
       await this.destroyMap();
 
@@ -276,10 +286,7 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
 
 
     try {
-      if (this.circleId) {
-        await this.newMap.removeCircles([this.circleId]);
-        this.circleId = undefined;
-      }
+    
   
       const centerPoint = point([this.userLocation.lng, this.userLocation.lat]);
   

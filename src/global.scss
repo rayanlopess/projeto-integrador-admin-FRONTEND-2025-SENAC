@@ -57,7 +57,7 @@ ion-header ion-toolbar {
   height: 70px !important;
 }
 
-//corpo principal de texto
+//config do body
 body {
   --ion-background-color: #fff;
   --ion-background-color-rgb: 255, 255, 255;
@@ -72,6 +72,7 @@ body {
   --ion-toolbar-color: #0e2b52;
 
 }
+//fim das config do body
 
 //tab-bar
 ion-tab-bar {
@@ -79,6 +80,7 @@ ion-tab-bar {
   --color: #0e2b5288 !important;
   --color-selected: #0e2b52;
 }
+//fim do tab
 
 //spinner de carregamento
 .loading-container {
@@ -98,10 +100,26 @@ ion-tab-bar {
   ion-spinner {
     width: 64px;
     height: 64px;
-    color: #0e2b52;
   }
 }
 //fim do spinner
+
+//ion-refresher
+.spinner-circular{
+  color: #0e2b52 !important;
+  
+}
+ion-refresher.refresher-native .arrow-container ion-icon{
+  color: #0e2b52 !important;
+  
+}
+ion-refresher.refresher-native .refresher-pulling-icon, ion-refresher.refresher-native .refresher-refreshing-icon{
+  background-color: #fff !important;
+  border: #fff;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  color: #0e2b52 !important;
+}
+//fim do refresher
 
 //FIM DO HTML GERAL
 
@@ -1413,7 +1431,7 @@ ion-range::part(bar-active) {
   box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px !important;
   --ion-item-background: transparent;
   --ion-border-color: transparent;
-  border: 2px solid #0e2b52;
+  border: 3px solid #0e2b52 !important;
   ion-card-content{
     padding: 4px 10px 4px 10px !important; 
     background: transparent !important;
@@ -1426,9 +1444,11 @@ ion-range::part(bar-active) {
     color: #0e2b52;
     font-weight: 400;
   }
- 
+  
 }
-
+.card-config-user.selected{
+  border: 3px solid red !important;
+}
 //FIM DO CONFIG-USER.SCSS
 
 //-----------------------------------------------//
@@ -1438,10 +1458,10 @@ ion-range::part(bar-active) {
 #titulo-central-ajuda{
   margin: auto;
   text-align: center;
-  width: 95%;
-  font-size: 22px;
-  margin-top: 40px;
-  margin-bottom: 10px;
+  width: 80%;
+  font-size: 20px;
+  margin-top: 100px;
+  margin-bottom: 70px;
   font-weight: 400;
   color: #0e2b52;
   a{
@@ -1451,18 +1471,27 @@ ion-range::part(bar-active) {
 }
 #footer-central-ajuda{
   font-size: 14px;
+  margin: auto;
+  text-align: center;
+  width: 90%;
+  margin-top: 80px;
+
+  font-weight: 400;
+  color: #0e2b52;
 }
 .card-central-ajuda{
   background: #0e2b52 !important;
   box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
   --ion-item-background: #0e2b52;
   --ion-border-color: #0e2b52;
+  border-radius: 20px;
+  margin-bottom: 40px;
   ion-card-content{
     padding: 4px 10px 4px 10px !important; 
   }
   i{
-    font-size: 56px;
-    color: #fff;
+    font-size: 60px;
+    color: #cce1ff;
   }
   .informacoes-div > p{
     margin: 0;
@@ -1481,6 +1510,7 @@ ion-range::part(bar-active) {
     color: #fff;
     font-weight: 800;
   }
+
   ion-thumbnail{
     width: 70px;
     height: 70px;
@@ -1559,6 +1589,23 @@ body.dark .loading-container {
   }
 }
 //fim do spinner
+
+//ion-refresher
+body.dark .spinner-circular{
+  color: #fff !important;
+  
+}
+body.dark ion-refresher.refresher-native .arrow-container ion-icon{
+  color: #fff !important;
+  
+}
+body.dark ion-refresher.refresher-native .refresher-pulling-icon, body.dark ion-refresher.refresher-native .refresher-refreshing-icon{
+  background-color: #333 !important;
+  border: #333;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  color: #333 !important;
+}
+//fim do refresher
 
 //FIM DO HTML GERAL
 
@@ -2192,5 +2239,29 @@ body.dark #texto-termos-uso{
 
 //-----------------------------------------------//
 
+//-----------------------------------------------//
+
+//CENTRAL-AJUDA.SCSS
+
+body.dark #titulo-central-ajuda{
+  color: #f5f5f5;
+  a{
+    color: #fff;
+  }
+}
+body.dark #footer-central-ajuda{
+  color: #fff;
+}
+body.dark .card-central-ajuda{
+  background: #1a1a1a !important;
+  --ion-item-background: #1a1a1a;
+  --ion-border-color: #1a1a1a;
+  i{
+    color: #fff;
+  }
+}
+
+
+//FIM DO CENTRAL-AJUDA.SCSS
 
 /* ------------ FIM DO DARK MODE ------------ */

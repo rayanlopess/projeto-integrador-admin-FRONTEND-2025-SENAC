@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 
 import { CookieConsentComponent } from '../../components/cookie-consent/cookie-consent.component';
 
+import { RefresherEventDetail } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -33,7 +34,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   private subscription!: Subscription;
 
-
+  isRefreshing = false;
 
   constructor(
     private router: Router,
@@ -56,10 +57,16 @@ export class HomePage implements OnInit, OnDestroy {
     }
   }
 
-  handleRefresh(event: RefresherCustomEvent) {
+  handleRefresh(event: CustomEvent<RefresherEventDetail>) {
+     this.isRefreshing = true;
+
+    
+
     setTimeout(() => {
-      window.location.reload();
-    }, 2000);
+      this.isRefreshing = false;
+      event.detail.complete(); 
+      this.carregarHospitais();
+    }, 2000); 
   }
 
   isModalOpen = false;
