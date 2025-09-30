@@ -2,7 +2,24 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { IonicModule } from '@ionic/angular';
+import {
+  IonList,
+  IonItem,
+  IonLabel,
+  IonNote,
+  IonModal,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonTitle,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+} from '@ionic/angular/standalone';
+
 import { ThemeActionService } from '../../services/theme/theme-action';
 import { ThemeService, ThemeMode } from '../../services/theme/theme';
 
@@ -18,7 +35,21 @@ import { PopoverController } from '@ionic/angular/standalone';
 @Component({
   selector: 'app-simple-popover',
   standalone: true,
-  imports: [IonicModule, CommonModule],
+  imports: [IonList,
+  IonItem,
+  IonLabel,
+  IonNote,
+  IonModal,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonTitle,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol, CommonModule],
   template: `
     <ion-list>
       

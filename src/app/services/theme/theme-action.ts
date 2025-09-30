@@ -1,6 +1,6 @@
 // src/app/services/theme-action.service.ts
 import { Injectable } from '@angular/core';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController } from '@ionic/angular/standalone';
 import { ThemeService, ThemeMode } from './theme';
 
 @Injectable({

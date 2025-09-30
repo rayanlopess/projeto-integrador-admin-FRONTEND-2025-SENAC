@@ -1,10 +1,32 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
-
+import {
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonTitle,
+  IonIcon,
+  IonContent,
+  IonCard,
+  IonCardContent,
+  IonList,
+  IonItem,
+  IonThumbnail,
+  IonTabBar,
+  IonTabButton,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonLabel,
+  IonNote,
+  IonModal,
+  IonCheckbox,
+  IonText,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { home, map, call, settings, personCircle, chevronBack, chevronForward, ellipsisVertical, arrowBackOutline} from 'ionicons/icons';
+import { home, map, call, settings, personCircle, chevronBack, chevronForward, ellipsisVertical, arrowBackOutline } from 'ionicons/icons';
 
 import { ThemeService, ThemeMode } from '../../../services/theme/theme';
 import { AlertController } from '@ionic/angular/standalone';
@@ -19,7 +41,31 @@ import { DateService } from '../../../services/datetime-service/date-service';
   templateUrl: './swipper.page.html',
   styleUrls: ['./swipper.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule],
+  imports: [IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonButton,
+    IonTitle,
+    IonIcon,
+    IonContent,
+    IonCard,
+    IonCardContent,
+    IonList,
+    IonItem,
+    IonThumbnail,
+    IonTabBar,
+    IonTabButton,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonLabel,
+    IonNote,
+    IonModal,
+    IonCheckbox,
+    IonText,
+    CommonModule,
+    FormsModule
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SwipperPage implements OnInit {
@@ -76,7 +122,7 @@ export class SwipperPage implements OnInit {
 
     // Se chegou aqui, checkbox está marcado
     this.isCheckboxInvalid = false; // Remove o erro
-    this.rt.navigate(['/config-inicial']);
+    this.rt.navigate(['/path/home']);
   }
 
 

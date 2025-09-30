@@ -1,19 +1,29 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, AfterViewInit, ViewChild, OnInit, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+
+import {
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonTitle,
+  IonContent,
+  IonSpinner,
+} from '@ionic/angular/standalone';
+
 
 import { addIcons } from 'ionicons';
 import { home, map, call, settings, personCircle, invertMode, medical, locate } from 'ionicons/icons';
 import { GoogleMap } from '@capacitor/google-maps';
 
 import { SimplePopoverComponent } from '../../components/simple-popover/simple-popover.component';
-import { AlertController, PopoverController} from '@ionic/angular/standalone';
+import { AlertController, PopoverController } from '@ionic/angular/standalone';
 import { ThemeService, ThemeMode } from '../../services/theme/theme';
 import { HospitalService, Hospital, HospitalProcessado, LocalizacaoUsuario } from '../../services/sistema-hospital/hospital';
 
-import { point, featureCollection } from '@turf/helpers';
-import buffer from '@turf/buffer';
+import { point } from '@turf/helpers';
 import { circle } from '@turf/circle';
 
 import { Subscription } from 'rxjs';
@@ -25,14 +35,25 @@ const apiKey = "AIzaSyDvQ8YamcGrMBGAp0cslVWSRhS5NXNEDcI";
   templateUrl: './mapa.page.html',
   styleUrls: ['./mapa.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule],
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonTitle,
+    IonContent,
+    IonSpinner, 
+    CommonModule, 
+    FormsModule
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild('map')
   mapRef!: ElementRef<HTMLElement>;
   newMap?: GoogleMap;
-  userLocation?: { lat: number; lng: number }; 
+  userLocation?: { lat: number; lng: number };
   private themeSubscription?: Subscription;
   private raioSubscription?: Subscription;
   private hospitaisSubscription?: Subscription; // Adicione esta linha
@@ -42,7 +63,7 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
   private circleId?: string;
   private raioKm: number = 10;
   private enderecoManual: string = JSON.parse(localStorage.getItem('configuracoesUsuario') || '{}').EnderecoManual || '';
-    private localizacaoAtual: string = JSON.parse(localStorage.getItem('configuracoesUsuario') || '{}').LocalizacaoAtual || '';
+  private localizacaoAtual: string = JSON.parse(localStorage.getItem('configuracoesUsuario') || '{}').LocalizacaoAtual || '';
 
   // Adicione uma propriedade para armazenar os hospitais filtrados
   private hospitaisFiltrados: HospitalProcessado[] = [];
@@ -61,7 +82,7 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentTheme = this.themeService.getCurrentTheme();
-    
+
 
     this.themeSubscription = this.themeService.themeChanged$.subscribe((mode: ThemeMode) => {
       const newTheme = this.themeService.getCurrentTheme();
@@ -115,16 +136,19 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
   async ngAfterViewInit() {
     try {
       this.isLoading.set(true);
-      
+
+      // Adicione um delay de 50ms antes de buscar a localização
+    await new Promise(resolve => setTimeout(resolve, 50)); 
+
       let localizacaoUsuario: LocalizacaoUsuario | null = null;
-      
+
       try {
         localizacaoUsuario = await this.hospitalService.inicializarComConfiguracoesSalvas();
       } catch (error) {
         console.warn('Não foi possível inicializar com configurações salvas, usando a localização atual como fallback.', error);
         localizacaoUsuario = await this.hospitalService.inicializarComLocalizacaoAtual();
       }
-      
+
       if (localizacaoUsuario) {
         this.userLocation = {
           lat: localizacaoUsuario.lat,
@@ -137,7 +161,7 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
       await this.createMap();
       this.isMapInitialized = true;
       this.isLoading.set(false);
-      
+
       // Chame a atualização inicial dos marcadores e do círculo
       this.raioKm = this.hospitalService.getRaioConfigurado();
       this.addHospitalMarkers(this.hospitaisFiltrados);
@@ -178,8 +202,8 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
       this.loadError.set(true);
       return;
     }
-    
-    
+
+
 
     try {
       await this.destroyMap();
@@ -190,7 +214,7 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
         id: 'my-map',
         element: this.mapRef.nativeElement,
         apiKey: apiKey,
-  
+
         config: {
           center: this.userLocation,
           zoom: zoomLevel,
@@ -201,7 +225,7 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
           streetViewControl: false,
           rotateControl: false,
           fullscreenControl: false,
-          
+
           mapId: this.currentTheme === 'dark' ? "6fbe87b38800cc70488f7956" : "6fbe87b38800cc70bd62cb93",
         },
       });
@@ -210,7 +234,7 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
         await this.showHospitalInfo(event.markerId);
       });
 
-      await this.addUserMarker(); 
+      await this.addUserMarker();
 
     } catch (error) {
       console.error('Error creating map:', error);
@@ -252,7 +276,7 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
     if (!this.newMap) return;
     try {
       await this.clearHospitalMarkers();
-      
+
       for (const hospital of hospitais) {
         try {
           const markerId = await this.newMap.addMarker({
@@ -286,20 +310,20 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
 
 
     try {
-    
-  
+
+
       const centerPoint = point([this.userLocation.lng, this.userLocation.lat]);
-  
+
       // Usamos 'as any' para contornar o erro de tipagem.
       // Isso informa ao TypeScript para não verificar os tipos neste objeto.
-      const options = { steps: 64, units: 'kilometers' } as any; 
+      const options = { steps: 64, units: 'kilometers' } as any;
       const circlePolygon = circle(centerPoint, this.raioKm, options);
-      
+
       console.log(`Desenhando círculo com raio de ${this.raioKm}km`);
-  
+
       const polygonIds = await this.newMap.addPolygons([{
         paths: circlePolygon.geometry.coordinates[0].map(coord => ({
-          lat: coord[1], 
+          lat: coord[1],
           lng: coord[0]
         })),
         strokeColor: '#3880ff',
@@ -308,41 +332,41 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
         fillColor: '#3880ff',
         fillOpacity: 0.2
       }]);
-  
+
       this.circleId = polygonIds[0];
     } catch (error) {
       console.error('Erro ao adicionar círculo do raio:', error);
     }
   }
-  
+
 
 
   async showHospitalInfo(markerId: string) {
     try {
       const hospital = await this.findHospitalByMarkerId(markerId);
       if (!hospital) return;
-      
+
       const alert = await this.alertController.create({
         header: `Deseja realmente ir até ${hospital.nome}?`,
         cssClass: 'container-alert',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'cancelarAction',
-          handler: () => {
-            console.log('Operação cancelada.');
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            cssClass: 'cancelarAction',
+            handler: () => {
+              console.log('Operação cancelada.');
+            },
           },
-        },
-        {
-          text: 'OK',
-          role: 'confirm',
-          cssClass: 'confirmarAction',
-          handler: async () => {
-            
+          {
+            text: 'OK',
+            role: 'confirm',
+            cssClass: 'confirmarAction',
+            handler: async () => {
+
+            },
           },
-        },
-      ],
+        ],
       });
       await alert.present();
     } catch (error) {

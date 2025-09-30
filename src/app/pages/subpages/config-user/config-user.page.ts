@@ -1,7 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, AlertController } from '@ionic/angular';
+import {
+    IonTabs,
+    IonTabBar,
+    IonTabButton,
+    IonIcon,
+    IonModal,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonButton,
+    IonTitle,
+    IonContent,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonCard,
+    IonCardContent,
+    IonList,
+    IonItem,
+    IonRange, 
+    IonLabel, 
+} from '@ionic/angular/standalone';
+import { AlertController } from '@ionic/angular/standalone';
+
+
 import { addIcons } from 'ionicons';
 import { sunny, moon, phonePortrait, close, arrowBackOutline, search, trash } from 'ionicons/icons';
 import { Router } from '@angular/router';
@@ -18,7 +42,30 @@ import { Navigation } from '../../../services/navigation/navigation';
     templateUrl: './config-user.page.html',
     styleUrls: ['./config-user.page.scss'],
     standalone: true,
-    imports: [IonicModule, CommonModule, FormsModule]
+    imports: [
+        IonTabs,
+        IonTabBar,
+        IonTabButton,
+        IonIcon,
+        IonModal,
+        IonHeader,
+        IonToolbar,
+        IonButtons,
+        IonButton,
+        IonTitle,
+        IonContent,
+        IonGrid,
+        IonRow,
+        IonCol,
+        IonCard,
+        IonCardContent,
+        IonList,
+        IonItem,
+        IonRange,
+        IonLabel,
+        CommonModule, 
+        FormsModule
+    ]
 })
 export class ConfigUserPage implements OnInit {
     public range: number = 50;

@@ -1,23 +1,32 @@
-/* mapa.page.scss */
-
-
 .map-container {
   width: 100%;
-  height: 101vh;
-  position: absolute;
+  
+  /* Use 100dvh para garantir que ele cubra a viewport total */
+  height: 100dvh; 
+  
+  /* Posicionamento Fixo é o padrão e geralmente o melhor */
+  position: fixed; 
   top: 0;
   left: 0;
+  
+  /* Z-index baixo (1) para ficar abaixo do Header e Overlays */
+  z-index: 1; 
   overflow: hidden;
 }
 
+/* Garanta que o IonContent seja transparente e não cubra o mapa */
+ion-content {
+  --background: transparent;
+}
 
-
+/* Garanta que os overlays (Header, Loading, Erro) fiquem em cima */
+ion-header {
+  z-index: 10; 
+}
+.loading-container, .error-overlay {
+  z-index: 5; /* ou mais, desde que seja maior que 1 */
+}
 .error-overlay {
-  
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;

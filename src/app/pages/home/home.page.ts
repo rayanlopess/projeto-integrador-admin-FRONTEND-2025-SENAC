@@ -1,7 +1,26 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import {
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonTitle,
+  IonContent,
+  IonSpinner,
+  IonRefresher,
+  IonRefresherContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonCard,
+  IonCardContent,
+  IonList,
+  IonItem,
+  IonThumbnail,
+} from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 
 import { addIcons } from 'ionicons';
@@ -22,7 +41,24 @@ import { RefresherEventDetail } from '@ionic/angular';
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonTitle,
+  IonContent,
+  IonSpinner,
+  IonRefresher,
+  IonRefresherContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonCard,
+  IonCardContent,
+  IonList,
+  IonItem,
+  IonThumbnail, CommonModule, FormsModule]
 })
 export class HomePage implements OnInit, OnDestroy {
 

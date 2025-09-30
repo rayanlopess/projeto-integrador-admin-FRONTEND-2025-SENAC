@@ -41,11 +41,9 @@ ion-tab-bar{
   .popover-content {
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    
     ion-list {
       padding: 8px 0;
     }
-    
     ion-item {
       --min-height: 48px;
       --padding-start: 16px;

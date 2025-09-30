@@ -57,13 +57,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/subpages/tela-logo/tela-logo.page').then(m => m.TelaLogoPage)
   },
   {
-    path: 'aviso-dados',
-    loadComponent: () => import('./pages/subpages/aviso-dados/aviso-dados.page').then( m => m.AvisoDadosPage)
-  },
-  {
     path: 'config-inicial',
     loadComponent: () => import('./pages/subpages/config-inicial/config-inicial.page').then( m => m.ConfigInicialPage)
-  },  {
+  },
+  {
     path: 'central-ajuda',
     loadComponent: () => import('./pages/subpages/central-ajuda/central-ajuda.page').then( m => m.CentralAjudaPage)
   },

@@ -2,14 +2,14 @@ import { Component, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { IonContent } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-tela-logo',
   templateUrl: './tela-logo.page.html',
   styleUrls: ['./tela-logo.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonContent, CommonModule, FormsModule]
 })
 export class TelaLogoPage implements AfterViewInit {
 

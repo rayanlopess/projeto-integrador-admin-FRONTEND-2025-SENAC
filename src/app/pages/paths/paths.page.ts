@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
 
 
 import { addIcons } from 'ionicons';
@@ -22,41 +21,76 @@ import { SimplePopoverComponent } from '../../components/simple-popover/simple-p
 import { Popover } from '../../services/popover/popover';
 
 import { CookieConsentComponent } from '../../components/cookie-consent/cookie-consent.component';
+import { ActionSheetController } from '@ionic/angular';
+import {
+  IonTabs,
+  IonTabBar,
+  IonTabButton,
+  IonIcon,
+  IonModal,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonTitle,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-paths',
   templateUrl: './paths.page.html',
   styleUrls: ['./paths.page.scss'],
   standalone: true,
-  imports: [ IonicModule, CommonModule, FormsModule, CookieConsentComponent], 
+  imports: [
+    IonTabs,
+    IonTabBar,
+    IonTabButton,
+    IonIcon,
+    IonModal,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonButton,
+    IonTitle,
+    IonContent,
+    IonGrid,
+    IonRow,
+    IonCol,
+    CommonModule, 
+    FormsModule, 
+    CookieConsentComponent
+  ],
 
 })
-export class PathsPage implements OnInit, OnDestroy{
+export class PathsPage implements OnInit, OnDestroy {
 
   activeTab: string = 'home';
 
   constructor(
     private router: Router,
     public titleService: Title,
-    private navCtrl: NavController, 
+    private navCtrl: NavController,
     private popoverCtrl: PopoverController,
     private date: DateService
   ) {
     addIcons({ home, map, call, settings, ellipsisVertical });
 
-  
+
   }
-   ngOnInit() {
-   
+  ngOnInit() {
+
   }
 
 
 
   ngOnDestroy() {
-   
-  
+
+
   }
 
 
-  
+
 }

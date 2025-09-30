@@ -1,20 +1,53 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
-import { AlertController } from '@ionic/angular/standalone';
+
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonButton,
+  IonIcon,
+  IonButtons,
+  IonRange,
+  IonList,
+  IonItem,
+  IonLabel,
+} from '@ionic/angular/standalone';
+
 import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { search } from 'ionicons/icons';
 import { HospitalService } from '../../../services/sistema-hospital/hospital'; // Add this import
 import { BuscarLocalizacao } from '../../../services/maps/buscar-localizacao';
+import { AlertController } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-config-inicial',
   templateUrl: './config-inicial.page.html',
   styleUrls: ['./config-inicial.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonButton,
+    IonIcon,
+    IonButtons,
+    IonRange,
+    IonList,
+    IonItem,
+    IonLabel, 
+    CommonModule, 
+    FormsModule]
 })
 export class ConfigInicialPage implements OnInit {
   public range: number = 20;
@@ -42,7 +75,7 @@ export class ConfigInicialPage implements OnInit {
   pinFormatter(value: number) {
     return `${value}km`;
   }
-  
+
   onAddressInput(event: any) {
     const query = event.target.value;
     if (query && query.length > 2) {
@@ -95,12 +128,12 @@ export class ConfigInicialPage implements OnInit {
         EnderecoManual: this.usandoLocalizacaoAtual ? "false" : this.enderecoManual,
         LocalizacaoAtual: this.usandoLocalizacaoAtual ? "true" : "false"
       };
-  
+
       localStorage.setItem('configuracoesUsuario', JSON.stringify(config));
-  
+
       // AQUI É O PONTO CRÍTICO: Chame o método do serviço para salvar e emitir o novo raio
       this.hospitalService.setRaioConfigurado(this.range);
-  
+
       // O método carregarHospitaisProximos não precisa do `this.range` como parâmetro,
       // pois ele já pegará o raio do `BehaviorSubject`
       if (this.usandoLocalizacaoAtual) {
@@ -108,10 +141,10 @@ export class ConfigInicialPage implements OnInit {
       } else {
         await this.hospitalService.inicializarComEndereco(this.enderecoManual);
       }
-      
+
       // Altere a chamada para carregarHospitaisProximos para que ele use o valor salvo
       await this.hospitalService.carregarHospitaisComConfiguracoesSalvas();
-  
+
       this.router.navigate(['/path/home']);
       localStorage.setItem("isFirstTime", "false");
 
