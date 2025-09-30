@@ -43,13 +43,13 @@ const apiKey = "AIzaSyDvQ8YamcGrMBGAp0cslVWSRhS5NXNEDcI";
     IonIcon,
     IonTitle,
     IonContent,
-    IonSpinner, 
-    CommonModule, 
+    IonSpinner,
+    CommonModule,
     FormsModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
+export class MapaPage implements OnInit, OnDestroy {
   @ViewChild('map')
   mapRef!: ElementRef<HTMLElement>;
   newMap?: GoogleMap;
@@ -133,15 +133,20 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
     await popover.present();
   }
 
-  async ngAfterViewInit() {
+  async ionViewDidEnter() {
+    // Se o mapa já foi inicializado, ignore.
+    if (this.isMapInitialized) return;
+
+    // --- LÓGICA DE INICIALIZAÇÃO MOVIDA PARA CÁ ---
     try {
       this.isLoading.set(true);
 
-      // Adicione um delay de 50ms antes de buscar a localização
-    await new Promise(resolve => setTimeout(resolve, 50)); 
+      // NOVO: Adicione um atraso extra e final para garantir que o layout Ionic esteja concluído.
+      // 500ms é um valor seguro para acomodar a renderização nativa.
+      await new Promise(resolve => setTimeout(resolve, 500)); 
 
       let localizacaoUsuario: LocalizacaoUsuario | null = null;
-
+      // ... (Restante da lógica de busca de localização)
       try {
         localizacaoUsuario = await this.hospitalService.inicializarComConfiguracoesSalvas();
       } catch (error) {
@@ -157,12 +162,13 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
       } else {
         throw new Error('Não foi possível obter a localização do usuário.');
       }
+      // --- FIM DA LÓGICA DE BUSCA ---
 
-      await this.createMap();
+      await this.createMap(); // Onde o mapa é de fato criado
+
       this.isMapInitialized = true;
       this.isLoading.set(false);
 
-      // Chame a atualização inicial dos marcadores e do círculo
       this.raioKm = this.hospitalService.getRaioConfigurado();
       this.addHospitalMarkers(this.hospitaisFiltrados);
       this.addRadiusCircle();
@@ -173,7 +179,12 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
       this.isLoading.set(false);
       this.presentAlert('Erro de Localização', error.message || 'Não foi possível carregar o mapa. Por favor, verifique suas configurações de localização.');
     }
-  }
+}
+
+async ionViewWillLeave() {
+  await this.destroyMap();
+}
+
 
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({
@@ -203,8 +214,6 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
       return;
     }
 
-
-
     try {
       await this.destroyMap();
 
@@ -233,6 +242,32 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
       await this.newMap.setOnMarkerClickListener(async (event) => {
         await this.showHospitalInfo(event.markerId);
       });
+
+      // ----------------------------------------------------
+      // SOLUÇÃO CRÍTICA (CORRIGIDA): USANDO setPadding
+      // ----------------------------------------------------
+
+      // 1. Tenta obter a altura real da barra de ferramentas (toolbar)
+      const toolbarElement = document.querySelector('ion-toolbar');
+      let toolbarHeight = 0;
+      if (toolbarElement) {
+        toolbarHeight = toolbarElement.offsetHeight;
+      }
+      // Valor padrão seguro (56px é o padrão do Ionic) caso não encontre o elemento
+      await this.newMap.setPadding({
+        top: toolbarHeight, 
+        bottom: 0,
+        left: 0,
+        right: 0
+      });
+
+      // NOVO PASSO: Força uma atualização da câmera e re-renderização
+      await this.newMap.setCamera({
+        coordinate: this.userLocation, // Usa a localização já obtida
+        zoom: zoomLevel // Usa o nível de zoom já calculado
+      });
+
+      // ----------------------------------------------------
 
       await this.addUserMarker();
 
@@ -446,19 +481,23 @@ export class MapaPage implements AfterViewInit, OnInit, OnDestroy {
   }
 
   async destroyMap() {
-    if (this.newMap) {
-      try {
-        await this.clearHospitalMarkers();
-        if (this.circleId) {
-          await this.newMap.removeCircles([this.circleId]);
-          this.circleId = undefined;
-        }
-        await this.newMap.destroy();
-        this.newMap = undefined;
-      } catch (error) {
-        console.error('Error destroying map:', error);
-      }
-    }
+      if (this.newMap) {
+            try {
+              // Limpar markers e circles ANTES de destruir o mapa
+              await this.clearHospitalMarkers(); 
+              if (this.circleId) {
+                await this.newMap.removeCircles([this.circleId]);
+                this.circleId = undefined;
+              }
+              
+              // A CHAVE: Destruir o recurso nativo
+              await this.newMap.destroy(); 
+              this.newMap = undefined;
+              this.isMapInitialized = false; // Resetar o flag
+            } catch (error) {
+              console.error('Error destroying map:', error);
+            }
+          }
   }
 
   async retryLoadMap() {

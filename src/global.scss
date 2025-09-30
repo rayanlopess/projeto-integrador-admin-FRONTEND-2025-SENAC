@@ -53,8 +53,8 @@
 //padding top pra não ficar grudado com a barra de notificação do celular (android/IOS)
 ion-header ion-toolbar {
 
-  padding-top: 25px !important;
-  height: 95px !important;
+  padding-top: 30px !important;
+  height: 100px !important;
 }
 
 //config do body
@@ -492,14 +492,17 @@ ion-button,
   span{
     font-weight: 800;
   }
+  margin-top: 20px;
 }
 .carousel-footer-page-1{
-    font-size: 18px;
-    text-align: center;
-    span{
+  font-size: 16px;
+  span{
     font-weight: 800;
   }
+  margin-top: 20px;
+  text-align: center;
 }
+
 //fim dos letreiros
 
 //fim da page1
@@ -515,8 +518,8 @@ ion-button,
 
 //estilização do card de example
 .swipper-card {
-  scale: (0.85);
-  width: 115%;
+  scale: (0.70);
+  width: 125%;
   background-color: #fff;
   border: 3px solid #0e2b52;
   border-radius: 10px;
@@ -557,7 +560,7 @@ ion-button,
 
 //letreiros
 .carousel-title-page-2{
-  font-size: 20px;
+  font-size: 18px;
   text-align: center;
   span{
     font-weight: 800;
@@ -565,7 +568,7 @@ ion-button,
   padding-top: 20%;
 }
 .carousel-footer-page-2{
-    font-size: 20px;
+    font-size: 18px;
     text-align: center;
     span{
     font-weight: 800;
@@ -588,13 +591,11 @@ ion-button,
 //
 .tab-bar-swipper{
   position: relative !important;
-  bottom: auto !important;
+  padding-top: 10px;
   width: 100%;
   border-radius: 10px;
-  width: 110%;
-  height: 33%;
-  scale: (0.9);
-  
+  margin-top: 11%;
+  height: 23%;
 }
 .icons-tab-swipper{
     font-size: 24px;
@@ -614,15 +615,15 @@ ion-button,
 
 //letreiros
 .carousel-title-page-3{
-  font-size: 20px;
+  font-size: 18px;
   text-align: center;
   span{
     font-weight: 800;
   }
-  margin-top: 15%;
+  margin-top: 20%;
 }
 .carousel-footer-page-3{
-    font-size: 20px;
+    font-size: 18px;
     text-align: center;
     span{
     font-weight: 800;
@@ -646,7 +647,7 @@ ion-button,
   width: 15px;
   height: 15px;
   position: absolute;
-  top: 52%;
+  top: 51.5%;
   left: 47%;
   transform: translate(-50%, -50%);
   transform: rotate(-20deg);
@@ -657,7 +658,7 @@ ion-button,
 
 //letreiros
 .carousel-title-page-4{
-  font-size: 20px;
+  font-size: 18px;
   text-align: center;
   span{
     font-weight: 800;
@@ -665,7 +666,7 @@ ion-button,
   margin-top: 14%;
 }
 .carousel-footer-page-4{
-    font-size: 20px;
+    font-size: 18px;
     text-align: center;
     span{
     font-weight: 800;
@@ -690,7 +691,7 @@ ion-button,
   width: 15px;
   height: 15px;
   position: absolute;
-  top: 52%;
+  top: 51.5%;
   left: 72%;
   transform: translate(-50%, -50%);
   transform: rotate(-20deg);
@@ -701,7 +702,7 @@ ion-button,
 
 //letreiros
 .carousel-title-page-5{
-  font-size: 20px;
+  font-size: 18px;
   text-align: center;
   span{
     font-weight: 800;
@@ -709,7 +710,7 @@ ion-button,
   margin-top: 15%;
 }
 .carousel-footer-page-5{
-    font-size: 20px;
+    font-size: 18px;
     text-align: center;
     span{
     font-weight: 800;
@@ -794,7 +795,7 @@ ion-button,
 }
 //letreiros
 .carousel-title-page-6{
-  font-size: 20px;
+  font-size: 18px;
   text-align: center;
   span{
     font-weight: 800;
@@ -819,19 +820,20 @@ ion-button,
 //page7
 #titulo-aviso-dados{
   color: #0e2b52;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 800;
+  margin-top: 10%;
 }
 #texto-aviso-dados{
   color: #0e2b52;
-  font-size: 18px;
+  font-size: 16px;
   span{
     font-weight: 800;
   }
 }
 #smile-light{
-  width: 300px;
-  height: 300px;
+  width: 250px;
+  height: 250px;
   margin-left: 20px;
 }
 #smile-dark{
@@ -870,6 +872,7 @@ ion-checkbox {
     color: #0e2b52 !important;
     text-decoration: underline;
   }
+  margin-left: 15px;
 
 }
 ion-checkbox::part(container) {
@@ -877,11 +880,12 @@ ion-checkbox::part(container) {
 }
 //letreiros
 .carousel-title-page-7{
-  font-size: 32px;
+  font-size: 30px;
   span{
     font-weight: 800;
   }
-  margin-top: 30%;
+  margin-top: 20%;
+  margin-left: 15px;
 }
 #btIniciarApp{
   margin-bottom: 5%;
@@ -890,21 +894,21 @@ ion-checkbox::part(container) {
   --border-radius: 20px;
   border-radius: 22px;
   border: 3px solid #d9d9d9;
-  width: 250px;
-  height: 50px;
-  font-size: 18px;
+  width: 220px;
+  height: 40px;
+  font-size: 16px;
   font-weight: 600;
 }
 #btSairApp{
-  margin-bottom: 30%;
+  margin-bottom: 40%;
   --background: transparent;
   --color: #0e2b52;
   --border-radius: 20px;
   border-radius: 22px;
   border: 3px solid #d9d9d9;
-  width: 250px;
-  height: 50px;
-  font-size: 18px;
+  width: 220px;
+  height: 40px;
+  font-size: 16px;
   font-weight: 600;
 }
 //fim dos letreiros 
@@ -1237,7 +1241,7 @@ ion-range::part(bar-active) {
 }
 .div-titulo-telefones{
   color: #0e2b52;
-  font-size: 20px;
+  font-size: 18px;
 
   width: 80%;
   display: flex;
@@ -1251,18 +1255,18 @@ ion-range::part(bar-active) {
 .div-warning-triangle{
   width: 20%;
   color: #a4071a;
-  font-size: 64px;
+  font-size: 56px;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: left;
 }
 #titulo-telefones{
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 1000;
   color: #0e2b52;
   text-align: center;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 .card-telefones{
   background: #d8dde3 !important;
@@ -1436,8 +1440,8 @@ ion-range::part(bar-active) {
   text-align: center;
   width: 80%;
   font-size: 20px;
-  margin-top: 100px;
-  margin-bottom: 70px;
+  margin-top: 70px;
+  margin-bottom: 50px;
   font-weight: 400;
   color: #0e2b52;
   a{
@@ -1446,7 +1450,7 @@ ion-range::part(bar-active) {
   }
 }
 #footer-central-ajuda{
-  font-size: 14px;
+  font-size: 12px;
   margin: auto;
   text-align: center;
   width: 90%;
@@ -1456,6 +1460,7 @@ ion-range::part(bar-active) {
   color: #0e2b52;
 }
 .card-central-ajuda{
+  scale: (0.9);
   background: #0e2b52 !important;
   box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
   --ion-item-background: #0e2b52;
@@ -1779,7 +1784,7 @@ body.dark #enf-img{
 body.dark .carousel-title-page-1{
   color: #fff;
 }
-.carousel-footer-page-1{
+body.dark .carousel-footer-page-1{
     color: #fff;
 }
 //fim dos letreiros 
@@ -1797,11 +1802,8 @@ body.dark .carousel-page:nth-child(2) {
 
 //estilização do card de example
 body.dark .swipper-card {
-  scale: (0.9);
-  width: 115%;
   background-color: #1a1a1a;
   border: 3px solid #fff;
-  border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 
   .informacoes-div-swipper > p{
@@ -1962,9 +1964,13 @@ body.dark #texto-aviso-dados{
   color: #fff;
 }
 body.dark #smile-dark{
-  width: 300px;
-  height: 300px;
+  width: 250px;
+  height: 250px;
   margin-left: 20px;
+}
+body.dark #smile-light{
+  width: 0;
+  height: 0;
 }
 ///fim da page8
 

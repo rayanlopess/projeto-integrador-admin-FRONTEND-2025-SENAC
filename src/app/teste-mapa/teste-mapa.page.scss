@@ -1,0 +1,18 @@
+/* global.scss */
+ion-content {
+    --background: transparent !important;
+  }
+  
+  #map {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block !important;
+  }
+  
+  /* Garantir que o content não tenha overflow hidden */
+  ion-content .inner-scroll {
+    overflow: hidden !important;
+  }

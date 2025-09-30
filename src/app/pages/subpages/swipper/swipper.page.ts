@@ -34,7 +34,7 @@ import { Router } from '@angular/router';
 
 import { DateService } from '../../../services/datetime-service/date-service';
 
-
+import { App } from '@capacitor/app';
 
 @Component({
   selector: 'app-swipper',
@@ -154,9 +154,13 @@ export class SwipperPage implements OnInit {
     await alert.present();
   }
 
-  sairApp() {
-
+  
+  public async sairApp(): Promise<void> {
+    // Isso usa o código nativo do Android/iOS para forçar o fechamento do app.
+    // É o equivalente do "kick out" que você pediu.
+    await App.exitApp();
   }
+
 
   getCurrentStatus(): string {
 

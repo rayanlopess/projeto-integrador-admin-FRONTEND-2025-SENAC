@@ -26,9 +26,8 @@
             "polyfills": [
               "src/polyfills.ts"
             ],
-            "allowedCommonJsDependencies": [
-              "fast-deep-equal"
-            ],
+        
+      
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [

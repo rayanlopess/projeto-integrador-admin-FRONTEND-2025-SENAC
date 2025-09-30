@@ -33,7 +33,7 @@ export const routes: Routes = [
   //caminho vazio redireciona para home
   {
     path: '',
-    redirectTo: 'tela-logo',
+    redirectTo: 'teste-mapa',
     pathMatch: 'full',
   },
   {
@@ -64,6 +64,11 @@ export const routes: Routes = [
     path: 'central-ajuda',
     loadComponent: () => import('./pages/subpages/central-ajuda/central-ajuda.page').then( m => m.CentralAjudaPage)
   },
+  {
+    path: 'teste-mapa',
+    loadComponent: () => import('./teste-mapa/teste-mapa.page').then( m => m.TesteMapaPage)
+  },
+
 
 
 

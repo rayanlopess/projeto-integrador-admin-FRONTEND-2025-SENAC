@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Teste Mapa</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Área de status -->
+  <div style="padding: 16px; background: white; z-index: 1000; position: relative;">
+    <h3>Status do Mapa:</h3>
+    <p>{{ status }}</p>
+    <ion-button (click)="checkGoogle()">Verificar Google Maps</ion-button>
+    <ion-button (click)="initMap()">Inicializar Mapa</ion-button>
+  </div>
+  
+  <!-- Container do mapa com borda vermelha para visualização -->
+  <div #mapElement id="map" 
+       style="height: 70vh; width: 100%; border: 3px solid red; position: relative;"></div>
+</ion-content>

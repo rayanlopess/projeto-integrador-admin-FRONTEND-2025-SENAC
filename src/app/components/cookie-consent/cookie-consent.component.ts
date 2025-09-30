@@ -13,6 +13,7 @@ import {
   IonRow,
   IonCol,
 } from '@ionic/angular/standalone';
+
 import { addIcons } from 'ionicons';
 import { sunny, moon, phonePortrait, close, arrowBackOutline } from 'ionicons/icons';
 
@@ -21,26 +22,26 @@ import { sunny, moon, phonePortrait, close, arrowBackOutline } from 'ionicons/ic
   templateUrl: './cookie-consent.component.html',
   styleUrls: ['./cookie-consent.component.scss'],
   standalone: true,
-  imports: [CommonModule,  IonButton,
-  IonModal,
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonIcon,
-  IonTitle,
-  IonContent,
-  IonGrid,
-  IonRow,
-  IonCol] // Importe o CommonModule para usar o *ngIf
+  imports: [CommonModule, IonButton,
+    IonModal,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonIcon,
+    IonTitle,
+    IonContent,
+    IonGrid,
+    IonRow,
+    IonCol] // Importe o CommonModule para usar o *ngIf
 })
 export class CookieConsentComponent implements OnInit {
 
   showConsent = false;
-isModalOpen = false;
+  isModalOpen = false;
 
   constructor() {
     addIcons({ sunny, moon, phonePortrait, close, arrowBackOutline });
-   }
+  }
 
   ngOnInit() {
     // Verifica se o usuário já aceitou os cookies

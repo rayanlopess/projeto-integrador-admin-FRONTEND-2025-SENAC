@@ -1,22 +1,18 @@
 .map-container {
-  width: 100%;
-  
-  /* Use 100dvh para garantir que ele cubra a viewport total */
-  height: 100dvh; 
-  
-  /* Posicionamento Fixo é o padrão e geralmente o melhor */
-  position: fixed; 
+  position: absolute; 
   top: 0;
   left: 0;
-  
-  /* Z-index baixo (1) para ficar abaixo do Header e Overlays */
+  width: 100%;
+  height: 100%;
   z-index: 1; 
   overflow: hidden;
 }
 
 /* Garanta que o IonContent seja transparente e não cubra o mapa */
 ion-content {
-  --background: transparent;
+ 
+  --background: transparent !important;
+  background: transparent !important;
 }
 
 /* Garanta que os overlays (Header, Loading, Erro) fiquem em cima */
