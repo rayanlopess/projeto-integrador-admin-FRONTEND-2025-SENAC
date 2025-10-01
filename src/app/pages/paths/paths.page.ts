@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 
 import { addIcons } from 'ionicons';
-import { home, map, call, settings, ellipsisVertical } from 'ionicons/icons';
+import { home, map, call, settings, ellipsisVertical, people} from 'ionicons/icons';
 import { Router, NavigationEnd } from '@angular/router';
 import { PopoverController, NavController } from '@ionic/angular/standalone';
 
@@ -76,7 +76,7 @@ export class PathsPage implements OnInit, OnDestroy {
     private popoverCtrl: PopoverController,
     private date: DateService
   ) {
-    addIcons({ home, map, call, settings, ellipsisVertical });
+    addIcons({ home, map, call, settings, ellipsisVertical,people });
 
 
   }

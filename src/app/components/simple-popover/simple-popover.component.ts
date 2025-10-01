@@ -52,11 +52,6 @@ import { PopoverController } from '@ionic/angular/standalone';
   IonCol, CommonModule],
   template: `
     <ion-list>
-      
-      <ion-item lines="none" button (click)="irConfig()">
-        <ion-label>Localização</ion-label>
-        <ion-note slot="end">Raio: {{raioDistancia()}}km</ion-note>
-      </ion-item>
 
       <ion-item lines="none" button (click)="openThemeSelector()">
         <ion-label>Tema</ion-label>

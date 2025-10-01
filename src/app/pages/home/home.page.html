@@ -1,4 +1,3 @@
-
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="end">
@@ -16,28 +15,29 @@
 
 <ion-content>
 
-  <div *ngIf="carregando" class="loading-container">
+  <!-- <div *ngIf="carregando" class="loading-container">
     <ion-spinner></ion-spinner>
     <p>Carregando hospitais próximos...</p>
-  </div>
+  </div> -->
 
-  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+  <!-- <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content>
 
     </ion-refresher-content>
-  </ion-refresher>
+  </ion-refresher> -->
 
 
   <ion-grid>
 
-    <ion-row *ngIf="!carregando">
+    <!-- *ngIf="!carregando" -->
+    <ion-row>
       <ion-col>
-        <p id="titulo-cards-home">Encontre a Unidade de Pronto Atendimento que irá lhe <br> atender mais rápido!</p>
+        <p id="titulo-cards-home">Lista de hospitais cadastrados:</p>
       </ion-col>
     </ion-row>
 
 
-    <!-- Mensagem de erro -->
+    <!-- Mensagem de erro
     <ion-row *ngIf="erroCarregamento">
 
 
@@ -50,55 +50,68 @@
           </div>
         </div>
       </ion-col>
-    </ion-row>
+    </ion-row> -->
 
-    <!-- Lista de hospitais -->
-    <ion-row *ngIf="!carregando && !erroCarregamento">
+    <!-- *ngIf="!carregando && !erroCarregamento" -->
+    <ion-row>
       <ion-col>
         <!-- Card vazio se não houver hospitais -->
-        <div *ngIf="hospitais.length === 0" class="empty-state">
+        <!-- <div *ngIf="hospitais.length === 0" class="empty-state">
           <img src="../../../assets/images/home/error-light.png" alt="Error Image" id="error-img-light">
           <img src="../../../assets/images/home/error-dark.png" alt="Error Image" id="error-img-dark">
           <div class="div-btSalvarConfig">
             <ion-button (click)="irParaConfiguracao()" id="btAlterarConfig">Alterar Configurações</ion-button>
           </div>
 
+        </div> -->
+
+
+
+  <!-- *ngFor="let hospital of hospitais" (click)="irHospital(hospital)" 
+          [class.hospital-proximo]="hospital.distancia && hospital.distancia < 5" -->
+
+
+        <div class="card-wrapper">
+
+          <ion-button class="botao-canto">
+            <ion-icon slot="icon-only" name="create"></ion-icon>
+          </ion-button>
+
+
+          <ion-card class="card-home card-com-botao">
+
+
+
+            <ion-card-content>
+              <ion-list>
+                <ion-item>
+                  <ion-thumbnail slot="end">
+                    <img alt="Hospital" src="../../../assets/icons/filamed-icon-azul.png" />
+                  </ion-thumbnail>
+                  <div class="informacoes-div">
+                    <!-- <h1>{{hospital.nome}} - {{getDistanciaDisplay(hospital)}}</h1> -->
+                    <h1>Upa Exemplo - 3.5km</h1>
+                    <!-- *ngIf="hospital.tempoDeslocamento" -->
+                    <p>
+                      <ion-icon class="icon-text" name="car"></ion-icon>&nbsp;
+                      <!-- Tempo Ida: <span>{{hospital.tempoDeslocamento}} min</span> -->
+                      <span>Ver no maps</span>
+                    </p>
+
+
+                    <!-- Fila de espera -->
+
+
+
+                  </div>
+                </ion-item>
+              </ion-list>
+            </ion-card-content>
+          </ion-card>
         </div>
-
-        <!-- Cards dos hospitais -->
-        <ion-card *ngFor="let hospital of hospitais" (click)="irHospital(hospital)" class="card-home"
-          [class.hospital-proximo]="hospital.distancia && hospital.distancia < 5">
-
-          <ion-card-content>
-            <ion-list>
-              <ion-item>
-                <ion-thumbnail slot="end">
-                  <img alt="Hospital" src="../../../assets/icons/filamed-icon-azul.png" />
-                </ion-thumbnail>
-                <div class="informacoes-div">
-                  <h1>{{hospital.nome}} - {{getDistanciaDisplay(hospital)}}</h1>
-
-                  <!-- Tempo de deslocamento (se disponível) -->
-                  <p *ngIf="hospital.tempoDeslocamento">
-                    <ion-icon class="icon-text" name="car"></ion-icon>&nbsp;
-                    Tempo Ida: <span>{{hospital.tempoDeslocamento}} min</span>
-                  </p>
-
-
-                  <!-- Fila de espera -->
-                  <p>
-                    <ion-icon class="icon-text" name="time"></ion-icon>&nbsp;
-                    Fila Espera: <span>{{hospital.tempo_espera}} min</span>
-                  </p>
-
-
-                </div>
-              </ion-item>
-            </ion-list>
-          </ion-card-content>
-        </ion-card>
+      
       </ion-col>
     </ion-row>
   </ion-grid>
-  
+
 </ion-content>

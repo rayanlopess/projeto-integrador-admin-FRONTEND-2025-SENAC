@@ -9,20 +9,16 @@ export const routes: Routes = [
     component: PathsPage,
     children: [
       {
-        path: 'home',
+        path: 'hospitais',
         loadComponent: () => import('./pages/home/home.page').then(m => m.HomePage)
       },
       {
-        path: 'mapa',
-        loadComponent: () => import('./pages/mapa/mapa.page').then(m => m.MapaPage)
+        path: 'usuarios',
+        loadComponent: () => import('./pages/usuarios/usuarios.page').then( m => m.UsuariosPage)
       },
-      {
-        path: 'telefones',
-        loadComponent: () => import('./pages/telefones/telefones.page').then(m => m.TelefonesPage)
-      },
-      {
+          {
         path: '',
-        redirectTo: '/path/home',
+        redirectTo: '/path/hospitais',
         pathMatch: 'full',
       }
     ],
@@ -33,20 +29,8 @@ export const routes: Routes = [
   //caminho vazio redireciona para home
   {
     path: '',
-    redirectTo: 'teste-mapa',
+    redirectTo: 'tela-logo',
     pathMatch: 'full',
-  },
-  {
-    path: 'swipper',
-    loadComponent: () => import('./pages/subpages/swipper/swipper.page').then(m => m.SwipperPage)
-  },
-  {
-    path: 'privacidade-seguranca',
-    loadComponent: () => import('./pages/subpages/termos-privacidade/privacidade-seguranca/privacidade-seguranca.page').then(m => m.PrivacidadeSegurancaPage)
-  },
-  {
-    path: 'termos-uso',
-    loadComponent: () => import('./pages/subpages/termos-privacidade/termos-uso/termos-uso.page').then(m => m.TermosUsoPage)
   },
   {
     path: 'config-user',
@@ -65,12 +49,20 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/subpages/central-ajuda/central-ajuda.page').then( m => m.CentralAjudaPage)
   },
   {
-    path: 'teste-mapa',
-    loadComponent: () => import('./teste-mapa/teste-mapa.page').then( m => m.TesteMapaPage)
+    path: 'login',
+    loadComponent: () => import('./sistema-login/login/login.page').then( m => m.LoginPage)
   },
+  {
+    path: 'esqueci-senha',
+    loadComponent: () => import('./sistema-login/esqueci-senha/esqueci-senha.page').then( m => m.EsqueciSenhaPage)
+  },
+  {
+    path: 'alteracao-senha',
+    loadComponent: () => import('./sistema-login/alteracao-senha/alteracao-senha.page').then( m => m.AlteracaoSenhaPage)
+  },
+  
 
-
-
+ 
 
 
 

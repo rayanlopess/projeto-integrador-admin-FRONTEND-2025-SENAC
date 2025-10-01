@@ -24,7 +24,7 @@ import {
 import { Router } from '@angular/router';
 
 import { addIcons } from 'ionicons';
-import { home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location} from 'ionicons/icons';
+import { home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create} from 'ionicons/icons';
 import { AlertController, PopoverController, LoadingController, RefresherCustomEvent } from '@ionic/angular/standalone';
 
 import { DateService } from '../../services/datetime-service/date-service';
@@ -80,7 +80,7 @@ export class HomePage implements OnInit, OnDestroy {
     private hospitalService: HospitalService,
     private loadingController: LoadingController
   ) {
-    addIcons({ home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location});
+    addIcons({ home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create});
   }
 
   async ngOnInit() {

@@ -13,3 +13,32 @@
     justify-content: center;
     margin-top: 20px;
 }
+
+.card-com-botao {
+  /* 1. Torna o card o container de referência para o posicionamento absoluto */
+  position: relative !important; 
+  /* Adicione um padding-top para evitar que o conteúdo fique por baixo do botão. */
+  /* Isso é opcional, mas ajuda a manter o layout limpo. */
+  overflow: visible !important;
+}
+
+.botao-canto {
+  /* 2. Posiciona o botão absolutamente em relação ao card */
+  position: absolute;
+  top: 0;           /* Alinha ao topo */
+  right: 40px;         /* Alinha à direita */
+  z-index: 99999;      /* Garante que o botão fique sobre outros elementos */
+  /* Ajustes visuais para replicar o estilo da foto (opcional) */
+  width: 5px;
+  height: 5px;
+  --background: red  !important; /* Fundo transparente para o botão */
+}
+
+/* Estilo para garantir que o ícone do lápis se pareça com o da imagem */
+.botao-canto ion-icon {
+    /* Ajuste o tamanho se necessário */
+    font-size: 12px; 
+    /* Coloque o fundo azul/escuro, como na imagem *//* Cor de fundo do lápis */
+    color: white; /* Cor do ícone */
+   /* Arredondamento apenas nos cantos (topo-direito e inferior-esquerdo) */
+}

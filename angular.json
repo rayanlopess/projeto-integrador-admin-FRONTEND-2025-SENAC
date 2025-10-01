@@ -42,9 +42,8 @@
               "src/theme/variables.scss",
               "node_modules/@ionic/angular/css/core.css",
               "src/app/pages/home/home.page.scss", 
-              "src/app/pages/telefones/telefones.page.scss",
-              "src/app/pages/paths/paths.page.scss",
-              "src/app/pages/mapa/mapa.page.scss"
+              "src/app/pages/paths/paths.page.scss"
+          
 
             ],
             "scripts": [],
