@@ -1,486 +1,485 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-buttons slot="end">
-      <ion-button id="botao-toolbar" (click)="presentPopover($event)">
-        <ion-icon id="icon-toolbar" name="ellipsis-vertical"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+      <ion-buttons slot="start" *ngIf="isEditingMode || isDeletingMode">
+          <ion-button (click)="exitMode()" [color]="isDeletingMode ? 'danger' : 'primary'">
+              <ion-icon name="close"></ion-icon>
+          </ion-button>
+      </ion-buttons>
 
-    <div class="titulos-container">
-      <ion-title id="home-title">Bem-vindo ao Filamed</ion-title>
-      <span id="home-title">{{data}}</span>
-    </div>
+      <div class="titulos-container">
+          <ion-title id="home-title" 
+                     [ngStyle]="{'color': isDeletingMode ? '#a4071a' : (isEditingMode ? '#0e2b52' : undefined)}">
+              {{ pageTitle }}
+          </ion-title>
+          <span id="home-title" *ngIf="!isEditingMode && !isDeletingMode">{{data}}</span>
+      </div>
+
+
+      <ion-buttons slot="end" *ngIf="!isEditingMode && !isDeletingMode">
+          <ion-button id="botao-toolbar" (click)="presentPopover($event)">
+              <ion-icon id="icon-toolbar" name="ellipsis-vertical"></ion-icon>
+          </ion-button>
+      </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="">
-
-    <ion-fab-button>
-      <ion-icon name="chevron-up"></ion-icon>
-    </ion-fab-button>
-
-    <ion-fab-list side="top">
-      <ion-fab-button (click)="setOpenAdd(true)">
-        <ion-icon name="add"></ion-icon>
-      </ion-fab-button>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="!isEditingMode && !isDeletingMode">
       <ion-fab-button>
-        <ion-icon name="create"></ion-icon>
+          <ion-icon name="chevron-up"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button class="fab-remove">
-        <ion-icon name="trash"></ion-icon>
-      </ion-fab-button>
-    </ion-fab-list>
+
+      <ion-fab-list side="top">
+          <ion-fab-button (click)="setOpenAdd(true)">
+              <ion-icon name="add"></ion-icon>
+          </ion-fab-button>
+          <ion-fab-button (click)="toggleMode('edit')">
+              <ion-icon name="create"></ion-icon>
+          </ion-fab-button>
+          <ion-fab-button class="fab-remove" (click)="toggleMode('delete')">
+              <ion-icon name="trash"></ion-icon>
+          </ion-fab-button>
+      </ion-fab-list>
   </ion-fab>
 
+  <div *ngIf="carregando" class="loading-container">
+      <ion-spinner></ion-spinner>
+      <p>Carregando hospitais próximos...</p>
+  </div>
 
-  <!-- <div *ngIf="carregando" class="loading-container">
-    <ion-spinner></ion-spinner>
-    <p>Carregando hospitais próximos...</p>
-  </div> -->
-
-  <!-- <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-    <ion-refresher-content>
-
-    </ion-refresher-content>
-  </ion-refresher> -->
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
 
   <ion-grid>
 
-    <!-- *ngIf="!carregando" -->
-    <ion-row>
-      <ion-col>
-        <p id="titulo-cards-home">Lista de Hospitais Cadastrados:</p>
-      </ion-col>
-    </ion-row>
+      <ion-row>
+          <ion-col>
+              <p id="titulo-cards-home">Lista de Hospitais Cadastrados:</p>
+          </ion-col>
+      </ion-row>
 
+      <ion-row *ngIf="!carregando && hospitais.length > 0">
+          <ion-col>
+              
+              <div class="card-wrapper" *ngFor="let hospital of hospitais" 
+                   (click)="!isEditingMode && !isDeletingMode && viewHospitalOnMap(hospital)">
 
-    <!-- Mensagem de erro
-    <ion-row *ngIf="erroCarregamento">
+                  <button id="botao-canto" class="ion-activatable botao-edit" *ngIf="isEditingMode"
+                          (click)="setOpenEdit(true, hospital); $event.stopPropagation()">
+                      <ion-icon name="create"></ion-icon>
+                      <ion-ripple-effect></ion-ripple-effect>
+                  </button>
+                  
+                  <button id="botao-canto-delete" class="ion-activatable" *ngIf="isDeletingMode"
+                          (click)="deleteHospital(hospital); $event.stopPropagation()">
+                      <ion-icon name="trash"></ion-icon>
+                      <ion-ripple-effect></ion-ripple-effect>
+                  </button>
+                  
 
+                  <ion-card class="card-home card-com-botao">
+                      <ion-card-content>
+                          <ion-list>
+                              <ion-item lines="none">
+                                  <ion-thumbnail slot="end">
+                                      <img alt="Hospital" [src]="hospital.foto || '../../../assets/icons/filamed-icon-azul.png'" />
+                                  </ion-thumbnail>
+                                  <div class="informacoes-div">
+                                      <h1>{{hospital.nome}}</h1>
+                                      <p>
+                                          <ion-icon class="icon-text" name="location"></ion-icon>&nbsp;
+                                          <span (click)="!isEditingMode && !isDeletingMode && viewHospitalOnMap(hospital); $event.stopPropagation()">
+                                              Ver no maps ({{ getDistanciaDisplay(hospital) }})
+                                          </span>
+                                      </p>
+                                      
+                                      <p *ngIf="hospital.tempo_espera">
+                                          <ion-icon class="icon-text" name="time"></ion-icon>&nbsp;
+                                          Tempo de Espera: <span>{{ getTempoEsperaDisplay(hospital) }}</span>
+                                      </p>
+                                  </div>
+                              </ion-item>
+                          </ion-list>
+                      </ion-card-content>
+                  </ion-card>
+              </div>
 
-      <ion-col>
-        <div class="error-container">
-          <img src="../../../assets/images/home/error2-light.png" alt="Error Image" id="error-img-light2">
-          <img src="../../../assets/images/home/error2-dark.png" alt="Error Image" id="error-img-dark2">
-          <div class="div-btSalvarConfig">
-            <ion-button (click)="tentarNovamente()" id="btTentarNovamente">Tentar Novamente</ion-button>
-          </div>
-        </div>
-      </ion-col>
-    </ion-row> -->
-
-    <!-- *ngIf="!carregando && !erroCarregamento" -->
-    <ion-row>
-      <ion-col>
-        <!-- Card vazio se não houver hospitais -->
-        <!-- <div *ngIf="hospitais.length === 0" class="empty-state">
-          <img src="../../../assets/images/home/error-light.png" alt="Error Image" id="error-img-light">
-          <img src="../../../assets/images/home/error-dark.png" alt="Error Image" id="error-img-dark">
-          <div class="div-btSalvarConfig">
-            <ion-button (click)="irParaConfiguracao()" id="btAlterarConfig">Alterar Configurações</ion-button>
-          </div>
-
-        </div> -->
-
-
-
-        <!-- *ngFor="let hospital of hospitais" (click)="irHospital(hospital)" 
-          [class.hospital-proximo]="hospital.distancia && hospital.distancia < 5" -->
-
-
-        <div class="card-wrapper">
-          <button id="botao-canto" class="ion-activatable botao-edit" (click)="setOpenEdit(true)">
-            <ion-icon name="create"></ion-icon>
-            <ion-ripple-effect></ion-ripple-effect>
-          </button>
-          <button id="botao-canto-delete" class="ion-activatable">
-            <ion-icon name="trash"></ion-icon>
-            <ion-ripple-effect></ion-ripple-effect>
-          </button>
-
-
-          <button id="botao-canto-delete" class="ion-activatable" hidden>
-            <ion-icon name="trash"></ion-icon>
-            <ion-ripple-effect></ion-ripple-effect>
-          </button>
-          <ion-card class="card-home card-com-botao">
-            <ion-card-content>
-              <ion-list>
-                <ion-item>
-                  <ion-thumbnail slot="end">
-                    <img alt="Hospital" src="../../../assets/icons/filamed-icon-azul.png" />
-                  </ion-thumbnail>
-                  <div class="informacoes-div">
-                    <!-- <h1>{{hospital.nome}} - {{getDistanciaDisplay(hospital)}}</h1> -->
-                    <h1>Upa Exemplo</h1>
-                    <!-- *ngIf="hospital.tempoDeslocamento" -->
-                    <p>
-                      <ion-icon class="icon-text" name="location"></ion-icon>&nbsp;
-                      <!-- Tempo Ida: <span>{{hospital.tempoDeslocamento}} min</span> -->
-                      <span>Ver no maps</span>
-                    </p>
-
-
-                    <!-- Fila de espera -->
-
-
-
-                  </div>
-                </ion-item>
-              </ion-list>
-            </ion-card-content>
-          </ion-card>
-        </div>
-
-      </ion-col>
-    </ion-row>
+          </ion-col>
+      </ion-row>
   </ion-grid>
 
 </ion-content>
 
-
-
 <ion-modal [isOpen]="isModalOpenAdd">
   <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-button id="botao-toolbar" (click)="setOpenAdd(false)">
-            <ion-icon name="arrow-back-outline"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-        <div class="titulos-container">
-          <ion-title id="home-title">Cadastrar Hospital</ion-title>
-        </div>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content [fullscreen]="true">
-      <ion-grid>
-
-        <ion-row>
-          <ion-col>
-            <p id="titulo-cards-home">Insira as Informações do Hospital:</p>
-          </ion-col>
-        </ion-row>
-
-
-        <!-- *ngIf="!carregando && !erroCarregamento" -->
-        <ion-row>
-          <ion-col>
-            <!-- Card vazio se não houver hospitais -->
-            <!-- <div *ngIf="hospitais.length === 0" class="empty-state">
-          <img src="../../../assets/images/home/error-light.png" alt="Error Image" id="error-img-light">
-          <img src="../../../assets/images/home/error-dark.png" alt="Error Image" id="error-img-dark">
-          <div class="div-btSalvarConfig">
-            <ion-button (click)="irParaConfiguracao()" id="btAlterarConfig">Alterar Configurações</ion-button>
-          </div>
-
-        </div> -->
-
-
-
-            <!-- *ngFor="let hospital of hospitais" (click)="irHospital(hospital)" 
-          [class.hospital-proximo]="hospital.distancia && hospital.distancia < 5" -->
-
-
-            <div class="card-wrapper div-card-wrapper">
-              <ion-card class="card-home card-com-botao">
-                <ion-card-content>
-                  <ion-list>
-                    <ion-item>
-                      <ion-thumbnail slot="end">
-                        <img alt="Hospital" src="../../../assets/icons/filamed-icon-azul.png" />
-                      </ion-thumbnail>
-                      <div class="informacoes-div">
-                        <!-- <h1>{{hospital.nome}} - {{getDistanciaDisplay(hospital)}}</h1> -->
-                        <h1>{{nomeHospital}}</h1>
-                        <!-- *ngIf="hospital.tempoDeslocamento" -->
-                        <p>
-                          <ion-icon class="icon-text" name="location"></ion-icon>&nbsp;
-                          <!-- Tempo Ida: <span>{{hospital.tempoDeslocamento}} min</span> -->
-                          <span>Ver no maps</span>
-                        </p>
-                      </div>
-                    </ion-item>
-                  </ion-list>
-                </ion-card-content>
-              </ion-card>
-            </div>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-
-            <div class="input-barra">
-              <div class="input-texto">
-                <div class="icon-search">
-                  <ion-buttons>
-                    <ion-button disabled>
-                      <i class="bi bi-hospital-fill icon"></i>
-                    </ion-button>
-                  </ion-buttons>
-                </div>
-                <div class="wave-group">
-                  <input required type="text" class="input-tecido" placeholder="Ex.: UPA " [(ngModel)]="nomeHospital"
-                    errorText="Preencha os campos corretamente">
-                  <label class="label">
-                    <span class="label-char" style="--index: 0">N</span>
-                    <span class="label-char" style="--index: 1">o</span>
-                    <span class="label-char" style="--index: 2">m</span>
-                    <span class="label-char" style="--index: 3">e</span>
-                    <span class="label-char" style="--index: 5">&nbsp;</span>
-                    <span class="label-char" style="--index: 6">d</span>
-                    <span class="label-char" style="--index: 7">o</span>
-                    <span class="label-char" style="--index: 8">&nbsp;</span>
-                    <span class="label-char" style="--index: 9">H</span>
-                    <span class="label-char" style="--index: 10">o</span>
-                    <span class="label-char" style="--index: 11">s</span>
-                    <span class="label-char" style="--index: 12">p</span>
-                    <span class="label-char" style="--index: 13">i</span>
-                    <span class="label-char" style="--index: 14">t</span>
-                    <span class="label-char" style="--index: 15">a</span>
-                    <span class="label-char" style="--index: 16">l</span>
-                  </label>
-                </div>
+      <ion-header>
+          <ion-toolbar>
+              <ion-buttons slot="start">
+                  <ion-button id="botao-toolbar" (click)="setOpenAdd(false)">
+                      <ion-icon name="arrow-back-outline"></ion-icon>
+                  </ion-button>
+              </ion-buttons>
+              <div class="titulos-container">
+                  <ion-title id="home-title">Cadastrar Hospital</ion-title>
               </div>
-              <span class="bar"></span>
-            </div>
+          </ion-toolbar>
+      </ion-header>
 
+      <ion-content [fullscreen]="true">
+          <ion-grid>
+              <ion-row>
+                  <ion-col>
+                      <p id="titulo-cards-home">Insira as Informações do Hospital:</p>
+                  </ion-col>
+              </ion-row>
 
-          </ion-col>
-        </ion-row>
+              <ion-row>
+                  <ion-col>
+                      <div class="card-wrapper div-card-wrapper">
+                          <ion-card class="card-home card-com-botao">
+                              <ion-card-content>
+                                  <ion-list>
+                                      <ion-item lines="none">
+                                          <ion-thumbnail slot="end">
+                                              <img alt="Hospital" [src]="hospitalPhoto || '../../../assets/icons/filamed-icon-azul.png'" />
+                                          </ion-thumbnail>
+                                          <div class="informacoes-div">
+                                              <h1>{{nomeHospital || 'Hospital Preview'}}</h1>
+                                              <p>
+                                                  <ion-icon class="icon-text" name="locate"></ion-icon>&nbsp;
+                                                  <span>Lat: {{tempLatitude | number: '1.4-4'}}</span>
+                                              </p>
+                                              <p>
+                                                  <ion-icon class="icon-text" name="locate"></ion-icon>&nbsp;
+                                                  <span>Long: {{tempLongitude | number: '1.4-4'}}</span>
+                                              </p>
+                                          </div>
+                                      </ion-item>
+                                  </ion-list>
+                              </ion-card-content>
+                          </ion-card>
+                      </div>
+                  </ion-col>
+              </ion-row>
+              
+              <ion-row>
+                  <ion-col>
+                      <div class="input-barra">
+                          <div class="input-texto">
+                              <div class="icon-search">
+                                   <ion-buttons>
+                                       <ion-button disabled>
+                                           <i class="bi bi-hospital-fill icon"></i>
+                                       </ion-button>
+                                   </ion-buttons>
+                              </div>
+                              <div class="wave-group">
+                                  <input required type="text" class="input-tecido" placeholder="Ex.: UPA " [(ngModel)]="nomeHospital"
+                                    errorText="Preencha os campos corretamente">
+                                  <label class="label">
+                                    <span class="label-char" style="--index: 0">N</span>
+                                    <span class="label-char" style="--index: 1">o</span>
+                                    <span class="label-char" style="--index: 2">m</span>
+                                    <span class="label-char" style="--index: 3">e</span>
+                                    <span class="label-char" style="--index: 5">&nbsp;</span>
+                                    <span class="label-char" style="--index: 6">d</span>
+                                    <span class="label-char" style="--index: 7">o</span>
+                                    <span class="label-char" style="--index: 8">&nbsp;</span>
+                                    <span class="label-char" style="--index: 9">H</span>
+                                    <span class="label-char" style="--index: 10">o</span>
+                                    <span class="label-char" style="--index: 11">s</span>
+                                    <span class="label-char" style="--index: 12">p</span>
+                                    <span class="label-char" style="--index: 13">i</span>
+                                    <span class="label-char" style="--index: 14">t</span>
+                                    <span class="label-char" style="--index: 15">a</span>
+                                    <span class="label-char" style="--index: 16">l</span>
+                                  </label>
+                              </div>
+                          </div>
+                          <span class="bar"></span>
+                      </div>
+                  </ion-col>
+              </ion-row>
+              
+              <ion-row>
+                  <ion-col>
+                      <div class="div-btSalvarConfig">
+                          <ion-button id="btAjustaLoc" (click)="openLocationSelectionModal()">
+                              <div class="button-localizacao">
+                                  <div class="esquerda">
+                                      <ion-icon name="locate"></ion-icon>
+                                  </div>
+                                  <div class="direita">
+                                      <span>ajustar localização</span>
+                                  </div>
+                              </div>
+                          </ion-button>
+                      </div>
+                  </ion-col>
+              </ion-row>
 
-        <ion-row>
-          <ion-col>
-            <div class="div-btSalvarConfig">
-              <ion-button id="btAjustaLoc" (click)="salvarConfig()">
-                <div class="button-localizacao">
-                  <div class="esquerda">
-                    <ion-icon name="locate"></ion-icon>
-                  </div>
-                  <div class="direita">
-                    <span>ajustar localização</span>
-                  </div>
-                </div>
-              </ion-button>
-            </div>
+              <ion-row>
+                  <ion-col>
+                      <div class="div-btSalvarConfig">
+                          <ion-button id="btAddImg" (click)="openCamera()">
+                              <div class="button-img">
+                                  <div class="esquerda">
+                                      <ion-icon name="image"></ion-icon>
+                                  </div>
+                                  <div class="direita">
+                                      <span>adicionar foto da unidade</span>
+                                  </div>
+                              </div>
+                          </ion-button>
+                      </div>
+                  </ion-col>
+              </ion-row>
 
-          </ion-col>
-        </ion-row>
+              <ion-row>
+                  <ion-col>
+                      <div class="div-btSalvarConfig">
+                          <ion-button id="btSalvarConfig" (click)="salvarConfig()">
+                              Salvar
+                          </ion-button>
+                      </div>
+                  </ion-col>
+              </ion-row>
 
-        <ion-row>
-          <ion-col>
-            <div class="div-btSalvarConfig">
-              <ion-button id="btAddImg" (click)="salvarConfig()">
-                <div class="button-img">
-                  <div class="esquerda">
-                    <ion-icon name="image"></ion-icon>
-                  </div>
-                  <div class="direita">
-                    <span>adicionar foto da unidade</span>
-                  </div>
-                </div>
-              </ion-button>
-            </div>
-          </ion-col>
-        </ion-row>
+          </ion-grid>
+      </ion-content>
+      <div class="footer-paths">
+          <img alt="Silhouette of mountains" src="../../../assets/icons/filamed-sem-fundo.png" />
+      </div>
+  </ng-template>
+</ion-modal>
 
+<ion-modal [isOpen]="isModalOpenEdit">
+  <ng-template>
+      <ion-header>
+          <ion-toolbar>
+              <ion-buttons slot="start">
+                  <ion-button id="botao-toolbar" (click)="setOpenEdit(false)">
+                      <ion-icon name="arrow-back-outline"></ion-icon>
+                  </ion-button>
+              </ion-buttons>
+              <div class="titulos-container">
+                  <ion-title id="home-title">Editar Hospital</ion-title>
+              </div>
+          </ion-toolbar>
+      </ion-header>
 
-        <ion-row>
-          <ion-col>
-            <div class="div-btSalvarConfig">
-              <ion-button id="btSalvarConfig" (click)="salvarConfig()">
-                Salvar
-              </ion-button>
-            </div>
-          </ion-col>
-        </ion-row>
+      <ion-content [fullscreen]="true">
+          <ion-grid>
+              <ion-row>
+                  <ion-col>
+                      <p id="titulo-cards-home">Informações do Hospital:</p>
+                  </ion-col>
+              </ion-row>
 
+              <ion-row>
+                  <ion-col>
+                      <div class="card-wrapper div-card-wrapper">
+                          <ion-card class="card-home card-com-botao">
+                              <ion-card-content>
+                                  <ion-list>
+                                      <ion-item lines="none">
+                                          <ion-thumbnail slot="end">
+                                              <img alt="Hospital" [src]="hospitalPhoto || selectedHospital?.foto || '../../../assets/icons/filamed-icon-azul.png'" />
+                                          </ion-thumbnail>
+                                          <div class="informacoes-div">
+                                              <h1>{{nomeHospital || selectedHospital?.nome || 'Hospital Preview'}}</h1>
+                                              <p>
+                                                  <ion-icon class="icon-text" name="locate"></ion-icon>&nbsp;
+                                                  <span>Lat: {{tempLatitude | number: '1.4-4'}}</span>
+                                              </p>
+                                              <p>
+                                                  <ion-icon class="icon-text" name="locate"></ion-icon>&nbsp;
+                                                  <span>Long: {{tempLongitude | number: '1.4-4'}}</span>
+                                              </p>
+                                          </div>
+                                      </ion-item>
+                                  </ion-list>
+                              </ion-card-content>
+                          </ion-card>
+                      </div>
+                  </ion-col>
+              </ion-row>
+              
+              <ion-row>
+                  <ion-col>
+                      <div class="input-barra">
+                          <div class="input-texto">
+                               <div class="icon-search">
+                                   <ion-buttons>
+                                       <ion-button disabled>
+                                           <i class="bi bi-hospital-fill icon"></i>
+                                       </ion-button>
+                                   </ion-buttons>
+                               </div>
+                               <div class="wave-group">
+                                   <input required type="text" class="input-tecido" placeholder="Ex.: UPA " [(ngModel)]="nomeHospital"
+                                          errorText="Preencha os campos corretamente">
+                                   <label class="label">
+                                       <span class="label-char" style="--index: 0">N</span>
+                                       <span class="label-char" style="--index: 1">o</span>
+                                       <span class="label-char" style="--index: 2">m</span>
+                                       <span class="label-char" style="--index: 3">e</span>
+                                       <span class="label-char" style="--index: 5">&nbsp;</span>
+                                       <span class="label-char" style="--index: 6">d</span>
+                                       <span class="label-char" style="--index: 7">o</span>
+                                       <span class="label-char" style="--index: 8">&nbsp;</span>
+                                       <span class="label-char" style="--index: 9">H</span>
+                                       <span class="label-char" style="--index: 10">o</span>
+                                       <span class="label-char" style="--index: 11">s</span>
+                                       <span class="label-char" style="--index: 12">p</span>
+                                       <span class="label-char" style="--index: 13">i</span>
+                                       <span class="label-char" style="--index: 14">t</span>
+                                       <span class="label-char" style="--index: 15">a</span>
+                                       <span class="label-char" style="--index: 16">l</span>
+                                   </label>
+                               </div>
+                           </div>
+                          <span class="bar"></span>
+                      </div>
+                  </ion-col>
+              </ion-row>
 
+              <ion-row>
+                  <ion-col>
+                      <div class="div-btSalvarConfig">
+                          <ion-button id="btAjustaLoc" (click)="openLocationSelectionModal()">
+                              <div class="button-localizacao">
+                                  <div class="esquerda">
+                                      <ion-icon name="locate"></ion-icon>
+                                  </div>
+                                  <div class="direita">
+                                      <span>ajustar localização</span>
+                                  </div>
+                              </div>
+                          </ion-button>
+                      </div>
+                  </ion-col>
+              </ion-row>
 
+              <ion-row>
+                  <ion-col>
+                      <div class="div-btSalvarConfig">
+                          <ion-button id="btAddImg" (click)="openCamera()">
+                              <div class="button-img">
+                                  <div class="esquerda">
+                                      <ion-icon name="image"></ion-icon>
+                                  </div>
+                                  <div class="direita">
+                                      <span>adicionar foto da unidade</span>
+                                  </div>
+                              </div>
+                          </ion-button>
+                      </div>
+                  </ion-col>
+              </ion-row>
 
-      </ion-grid>
-    </ion-content>
-    <div class="footer-paths">
-      <img alt="Silhouette of mountains" src="../../../assets/icons/filamed-sem-fundo.png" />
-    </div>
+              <ion-row>
+                  <ion-col>
+                      <div class="div-btSalvarConfig">
+                          <ion-button id="btSalvarAlteracoes" (click)="salvarConfig()">
+                              Salvar Alterações
+                          </ion-button>
+                      </div>
+                  </ion-col>
+              </ion-row>
+
+          </ion-grid>
+      </ion-content>
+      <div class="footer-paths">
+          <img alt="Silhouette of mountains" src="../../../assets/icons/filamed-sem-fundo.png" />
+      </div>
+
   </ng-template>
 </ion-modal>
 
 
-
-
-
-<ion-modal [isOpen]="isModalOpenEdit">
+<ion-modal [isOpen]="isModalOpenMap">
   <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-button id="botao-toolbar" (click)="setOpenEdit(false)">
-            <ion-icon name="arrow-back-outline"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-        <div class="titulos-container">
-          <ion-title id="home-title">Editar Hospital</ion-title>
-        </div>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content [fullscreen]="true">
-      <ion-grid>
-
-
-        <ion-row>
-          <ion-col>
-            <p id="titulo-cards-home">Informações do Hospital:</p>
-          </ion-col>
-        </ion-row>
-
-        <!-- *ngIf="!carregando && !erroCarregamento" -->
-        <ion-row>
-          <ion-col>
-            <!-- Card vazio se não houver hospitais -->
-            <!-- <div *ngIf="hospitais.length === 0" class="empty-state">
-          <img src="../../../assets/images/home/error-light.png" alt="Error Image" id="error-img-light">
-          <img src="../../../assets/images/home/error-dark.png" alt="Error Image" id="error-img-dark">
-          <div class="div-btSalvarConfig">
-            <ion-button (click)="irParaConfiguracao()" id="btAlterarConfig">Alterar Configurações</ion-button>
-          </div>
-
-        </div> -->
-
-
-
-            <!-- *ngFor="let hospital of hospitais" (click)="irHospital(hospital)" 
-          [class.hospital-proximo]="hospital.distancia && hospital.distancia < 5" -->
+      <ion-header>
+          <ion-toolbar>
+              <ion-buttons slot="start">
+                  <ion-button (click)="isModalOpenMap = false">
+                      <ion-icon name="arrow-back-outline"></ion-icon>
+                  </ion-button>
+              </ion-buttons>
+              <ion-title>Localização de {{selectedHospital?.nome}}</ion-title>
+          </ion-toolbar>
+      </ion-header>
+      <ion-content [fullscreen]="true">
+          <ion-grid>
+              <ion-row>
+                  <ion-col>
+                      <p id="titulo-cards-home">"Ver no maps" do hospital:</p>
+                      <div class="mapa-placeholder" style="height: 300px; border: 1px solid var(--ion-color-medium);">
+                          <p style="padding: 16px; text-align: center;">
+                              **MAPA DE VISUALIZAÇÃO**<br>
+                              Aqui seria carregado o componente de mapa<br>
+                              <small>Lat: {{selectedHospital?.lati | number: '1.4-4'}} / Long: {{selectedHospital?.longi | number: '1.4-4'}}</small>
+                          </p>
+                          </div>
+                      <ion-item lines="none" *ngIf="selectedHospital">
+                          <ion-icon name="location" slot="start"></ion-icon>
+                          <ion-label>
+                              Endereço Estimado: <br>
+                              **{{selectedHospital?.logradouro}}, {{selectedHospital?.bairro}} - {{selectedHospital?.cidade}}/{{selectedHospital?.uf}}**
+                          </ion-label>
+                      </ion-item>
+                  </ion-col>
+              </ion-row>
+          </ion-grid>
+      </ion-content>
+  </ng-template>
+</ion-modal>
 
 
-            <div class="card-wrapper div-card-wrapper">
-              <ion-card class="card-home card-com-botao">
-                <ion-card-content>
-                  <ion-list>
-                    <ion-item>
-                      <ion-thumbnail slot="end">
-                        <img alt="Hospital" src="../../../assets/icons/filamed-icon-azul.png" />
-                      </ion-thumbnail>
-                      <div class="informacoes-div">
-                        <!-- <h1>{{hospital.nome}} - {{getDistanciaDisplay(hospital)}}</h1> -->
-                        <h1>{{nomeHospital}}</h1>
-                        <!-- *ngIf="hospital.tempoDeslocamento" -->
-                        <p>
-                          <ion-icon class="icon-text" name="location"></ion-icon>&nbsp;
-                          <!-- Tempo Ida: <span>{{hospital.tempoDeslocamento}} min</span> -->
-                          <span>Ver no maps</span>
-                        </p>
+<ion-modal [isOpen]="isModalOpenLocationSelect">
+  <ng-template>
+      <ion-header>
+          <ion-toolbar>
+              <ion-buttons slot="start">
+                  <ion-button (click)="isModalOpenLocationSelect = false">
+                      <ion-icon name="arrow-back-outline"></ion-icon>
+                  </ion-button>
+              </ion-buttons>
+              <ion-title>Selecione a Localização</ion-title>
+              <ion-buttons slot="end">
+                  <ion-button (click)="saveSelectedLocation()" color="primary" [disabled]="!tempLatitude || !tempLongitude">
+                      Salvar
+                  </ion-button>
+              </ion-buttons>
+          </ion-toolbar>
+      </ion-header>
+      <ion-content [fullscreen]="true">
+          <ion-grid>
+              <ion-row>
+                  <ion-col>
+                      <p id="titulo-cards-home">Arraste o marcador no mapa:</p>
+                      <div class="mapa-placeholder" style="height: 300px; border: 1px solid var(--ion-color-medium);">
+                          <p style="padding: 16px; text-align: center;">
+                              **MAPA INTERATIVO**<br>
+                              Aqui o usuário arrastaria um marcador para definir as coordenadas.<br>
+                              <small>Lat: {{tempLatitude | number: '1.4-4'}} / Long: {{tempLongitude | number: '1.4-4'}}</small>
+                          </p>
                       </div>
-                    </ion-item>
-                  </ion-list>
-                </ion-card-content>
-              </ion-card>
-            </div>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-
-            <div class="input-barra">
-              <div class="input-texto">
-                <div class="icon-search">
-                  <ion-buttons>
-                    <ion-button disabled>
-                      <i class="bi bi-hospital-fill icon"></i>
-                    </ion-button>
-                  </ion-buttons>
-                </div>
-                <div class="wave-group">
-                  <input required type="text" class="input-tecido" placeholder="Ex.: UPA " [(ngModel)]="nomeHospital"
-                    errorText="Preencha os campos corretamente">
-                  <label class="label">
-                    <span class="label-char" style="--index: 0">N</span>
-                    <span class="label-char" style="--index: 1">o</span>
-                    <span class="label-char" style="--index: 2">m</span>
-                    <span class="label-char" style="--index: 3">e</span>
-                    <span class="label-char" style="--index: 5">&nbsp;</span>
-                    <span class="label-char" style="--index: 6">d</span>
-                    <span class="label-char" style="--index: 7">o</span>
-                    <span class="label-char" style="--index: 8">&nbsp;</span>
-                    <span class="label-char" style="--index: 9">H</span>
-                    <span class="label-char" style="--index: 10">o</span>
-                    <span class="label-char" style="--index: 11">s</span>
-                    <span class="label-char" style="--index: 12">p</span>
-                    <span class="label-char" style="--index: 13">i</span>
-                    <span class="label-char" style="--index: 14">t</span>
-                    <span class="label-char" style="--index: 15">a</span>
-                    <span class="label-char" style="--index: 16">l</span>
-                  </label>
-                </div>
-              </div>
-              <span class="bar"></span>
-            </div>
-
-
-          </ion-col>
-        </ion-row>
-
-        <ion-row>
-          <ion-col>
-            <div class="div-btSalvarConfig">
-              <ion-button id="btAjustaLoc" (click)="salvarConfig()">
-                <div class="button-localizacao">
-                  <div class="esquerda">
-                    <ion-icon name="locate"></ion-icon>
-                  </div>
-                  <div class="direita">
-                    <span>ajustar localização</span>
-                  </div>
-                </div>
-              </ion-button>
-            </div>
-
-          </ion-col>
-        </ion-row>
-
-        <ion-row>
-          <ion-col>
-            <div class="div-btSalvarConfig">
-              <ion-button id="btAddImg" (click)="salvarConfig()">
-                <div class="button-img">
-                  <div class="esquerda">
-                    <ion-icon name="image"></ion-icon>
-                  </div>
-                  <div class="direita">
-                    <span>adicionar foto da unidade</span>
-                  </div>
-                </div>
-              </ion-button>
-            </div>
-          </ion-col>
-        </ion-row>
-
-
-        <ion-row>
-          <ion-col>
-            <div class="div-btSalvarConfig">
-              <ion-button id="btSalvarAlteracoes" (click)="salvarConfig()">
-                Salvar Alterações
-              </ion-button>
-            </div>
-          </ion-col>
-        </ion-row>
-
-
-
-
-      </ion-grid>
-    </ion-content>
-    <div class="footer-paths">
-      <img alt="Silhouette of mountains" src="../../../assets/icons/filamed-sem-fundo.png" />
-    </div>
-
+                  </ion-col>
+              </ion-row>
+              <ion-row>
+                  <ion-col>
+                       <ion-button expand="full" fill="solid" (click)="getCurrentLocation()" color="secondary">
+                          <ion-icon name="locate" slot="start"></ion-icon>
+                          Usar Localização Atual (GPS)
+                      </ion-button>
+                  </ion-col>
+              </ion-row>
+          </ion-grid>
+      </ion-content>
   </ng-template>
 </ion-modal>

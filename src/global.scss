@@ -301,6 +301,11 @@ ion-refresher.refresher-native .refresher-pulling-icon, ion-refresher.refresher-
   margin-bottom: 10px;
   font-weight: 700;
   color: #0e2b52;
+  transition: all 0.3s ease-in-out;
+}
+.icon-exit{
+  font-size: 32px !important;
+  color: #a4071a;
 }
 .card-home {
   transform: scale(0.9);
@@ -344,34 +349,29 @@ ion-refresher.refresher-native .refresher-pulling-icon, ion-refresher.refresher-
   position: relative !important; 
   overflow: visible !important;
 }
-#botao-canto{
+.botao-canto, .botao-canto-delete {
   width: 35px;
   height: 35px;
   position: absolute;
-  top: 0;       
-  right: 45px;        
-  z-index: 99999;      
+  top: 20px;
+  right: 20px;
+  z-index: 99999;
   border: 3px solid #0e2b52 !important;
   background: #0e2b52 !important;
   border-radius: 10px;
   cursor: pointer;
+  color: #fff; 
 }
-#botao-canto-delete{
-  width: 35px;
-  height: 35px;
-  position: absolute;
-  top: 0;       
-  right: 45px;        
-  z-index: 99999;      
+.botao-delete {
+  right: 20px; 
   border: 3px solid #a4071a !important;
   background: #a4071a !important;
-  border-radius: 10px;
-  cursor: pointer;
 }
 #botao-canto ion-icon, #botao-canto-delete ion-icon {
     font-size: 20px;
     color: #fff; /* Cor do ícone */
 }
+
 //fim do cards tela principal
 
 //ion-fab tela principal
@@ -593,7 +593,10 @@ ion-fab-button {
   font-weight: 600;
   margin-top: 70px;
 }
-
+.labelDtNascimento{
+  font-size: 14px;
+  margin-left: 10px;
+}
 ion-datetime{
   --background: #fff;
 }
@@ -641,7 +644,7 @@ ion-datetime::part(month-year-button) {
   height: 50px;
   font-size: 18px;
   font-weight: 600;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 //fim do botao de salvar
 

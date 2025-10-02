@@ -6,25 +6,29 @@ import { Injectable } from '@angular/core';
 })
 export class RequiemDosDeusesService {
 
-  private baseUrl = 'http://localhost:3000'; // Adicione http://
+  private baseUrl = 'http://localhost:3000';
 
   constructor(public http: HttpClient) { }
 
+  // Opções de cabeçalho padrão para JSON
+  private getJsonHttpOptions() {
+    return {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      })
+    };
+  }
+
   get(endpoint: string, dados: any) {
     return this.http.get(`${this.baseUrl}${endpoint}`, {
-      params: dados // Passe os dados diretamente como params
+      params: dados
     });
   }
 
   post(endpoint: string, formData: any) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json', // Geralmente melhor usar JSON
-        'Accept': 'application/json'
-      })
-    };
-    
-    // Se realmente precisa de FormData, remova o Content-Type para o browser definir automaticamente
-    return this.http.post(`${this.baseUrl}${endpoint}`, formData, httpOptions);
+    return this.http.post(`${this.baseUrl}${endpoint}`, formData, this.getJsonHttpOptions());
   }
+
+  // PUT e DELETE removidos ou não incluídos, pois não são usados no UserService atual.
 }

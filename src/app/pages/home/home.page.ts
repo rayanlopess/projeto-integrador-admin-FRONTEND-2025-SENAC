@@ -2,51 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonButton,
-  IonIcon,
-  IonTitle,
-  IonContent,
-  IonSpinner,
-  IonRefresher,
-  IonRefresherContent,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonCard,
-  IonCardContent,
-  IonList,
-  IonItem,
-  IonThumbnail,
-  IonRippleEffect,
-  IonFab,
-  IonFabButton,
-  IonFabList,
-  IonModal
-} from '@ionic/angular/standalone';
-import { Router } from '@angular/router';
-
-import { addIcons } from 'ionicons';
-import { home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create, chevronUp, add, trash, locate, image} from 'ionicons/icons';
-import { AlertController, PopoverController, LoadingController, RefresherCustomEvent } from '@ionic/angular/standalone';
-
-import { DateService } from '../../services/datetime-service/date-service';
-import { SimplePopoverComponent } from '../../components/simple-popover/simple-popover.component';
-import { HospitalService, HospitalProcessado } from '../../services/sistema-hospital/hospital';
-import { Subscription } from 'rxjs';
-
-
-
-import { RefresherEventDetail } from '@ionic/angular';
-
-@Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
-  standalone: true,
-  imports: [IonHeader,
+    IonHeader,
     IonToolbar,
     IonButtons,
     IonButton,
@@ -65,168 +21,405 @@ import { RefresherEventDetail } from '@ionic/angular';
     IonItem,
     IonThumbnail,
     IonRippleEffect,
-    CommonModule, 
-    FormsModule,
     IonFab,
     IonFabButton,
     IonFabList,
-    IonModal
-  
-  ]
-    
+    IonModal,
+    IonLabel, ToastController
+} from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
+
+// Importações do Capacitor
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Geolocation } from '@capacitor/geolocation';
+
+import { addIcons } from 'ionicons';
+import { close, home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create, chevronUp, add, trash, locate, image } from 'ionicons/icons';
+import { AlertController, PopoverController, LoadingController, RefresherCustomEvent } from '@ionic/angular/standalone';
+
+import { DateService } from '../../services/datetime-service/date-service';
+import { SimplePopoverComponent } from '../../components/simple-popover/simple-popover.component';
+import { Subscription, Observable } from 'rxjs'; // <-- CORREÇÃO: Importação do Observable
+import { RefresherEventDetail } from '@ionic/angular';
+
+// Presumo que estas interfaces e o Service estão no mesmo arquivo ou que HospitalService as importa corretamente
+import { HospitalService, HospitalProcessado } from '../../services/sistema-hospital/hospital'; 
+
+import { finalize } from 'rxjs/operators';
+
+
+// --- REMOVEMOS A INTERFACE 'Hospital' MOCKADA PARA EVITAR CONFLITO DE TIPOS ---
+// Agora usaremos HospitalProcessado em todos os lugares.
+// -----------------------------------------------------------------------------
+
+
+@Component({
+    selector: 'app-home',
+    templateUrl: './home.page.html',
+    styleUrls: ['./home.page.scss'],
+    standalone: true,
+    imports: [
+        IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonTitle, IonContent, IonSpinner,
+        IonRefresher, IonRefresherContent, IonGrid, IonRow, IonCol, IonCard, IonCardContent,
+        IonList, IonItem, IonThumbnail, IonRippleEffect, CommonModule, FormsModule,
+        IonFab, IonFabButton, IonFabList, IonModal, IonLabel
+    ]
 })
 export class HomePage implements OnInit, OnDestroy {
 
-  public hospitais: HospitalProcessado[] = [];
-  public carregando: boolean = true;
-  public erroCarregamento: boolean = false;
-  public mensagemErro: string = '';
-  public data: string = this.dateService.getFormattedDate();
+    // --- VARIÁVEIS DE ESTADO DO COMPONENTE ---
+    public hospitais: HospitalProcessado[] = [];
+    public carregando: boolean = false;
+    public erroCarregamento: boolean = false;
+    public mensagemErro: string = '';
+    public data: string = this.dateService.getFormattedDate();
 
-  
-  public nomeHospital:string = '';
+    // Variáveis de Modo de Interação
+    public isEditingMode: boolean = false;
+    public isDeletingMode: boolean = false;
 
-  private subscription!: Subscription;
+    // Variáveis de Modal
+    public isModalOpenAdd: boolean = false;
+    public isModalOpenEdit: boolean = false;
+    public isModalOpenMap: boolean = false;
+    public isModalOpenLocationSelect: boolean = false;
 
-  isRefreshing = false;
+    // Variáveis para Formulário/Seleção
+    public nomeHospital: string = '';
+    public selectedHospital: HospitalProcessado | null = null;
+    public tempLatitude: number | null = null;
+    public tempLongitude: number | null = null;
+    public hospitalPhoto: string | null = null; // Base64 da foto
+    public hospitalPhotoFilename: string = 'foto_hospital.jpeg'; // Nome do arquivo para o backend
 
-  constructor(
-    private router: Router,
-    private dateService: DateService,
-    public alertController: AlertController,
-    private popoverCtrl: PopoverController,
-    private hospitalService: HospitalService,
-    private loadingController: LoadingController
-  ) {
-    addIcons({ home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create, chevronUp, add, trash, locate, image});
-  }
+    private subscription: Subscription = new Subscription();
+    isRefreshing = false;
 
-  async ngOnInit() {
-    await this.carregarHospitais();
-  }
-
-  ngOnDestroy() {
-
-  }
-
-
-  handleRefresh(event: CustomEvent<RefresherEventDetail>) {
-    this.isRefreshing = true;
-    setTimeout(() => {
-      this.isRefreshing = false;
-      event.detail.complete();
-      this.carregarHospitais();
-    }, 2000);
-  }
-
-  isModalOpenAdd = false;
-
-  setOpenAdd(isOpen: boolean) {
-    this.isModalOpenAdd = isOpen;
-  }
-  isModalOpenEdit = false;
-
-  setOpenEdit(isOpen: boolean) {
-    this.isModalOpenEdit = isOpen;
-  }
-
-
-  async carregarHospitais() {
-    this.carregando = true;
-    this.erroCarregamento = false;
-
-
-  }
-
-  async tentarNovamente() {
-    await this.carregarHospitais();
-  }
-
-  irParaConfiguracao() {
-
-  }
-
-  async presentPopover(event: Event) {
-    const popover = await this.popoverCtrl.create({
-      component: SimplePopoverComponent,
-      event
-    });
-    await popover.present();
-  }
-
-  async irHospital(hospital: HospitalProcessado) {
-
-    const distancia = hospital.distanciaRota ?? hospital.distancia;
-    const tempoDeslocamento = hospital.tempoDeslocamento ? `${hospital.tempoDeslocamento} min` : '?';
-
-    const alert = await this.alertController.create({
-      header: `Deseja realmente ir até ${hospital.nome}?`,
-      cssClass: 'container-alert',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'cancelarAction',
-          handler: () => {
-            console.log('Operação cancelada.');
-          },
-        },
-        {
-          text: 'OK',
-          role: 'confirm',
-          cssClass: 'confirmarAction',
-          handler: async () => {
-            this.abrirNoMapa(hospital);
-          },
-        },
-      ],
-    });
-
-    await alert.present();
-  }
-
-  private abrirNoMapa(hospital: HospitalProcessado) {
-    const userLocation = this.hospitalService.getLocalizacaoAtual();
-
-    if (userLocation) {
-      const url = `https://www.google.com/maps/dir/?api=1&origin=${userLocation.lat},${userLocation.lng}&destination=${hospital.nome}&travelmode=driving`;
-      window.open(url, '_blank');
-    } else {
-      const url = `https://www.google.com/maps/search/?api=1&query=${hospital.lati},${hospital.longi}`;
-      window.open(url, '_blank');
+    constructor(
+        private router: Router,
+        private dateService: DateService,
+        public alertController: AlertController,
+        private popoverCtrl: PopoverController,
+        private loadingController: LoadingController,
+        private toastController: ToastController,
+        private hospitalService: HospitalService
+    ) {
+        addIcons({ home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create, chevronUp, add, trash, locate, image, close });
     }
-  }
 
-  // Helper methods for template - use these in your HTML to display the correct values
-  getDistanciaDisplay(hospital: HospitalProcessado): string {
-    // Prefer route distance, fall back to straight line distance
-    const distancia = hospital.distanciaRota ?? hospital.distancia;
-    return distancia ? this.formatarDistancia(distancia) : '?';
-  }
-
-  getTempoDeslocamentoDisplay(hospital: HospitalProcessado): string {
-    return hospital.tempoDeslocamento ? `${hospital.tempoDeslocamento} min` : 'Calculando...';
-  }
-
-  getTempoEsperaDisplay(hospital: HospitalProcessado): string {
-    return hospital.tempo_espera ? this.formatarTempo(hospital.tempo_espera) : '?';
-  }
-
-  formatarTempo(minutos: number): string {
-    if (minutos < 60) {
-      return `${minutos} min`;
-    } else {
-      const horas = Math.floor(minutos / 60);
-      const mins = minutos % 60;
-      return mins > 0 ? `${horas}h ${mins}min` : `${horas}h`;
+    // GETTER PARA O TÍTULO DINÂMICO
+    get pageTitle(): string {
+        if (this.isEditingMode) {
+            return 'Modo de Edição Ativo';
+        }
+        if (this.isDeletingMode) {
+            return 'Modo de Exclusão Ativo';
+        }
+        return 'Hospitais';
     }
-  }
 
-  formatarDistancia(km: number): string {
-    return km < 1 ? `${(km * 1000).toFixed(0)}m` : `${km.toFixed(1)}km`;
-  }
+    async ngOnInit() {
+        await this.carregarHospitais();
+    }
 
-  salvarConfig(){
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
 
-  }
+
+    async carregarHospitais() {
+        this.carregando = true;
+        this.erroCarregamento = false;
+
+        this.subscription.add(
+            this.hospitalService.getAllHospitais()
+                .pipe(finalize(() => this.carregando = false))
+                .subscribe({
+                    next: (data) => {
+                        this.hospitais = data;
+                        this.erroCarregamento = false;
+                    },
+                    error: (err: any) => { // <-- CORREÇÃO: Tipo 'any' adicionado
+                        console.error('Erro ao carregar hospitais:', err);
+                        this.erroCarregamento = true;
+                        this.mensagemErro = 'Não foi possível carregar os dados. Tente novamente.';
+                        this.presentToast('Erro ao carregar dados.', 'danger');
+                    }
+                })
+        );
+    }
+
+    // <-- CORREÇÃO: A SEGUNDA IMPLEMENTAÇÃO DE handleRefresh FOI REMOVIDA.
+    // Mantenho apenas a primeira, que faz o refresh correto:
+    handleRefresh(event: CustomEvent<RefresherEventDetail>) {
+        this.carregarHospitais()
+            .then(() => event.detail.complete())
+            .catch(() => event.detail.complete()); 
+    }
+
+
+    // -----------------------------------------------------------
+    // LÓGICA DE MODAIS E FORMULÁRIOS
+    // -----------------------------------------------------------
+
+    setOpenAdd(isOpen: boolean) {
+        this.isModalOpenAdd = isOpen;
+        if (!isOpen) {
+            this.nomeHospital = '';
+            this.hospitalPhoto = null;
+            this.tempLatitude = null;
+            this.tempLongitude = null;
+        } else {
+            this.getCurrentLocation();
+        }
+    }
+
+    setOpenEdit(isOpen: boolean, hospital: HospitalProcessado | null = null) {
+        this.isModalOpenEdit = isOpen;
+        this.selectedHospital = hospital;
+
+        if (isOpen && hospital) {
+            this.nomeHospital = hospital.nome;
+            this.tempLatitude = hospital.lati;
+            this.tempLongitude = hospital.longi;
+            this.hospitalPhoto = null; // Limpa o Base64, a visualização usará hospital.foto (URL)
+        } else if (!isOpen) {
+            this.selectedHospital = null;
+        }
+    }
+
+    // -----------------------------------------------------------
+    // AÇÕES DE MAPA E CÂMERA (Capacitor)
+    // -----------------------------------------------------------
+
+    async openCamera() {
+        try {
+            const image = await Camera.getPhoto({
+                quality: 90,
+                allowEditing: false,
+                resultType: CameraResultType.DataUrl,
+                source: CameraSource.Camera,
+            });
+
+            this.hospitalPhoto = image.dataUrl || null;
+            this.hospitalPhotoFilename = `foto_${Date.now()}.jpeg`;
+        } catch (error) {
+            console.error('Erro ao abrir a câmera:', error);
+            this.presentToast('Não foi possível acessar a câmera ou galeria.', 'warning');
+        }
+    }
+
+    // -----------------------------------------------------------
+    // MÉTODOS DE AÇÃO DE DADOS (USANDO O SERVICE)
+    // -----------------------------------------------------------
+
+    async deleteHospital(hospital: HospitalProcessado) {
+        const alert = await this.alertController.create({
+            header: 'Confirma Exclusão?',
+            message: `Tem certeza que deseja deletar o hospital ${hospital.nome}?`,
+            buttons: [
+                { text: 'Cancelar', role: 'cancel' },
+                {
+                    text: 'Deletar',
+                    handler: async () => {
+                        const loading = await this.loadingController.create({ message: 'Excluindo...' });
+                        await loading.present();
+
+                        this.subscription.add(
+                            this.hospitalService.deleteHospital(hospital.id)
+                                .pipe(finalize(() => loading.dismiss()))
+                                .subscribe({
+                                    next: () => {
+                                        this.presentToast(`Hospital ${hospital.nome} excluído.`, 'success');
+                                        this.carregarHospitais();
+                                    },
+                                    error: (err: any) => { // <-- CORREÇÃO: Tipo 'any' adicionado
+                                        console.error('Erro ao excluir:', err);
+                                        this.presentToast('Erro ao excluir hospital.', 'danger');
+                                    }
+                                })
+                        );
+                    },
+                },
+            ],
+        });
+        await alert.present();
+    }
+
+    async salvarConfig() {
+        if (!this.nomeHospital || this.tempLatitude === null || this.tempLongitude === null) {
+            this.presentToast('Preencha nome e localize o hospital.', 'warning');
+            return;
+        }
+
+        const loading = await this.loadingController.create({
+            message: this.isModalOpenAdd ? 'Adicionando hospital...' : 'Atualizando hospital...'
+        });
+        await loading.present();
+
+        // 1. Prepara os dados de texto
+        const hospitalData = {
+            id: this.selectedHospital?.id,
+            nome: this.nomeHospital,
+            lati: this.tempLatitude,
+            longi: this.tempLongitude,
+            // ATENÇÃO: Adicione aqui todos os outros campos (uf, cidade, bairro, logradouro, tempo_espera, etc.)
+            // que seu formulário deve preencher e que o backend espera!
+        };
+
+        // 2. Cria o FormData, incluindo a foto Base64
+        const formData = this.hospitalService.createFormData(
+            hospitalData,
+            this.hospitalPhoto,
+            this.hospitalPhotoFilename
+        );
+
+        let request$: Observable<any>;
+        let successMessage: string;
+
+        if (this.isModalOpenAdd) {
+            request$ = this.hospitalService.addHospital(formData);
+            successMessage = 'Hospital adicionado com sucesso!';
+        } else if (this.isModalOpenEdit && this.selectedHospital) {
+            request$ = this.hospitalService.updateHospital(formData);
+            successMessage = 'Hospital atualizado com sucesso!';
+        } else {
+            loading.dismiss();
+            return;
+        }
+
+        // 3. Executa a requisição
+        this.subscription.add(
+            request$.pipe(finalize(() => loading.dismiss()))
+                .subscribe({
+                    next: () => {
+                        this.presentToast(successMessage, 'success');
+                        this.setOpenAdd(false);
+                        this.setOpenEdit(false);
+                        this.carregarHospitais();
+                    },
+                    error: (err: any) => { // <-- CORREÇÃO: Tipo 'any' adicionado
+                        console.error('Erro na requisição:', err);
+                        this.presentToast('Erro ao salvar os dados. Verifique o servidor.', 'danger');
+                    }
+                })
+        );
+    }
+
+    // --- MÉTODOS AUXILIARES DE TOAST (Usando ToastController) ---
+
+    async presentToast(message: string, color: string = 'primary') {
+        const toast = await this.toastController.create({
+            message: message,
+            duration: 2000,
+            position: 'bottom',
+            color: color,
+            buttons: [{ text: 'FECHAR', role: 'cancel' }]
+        });
+        await toast.present();
+    }
+
+
+    // -----------------------------------------------------------
+    // LÓGICA DE MODOS E NAVEGAÇÃO
+    // -----------------------------------------------------------
+
+    toggleMode(mode: 'edit' | 'delete') {
+        if (mode === 'edit') {
+            this.isDeletingMode = false;
+            this.isEditingMode = !this.isEditingMode;
+        } else if (mode === 'delete') {
+            this.isEditingMode = false;
+            this.isDeletingMode = !this.isDeletingMode;
+        }
+    }
+
+    exitMode() {
+        this.isEditingMode = false;
+        this.isDeletingMode = false;
+    }
+
+
+    irParaConfiguracao() {
+        // Lógica de Redirecionamento de Configuração
+    }
+
+    async presentPopover(event: Event) {
+        const popover = await this.popoverCtrl.create({
+            component: SimplePopoverComponent,
+            event
+        });
+        await popover.present();
+    }
+
+    // -----------------------------------------------------------
+    // LÓGICA DE MAPA E LOCALIZAÇÃO (Capacitor)
+    // -----------------------------------------------------------
+
+    viewHospitalOnMap(hospital: HospitalProcessado) { // <-- CORREÇÃO: Usando HospitalProcessado
+        if (this.isEditingMode || this.isDeletingMode) return;
+
+        this.selectedHospital = hospital;
+        this.isModalOpenMap = true;
+    }
+
+    openLocationSelectionModal() {
+        if (this.selectedHospital) {
+            this.tempLatitude = this.selectedHospital.lati;
+            this.tempLongitude = this.selectedHospital.longi;
+        }
+
+        this.getCurrentLocation();
+        this.isModalOpenLocationSelect = true;
+    }
+
+    async getCurrentLocation() {
+        try {
+            const position = await Geolocation.getCurrentPosition();
+            this.tempLatitude = position.coords.latitude;
+            this.tempLongitude = position.coords.longitude;
+        } catch (error) {
+            console.error('Erro ao obter localização:', error);
+            this.presentToast('Não foi possível obter a localização atual.', 'warning');
+        }
+    }
+
+    saveSelectedLocation() {
+        if (this.tempLatitude !== null && this.tempLongitude !== null) {
+            if (this.selectedHospital) {
+                this.selectedHospital.lati = this.tempLatitude;
+                this.selectedHospital.longi = this.tempLongitude;
+            }
+        }
+        this.isModalOpenLocationSelect = false;
+    }
+
+
+    // --- MÉTODOS AUXILIARES DE DISPLAY ---
+    getDistanciaDisplay(hospital: HospitalProcessado): string { // <-- CORREÇÃO: Usando HospitalProcessado
+        const distancia = hospital.distanciaRota ?? hospital.distancia;
+        return distancia ? this.formatarDistancia(distancia) : '?';
+    }
+
+    getTempoDeslocamentoDisplay(hospital: HospitalProcessado): string { // <-- CORREÇÃO: Usando HospitalProcessado
+        return hospital.tempoDeslocamento ? `${hospital.tempoDeslocamento} min` : 'Calculando...';
+    }
+
+    getTempoEsperaDisplay(hospital: HospitalProcessado): string { // <-- CORREÇÃO: Usando HospitalProcessado
+        return hospital.tempo_espera ? this.formatarTempo(hospital.tempo_espera) : '?';
+    }
+
+    formatarTempo(minutos: number): string {
+        if (minutos < 60) {
+            return `${minutos} min`;
+        } else {
+            const horas = Math.floor(minutos / 60);
+            const mins = minutos % 60;
+            return mins > 0 ? `${horas}h ${mins}min` : `${horas}h`;
+        }
+    }
+
+    formatarDistancia(km: number): string {
+        return km < 1 ? `${(km * 1000).toFixed(0)}m` : `${km.toFixed(1)}km`;
+    }
 }
