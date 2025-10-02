@@ -20,11 +20,16 @@ import {
   IonList,
   IonItem,
   IonThumbnail,
+  IonRippleEffect,
+  IonFab,
+  IonFabButton,
+  IonFabList,
+  IonModal
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 
 import { addIcons } from 'ionicons';
-import { home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create} from 'ionicons/icons';
+import { home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create, chevronUp, add, trash, locate, image} from 'ionicons/icons';
 import { AlertController, PopoverController, LoadingController, RefresherCustomEvent } from '@ionic/angular/standalone';
 
 import { DateService } from '../../services/datetime-service/date-service';
@@ -42,23 +47,33 @@ import { RefresherEventDetail } from '@ionic/angular';
   styleUrls: ['./home.page.scss'],
   standalone: true,
   imports: [IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonButton,
-  IonIcon,
-  IonTitle,
-  IonContent,
-  IonSpinner,
-  IonRefresher,
-  IonRefresherContent,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonCard,
-  IonCardContent,
-  IonList,
-  IonItem,
-  IonThumbnail, CommonModule, FormsModule]
+    IonToolbar,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonTitle,
+    IonContent,
+    IonSpinner,
+    IonRefresher,
+    IonRefresherContent,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonCard,
+    IonCardContent,
+    IonList,
+    IonItem,
+    IonThumbnail,
+    IonRippleEffect,
+    CommonModule, 
+    FormsModule,
+    IonFab,
+    IonFabButton,
+    IonFabList,
+    IonModal
+  
+  ]
+    
 })
 export class HomePage implements OnInit, OnDestroy {
 
@@ -67,6 +82,9 @@ export class HomePage implements OnInit, OnDestroy {
   public erroCarregamento: boolean = false;
   public mensagemErro: string = '';
   public data: string = this.dateService.getFormattedDate();
+
+  
+  public nomeHospital:string = '';
 
   private subscription!: Subscription;
 
@@ -80,7 +98,7 @@ export class HomePage implements OnInit, OnDestroy {
     private hospitalService: HospitalService,
     private loadingController: LoadingController
   ) {
-    addIcons({ home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create});
+    addIcons({ home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create, chevronUp, add, trash, locate, image});
   }
 
   async ngOnInit() {
@@ -88,64 +106,36 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+
   }
+
 
   handleRefresh(event: CustomEvent<RefresherEventDetail>) {
-     this.isRefreshing = true;
-
-    
-
+    this.isRefreshing = true;
     setTimeout(() => {
       this.isRefreshing = false;
-      event.detail.complete(); 
+      event.detail.complete();
       this.carregarHospitais();
-    }, 2000); 
+    }, 2000);
   }
 
-  isModalOpen = false;
+  isModalOpenAdd = false;
 
-  setOpen(isOpen: boolean) {
-    this.isModalOpen = isOpen;
+  setOpenAdd(isOpen: boolean) {
+    this.isModalOpenAdd = isOpen;
   }
+  isModalOpenEdit = false;
+
+  setOpenEdit(isOpen: boolean) {
+    this.isModalOpenEdit = isOpen;
+  }
+
 
   async carregarHospitais() {
     this.carregando = true;
     this.erroCarregamento = false;
 
-    try {
-      // Verifica se tem configurações salvas
-      if (this.hospitalService.temConfiguracoesSalvas()) {
-        await this.hospitalService.carregarHospitaisComConfiguracoesSalvas();
-      } else {
-        // Se não tem configurações, redireciona para configuração inicial
-        this.router.navigate(['/config-user']);
-        return;
-      }
 
-      // Se inscreve para receber os hospitais
-      this.subscription = this.hospitalService.hospitaisFiltrados$.subscribe({
-        next: (hospitais) => {
-          this.hospitais = hospitais;
-          this.carregando = false;
-          console.log('Hospitais carregados:', this.hospitais);
-        },
-        error: (error) => {
-          console.error('Erro ao carregar hospitais:', error);
-          this.mensagemErro = 'Erro ao carregar hospitais. Verifique sua conexão.';
-          this.erroCarregamento = true;
-          this.carregando = false;
-        }
-      });
-
-    } catch (error: any) {
-      console.error('Erro:', error);
-      this.mensagemErro = error.message || 'Erro ao carregar hospitais';
-      this.erroCarregamento = true;
-      this.carregando = false;
-    }
   }
 
   async tentarNovamente() {
@@ -153,7 +143,7 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   irParaConfiguracao() {
-    this.router.navigate(['/config-user']);
+
   }
 
   async presentPopover(event: Event) {
@@ -165,10 +155,10 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   async irHospital(hospital: HospitalProcessado) {
-    // Use route distance if available, otherwise use straight line distance
+
     const distancia = hospital.distanciaRota ?? hospital.distancia;
     const tempoDeslocamento = hospital.tempoDeslocamento ? `${hospital.tempoDeslocamento} min` : '?';
-    
+
     const alert = await this.alertController.create({
       header: `Deseja realmente ir até ${hospital.nome}?`,
       cssClass: 'container-alert',
@@ -197,7 +187,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   private abrirNoMapa(hospital: HospitalProcessado) {
     const userLocation = this.hospitalService.getLocalizacaoAtual();
-    
+
     if (userLocation) {
       const url = `https://www.google.com/maps/dir/?api=1&origin=${userLocation.lat},${userLocation.lng}&destination=${hospital.nome}&travelmode=driving`;
       window.open(url, '_blank');
@@ -234,5 +224,9 @@ export class HomePage implements OnInit, OnDestroy {
 
   formatarDistancia(km: number): string {
     return km < 1 ? `${(km * 1000).toFixed(0)}m` : `${km.toFixed(1)}km`;
+  }
+
+  salvarConfig(){
+
   }
 }

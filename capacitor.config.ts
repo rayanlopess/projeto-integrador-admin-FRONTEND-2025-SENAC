@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'pi-2025-frontend',
+  appId: 'com.filamed.adminapp',
+  appName: 'Filamed Admin',
   webDir: 'www'
 };
 

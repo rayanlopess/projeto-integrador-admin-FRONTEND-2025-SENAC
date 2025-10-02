@@ -15,5 +15,825 @@
 
 
 <ion-content [fullscreen]="true">
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="">
 
+    <ion-fab-button>
+      <ion-icon name="chevron-up"></ion-icon>
+    </ion-fab-button>
+
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="setOpenAdd(true)">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button>
+        <ion-icon name="create"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button class="fab-remove">
+        <ion-icon name="trash"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <ion-grid>
+
+    <!-- *ngIf="!carregando" -->
+    <ion-row>
+      <ion-col>
+        <p id="titulo-cards-home">Lista de usuários cadastrados:</p>
+      </ion-col>
+    </ion-row>
+
+
+    <!-- Mensagem de erro
+    <ion-row *ngIf="erroCarregamento">
+
+
+      <ion-col>
+        <div class="error-container">
+          <img src="../../../assets/images/home/error2-light.png" alt="Error Image" id="error-img-light2">
+          <img src="../../../assets/images/home/error2-dark.png" alt="Error Image" id="error-img-dark2">
+          <div class="div-btSalvarConfig">
+            <ion-button (click)="tentarNovamente()" id="btTentarNovamente">Tentar Novamente</ion-button>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row> -->
+
+    <!-- *ngIf="!carregando && !erroCarregamento" -->
+    <ion-row>
+      <ion-col>
+        <!-- Card vazio se não houver hospitais -->
+        <!-- <div *ngIf="hospitais.length === 0" class="empty-state">
+          <img src="../../../assets/images/home/error-light.png" alt="Error Image" id="error-img-light">
+          <img src="../../../assets/images/home/error-dark.png" alt="Error Image" id="error-img-dark">
+          <div class="div-btSalvarConfig">
+            <ion-button (click)="irParaConfiguracao()" id="btAlterarConfig">Alterar Configurações</ion-button>
+          </div>
+
+        </div> -->
+
+
+
+        <!-- *ngFor="let hospital of hospitais" (click)="irHospital(hospital)" 
+          [class.hospital-proximo]="hospital.distancia && hospital.distancia < 5" -->
+
+
+        <div class="card-wrapper">
+
+
+
+          <button id="botao-canto" class="ion-activatable botao-edit" (click)="setOpenEdit(true)">
+            <ion-icon name="create"></ion-icon>
+            <ion-ripple-effect></ion-ripple-effect>
+          </button>
+          <button id="botao-canto-delete" class="ion-activatable" hidden>
+            <ion-icon name="trash"></ion-icon>
+            <ion-ripple-effect></ion-ripple-effect>
+          </button>
+
+
+
+          <ion-card class="card-home card-com-botao">
+            <ion-card-content>
+              <ion-list>
+                <ion-item>
+
+                  <div class="informacoes-div">
+                    <!-- <h1>{{hospital.nome}} - {{getDistanciaDisplay(hospital)}}</h1> -->
+                    <h1>RayanAdmin</h1>
+                    <!-- *ngIf="hospital.tempoDeslocamento" -->
+                    <p>
+
+                      <i class="bi bi-person-vcard"></i>&nbsp;
+                      <!-- Tempo Ida: <span>{{hospital.tempoDeslocamento}} min</span> -->
+                      <span>Rayan Lopes Americo</span>
+                    </p>
+
+
+                    <!-- Fila de espera -->
+
+
+
+                  </div>
+                </ion-item>
+              </ion-list>
+            </ion-card-content>
+          </ion-card>
+        </div>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
+
+
+
+
+
+
+
+
+
+
+<ion-modal [isOpen]="isModalOpenAdd">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button id="botao-toolbar" (click)="setOpenAdd(false)">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <div class="titulos-container">
+          <ion-title id="home-title">Cadastrar Usuário</ion-title>
+        </div>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content [fullscreen]="true">
+      <ion-grid>
+
+        <ion-row>
+          <ion-col>
+            <p id="titulo-cards-home">Insira as Informações do Usuário:</p>
+          </ion-col>
+        </ion-row>
+
+
+        <!-- *ngIf="!carregando && !erroCarregamento" -->
+        <ion-row>
+          <ion-col>
+            <!-- Card vazio se não houver hospitais -->
+            <!-- <div *ngIf="hospitais.length === 0" class="empty-state">
+          <img src="../../../assets/images/home/error-light.png" alt="Error Image" id="error-img-light">
+          <img src="../../../assets/images/home/error-dark.png" alt="Error Image" id="error-img-dark">
+          <div class="div-btSalvarConfig">
+            <ion-button (click)="irParaConfiguracao()" id="btAlterarConfig">Alterar Configurações</ion-button>
+          </div>
+
+        </div> -->
+
+
+
+            <!-- *ngFor="let hospital of hospitais" (click)="irHospital(hospital)" 
+          [class.hospital-proximo]="hospital.distancia && hospital.distancia < 5" -->
+
+
+            <div class="card-wrapper">
+
+              <ion-card class="card-home card-com-botao">
+                <ion-card-content>
+                  <ion-list>
+                    <ion-item>
+
+                      <div class="informacoes-div">
+                        <!-- <h1>{{hospital.nome}} - {{getDistanciaDisplay(hospital)}}</h1> -->
+                        <h1></h1>
+                        <!-- *ngIf="hospital.tempoDeslocamento" -->
+                        <p>
+
+                          <i class="bi bi-person-vcard"></i>&nbsp;
+                          <!-- Tempo Ida: <span>{{hospital.tempoDeslocamento}} min</span> -->
+                          <span></span>
+                        </p>
+                      </div>
+                    </ion-item>
+                  </ion-list>
+                </ion-card-content>
+              </ion-card>
+            </div>
+          </ion-col>
+        </ion-row>
+
+
+
+        <ion-row>
+          <ion-col>
+            <div class="input-barra">
+              <div class="input-texto">
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button>
+                      <i class="bi bi-person-vcard-fill icon"></i>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+                <div class="wave-group">
+                  <input required="" [type]="'text'" class="input-tecido" [(ngModel)]="nomeCompleto"
+                    #inputNomeCompletoRef>
+                  <label class="label">
+                    <span class="label-char" style="--index: 0">N</span>
+                    <span class="label-char" style="--index: 1">o</span>
+                    <span class="label-char" style="--index: 2">m</span>
+                    <span class="label-char" style="--index: 3">e</span>
+                    <span class="label-char" style="--index: 5">&nbsp;</span>
+                    <span class="label-char" style="--index: 6">C</span>
+                    <span class="label-char" style="--index: 7">o</span>
+                    <span class="label-char" style="--index: 8">m</span>
+                    <span class="label-char" style="--index: 9">p</span>
+                    <span class="label-char" style="--index: 10">l</span>
+                    <span class="label-char" style="--index: 11">e</span>
+                    <span class="label-char" style="--index: 12">t</span>
+                    <span class="label-char" style="--index: 13">o</span>
+                  </label>
+
+                </div>
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button *ngIf="nomeCompleto" fill="clear" class="clear-button" [hidden]="!nomeCompleto"
+                      (click)="limparInput('nomeCompleto')">
+                      <ion-icon name="close"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+              </div>
+              <span class="bar"></span>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <div class="input-barra">
+              <div class="input-texto-datetime">
+
+                <div class="icon-search-datetime">
+                  <ion-buttons>
+                    <ion-button datetime="dataNascimentoModal">
+                      <i class="bi bi-calendar-date icon"></i>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+                <ion-datetime-button color="filamed-blue" id="btDatetime"
+                  datetime="dataNascimentoModal"></ion-datetime-button>
+
+                <ion-modal [keepContentsMounted]="true" class="modal-datetime">
+                  <ng-template>
+                    <ion-datetime color="filamed-blue" id="dataNascimentoModal" presentation="date" min="1900-01-01"
+                      max="2025-12-31" class="custom-data-picker" [(ngModel)]="dataNascimento" locale="pt-BR"
+                      [showDefaultButtons]="true"></ion-datetime>
+                  </ng-template>
+                </ion-modal>
+              </div>
+
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <div class="input-barra">
+              <div class="input-texto">
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button>
+                      <ion-icon name="document" class="icon"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+
+                <div class="wave-group">
+                  <input required="" [type]="'text'" class="input-tecido" [(ngModel)]="cpf" #inputCpfRef
+                    placeholder="Ex.: 000.000.000-00" mask="000.000.000-00">
+                  <label class="label">
+                    <span class="label-char" style="--index: 0">C</span>
+                    <span class="label-char" style="--index: 1">P</span>
+                    <span class="label-char" style="--index: 2">F</span>
+                  </label>
+
+                </div>
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button *ngIf="cpf" fill="clear" class="clear-button" [hidden]="!cpf"
+                      (click)="limparInput('cpf')">
+                      <ion-icon name="close"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+              </div>
+              <span class="bar"></span>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <div class="input-barra">
+              <div class="input-texto">
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button>
+                      <i class="bi bi-envelope-fill icon"></i>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+
+                <div class="wave-group">
+                  <input required="" [type]="'text'" class="input-tecido" [(ngModel)]="email" #inputEmailRef
+                    placeholder="Ex.: seuemail@exemplo.com">
+                  <label class="label">
+                    <span class="label-char" style="--index: 0">E</span>
+                    <span class="label-char" style="--index: 1">-</span>
+                    <span class="label-char" style="--index: 2">m</span>
+                    <span class="label-char" style="--index: 3">a</span>
+                    <span class="label-char" style="--index: 5">i</span>
+                    <span class="label-char" style="--index: 6">l</span>
+                  </label>
+
+                </div>
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button *ngIf="email" fill="clear" class="clear-button" [hidden]="!email"
+                      (click)="limparInput('email')">
+                      <ion-icon name="close"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+              </div>
+              <span class="bar"></span>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <div class="input-barra">
+              <div class="input-texto">
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button>
+                      <i class="bi bi-person-fill icon"></i>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+
+                <div class="wave-group">
+                  <input required="" [type]="'text'" class="input-tecido" [(ngModel)]="nomeUsuario"
+                    #inputNomeCompletoRef placeholder="Ex.: Usuário123">
+                  <label class="label">
+                    <span class="label-char" style="--index: 0">N</span>
+                    <span class="label-char" style="--index: 1">o</span>
+                    <span class="label-char" style="--index: 2">m</span>
+                    <span class="label-char" style="--index: 3">e</span>
+                    <span class="label-char" style="--index: 5">&nbsp;</span>
+                    <span class="label-char" style="--index: 6">d</span>
+                    <span class="label-char" style="--index: 7">e</span>
+                    <span class="label-char" style="--index: 8">&nbsp;</span>
+                    <span class="label-char" style="--index: 9">U</span>
+                    <span class="label-char" style="--index: 10">s</span>
+                    <span class="label-char" style="--index: 11">u</span>
+                    <span class="label-char" style="--index: 12">á</span>
+                    <span class="label-char" style="--index: 13">r</span>
+                    <span class="label-char" style="--index: 14">i</span>
+                    <span class="label-char" style="--index: 16">o</span>
+                  </label>
+
+                </div>
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button *ngIf="nomeUsuario" fill="clear" class="clear-button" [hidden]="!nomeUsuario"
+                      (click)="limparInput('nomeUsuario')">
+                      <ion-icon name="close"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+              </div>
+              <span class="bar"></span>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <div class="input-barra">
+              <div class="input-texto">
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button (click)="togglePasswordVisibility()">
+                      <ion-icon class="icon lock-icon"
+                        [name]="isPasswordVisible ? 'lock-open' : 'lock-closed'"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+
+                <div class="wave-group">
+                  <input required="" [type]="isPasswordVisible ? 'text' : 'password'" class="input-tecido"
+                    [(ngModel)]="senha" #inputSenhaRef>
+                  <label class="label">
+                    <span class="label-char" style="--index: 0">S</span>
+                    <span class="label-char" style="--index: 1">e</span>
+                    <span class="label-char" style="--index: 2">n</span>
+                    <span class="label-char" style="--index: 3">h</span>
+                    <span class="label-char" style="--index: 5">a</span>
+                  </label>
+
+                </div>
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button *ngIf="senha" fill="clear" class="clear-button" [hidden]="!senha"
+                      (click)="limparInput('senha')">
+                      <ion-icon name="close"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+              </div>
+              <span class="bar"></span>
+            </div>
+          </ion-col>
+        </ion-row>
+
+
+        <ion-row>
+          <ion-col>
+            <div class="div-btSalvarConfig">
+              <ion-button id="btSalvarConfigUser" (click)="salvarConfig()">
+                Salvar
+              </ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+
+
+
+
+      </ion-grid>
+    </ion-content>
+    <div class="footer-paths">
+      <img alt="Silhouette of mountains" src="../../../assets/icons/filamed-sem-fundo.png" />
+    </div>
+  </ng-template>
+</ion-modal>
+
+
+
+
+
+<ion-modal [isOpen]="isModalOpenEdit">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button id="botao-toolbar" (click)="setOpenEdit(false)">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <div class="titulos-container">
+          <ion-title id="home-title">Editar Usuário</ion-title>
+        </div>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content [fullscreen]="true">
+      <ion-grid>
+
+        <ion-row>
+          <ion-col>
+            <p id="titulo-cards-home">Informações do Usuário:</p>
+          </ion-col>
+        </ion-row>
+
+
+        <!-- *ngIf="!carregando && !erroCarregamento" -->
+        <ion-row>
+          <ion-col>
+            <!-- Card vazio se não houver hospitais -->
+            <!-- <div *ngIf="hospitais.length === 0" class="empty-state">
+          <img src="../../../assets/images/home/error-light.png" alt="Error Image" id="error-img-light">
+          <img src="../../../assets/images/home/error-dark.png" alt="Error Image" id="error-img-dark">
+          <div class="div-btSalvarConfig">
+            <ion-button (click)="irParaConfiguracao()" id="btAlterarConfig">Alterar Configurações</ion-button>
+          </div>
+
+        </div> -->
+
+
+
+            <!-- *ngFor="let hospital of hospitais" (click)="irHospital(hospital)" 
+          [class.hospital-proximo]="hospital.distancia && hospital.distancia < 5" -->
+
+
+            <div class="card-wrapper">
+
+              <ion-card class="card-home card-com-botao">
+                <ion-card-content>
+                  <ion-list>
+                    <ion-item>
+
+                      <div class="informacoes-div">
+                        <!-- <h1>{{hospital.nome}} - {{getDistanciaDisplay(hospital)}}</h1> -->
+                        <h1></h1>
+                        <!-- *ngIf="hospital.tempoDeslocamento" -->
+                        <p>
+
+                          <i class="bi bi-person-vcard"></i>&nbsp;
+                          <!-- Tempo Ida: <span>{{hospital.tempoDeslocamento}} min</span> -->
+                          <span></span>
+                        </p>
+                      </div>
+                    </ion-item>
+                  </ion-list>
+                </ion-card-content>
+              </ion-card>
+            </div>
+          </ion-col>
+        </ion-row>
+
+
+
+        <ion-row>
+          <ion-col>
+            <div class="input-barra">
+              <div class="input-texto">
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button>
+                      <i class="bi bi-person-vcard-fill icon"></i>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+                <div class="wave-group">
+                  <input required="" [type]="'text'" class="input-tecido" [(ngModel)]="nomeCompleto"
+                    #inputNomeCompletoRef>
+                  <label class="label">
+                    <span class="label-char" style="--index: 0">N</span>
+                    <span class="label-char" style="--index: 1">o</span>
+                    <span class="label-char" style="--index: 2">m</span>
+                    <span class="label-char" style="--index: 3">e</span>
+                    <span class="label-char" style="--index: 5">&nbsp;</span>
+                    <span class="label-char" style="--index: 6">C</span>
+                    <span class="label-char" style="--index: 7">o</span>
+                    <span class="label-char" style="--index: 8">m</span>
+                    <span class="label-char" style="--index: 9">p</span>
+                    <span class="label-char" style="--index: 10">l</span>
+                    <span class="label-char" style="--index: 11">e</span>
+                    <span class="label-char" style="--index: 12">t</span>
+                    <span class="label-char" style="--index: 13">o</span>
+                  </label>
+
+                </div>
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button *ngIf="nomeCompleto" fill="clear" class="clear-button" [hidden]="!nomeCompleto"
+                      (click)="limparInput('nomeCompleto')">
+                      <ion-icon name="close"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+              </div>
+              <span class="bar"></span>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <div class="input-barra">
+              <div class="input-texto-datetime">
+
+                <div class="icon-search-datetime">
+                  <ion-buttons>
+                    <ion-button datetime="dataNascimentoModal">
+                      <i class="bi bi-calendar-date icon"></i>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+                <ion-datetime-button color="filamed-blue" id="btDatetime"
+                  datetime="dataNascimentoModal"></ion-datetime-button>
+
+                <ion-modal [keepContentsMounted]="true" class="modal-datetime">
+                  <ng-template>
+                    <ion-datetime color="filamed-blue" id="dataNascimentoModal" presentation="date" min="1900-01-01"
+                      max="2025-12-31" class="custom-data-picker" [(ngModel)]="dataNascimento" locale="pt-BR"
+                      [showDefaultButtons]="true"></ion-datetime>
+                  </ng-template>
+                </ion-modal>
+              </div>
+
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <div class="input-barra">
+              <div class="input-texto">
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button>
+                      <ion-icon name="document" class="icon"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+
+                <div class="wave-group">
+                  <input required="" [type]="'text'" class="input-tecido" [(ngModel)]="cpf" #inputCpfRef
+                    placeholder="Ex.: 000.000.000-00" mask="000.000.000-00">
+                  <label class="label">
+                    <span class="label-char" style="--index: 0">C</span>
+                    <span class="label-char" style="--index: 1">P</span>
+                    <span class="label-char" style="--index: 2">F</span>
+                  </label>
+
+                </div>
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button *ngIf="cpf" fill="clear" class="clear-button" [hidden]="!cpf"
+                      (click)="limparInput('cpf')">
+                      <ion-icon name="close"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+              </div>
+              <span class="bar"></span>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <div class="input-barra">
+              <div class="input-texto">
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button>
+                      <i class="bi bi-envelope-fill icon"></i>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+
+                <div class="wave-group">
+                  <input required="" [type]="'text'" class="input-tecido" [(ngModel)]="email" #inputEmailRef
+                    placeholder="Ex.: seuemail@exemplo.com">
+                  <label class="label">
+                    <span class="label-char" style="--index: 0">E</span>
+                    <span class="label-char" style="--index: 1">-</span>
+                    <span class="label-char" style="--index: 2">m</span>
+                    <span class="label-char" style="--index: 3">a</span>
+                    <span class="label-char" style="--index: 5">i</span>
+                    <span class="label-char" style="--index: 6">l</span>
+                  </label>
+
+                </div>
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button *ngIf="email" fill="clear" class="clear-button" [hidden]="!email"
+                      (click)="limparInput('email')">
+                      <ion-icon name="close"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+              </div>
+              <span class="bar"></span>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <div class="input-barra">
+              <div class="input-texto">
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button>
+                      <i class="bi bi-person-fill icon"></i>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+
+                <div class="wave-group">
+                  <input required="" [type]="'text'" class="input-tecido" [(ngModel)]="nomeUsuario"
+                    #inputNomeCompletoRef placeholder="Ex.: Usuário123">
+                  <label class="label">
+                    <span class="label-char" style="--index: 0">N</span>
+                    <span class="label-char" style="--index: 1">o</span>
+                    <span class="label-char" style="--index: 2">m</span>
+                    <span class="label-char" style="--index: 3">e</span>
+                    <span class="label-char" style="--index: 5">&nbsp;</span>
+                    <span class="label-char" style="--index: 6">d</span>
+                    <span class="label-char" style="--index: 7">e</span>
+                    <span class="label-char" style="--index: 8">&nbsp;</span>
+                    <span class="label-char" style="--index: 9">U</span>
+                    <span class="label-char" style="--index: 10">s</span>
+                    <span class="label-char" style="--index: 11">u</span>
+                    <span class="label-char" style="--index: 12">á</span>
+                    <span class="label-char" style="--index: 13">r</span>
+                    <span class="label-char" style="--index: 14">i</span>
+                    <span class="label-char" style="--index: 16">o</span>
+                  </label>
+
+                </div>
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button *ngIf="nomeUsuario" fill="clear" class="clear-button" [hidden]="!nomeUsuario"
+                      (click)="limparInput('nomeUsuario')">
+                      <ion-icon name="close"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+              </div>
+              <span class="bar"></span>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <div class="input-barra">
+              <div class="input-texto">
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button (click)="togglePasswordVisibility()">
+                      <ion-icon class="icon lock-icon"
+                        [name]="isPasswordVisible ? 'lock-open' : 'lock-closed'"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+
+                <div class="wave-group">
+                  <input required="" [type]="isPasswordVisible ? 'text' : 'password'" class="input-tecido"
+                    [(ngModel)]="senha" #inputSenhaRef>
+                  <label class="label">
+                    <span class="label-char" style="--index: 0">S</span>
+                    <span class="label-char" style="--index: 1">e</span>
+                    <span class="label-char" style="--index: 2">n</span>
+                    <span class="label-char" style="--index: 3">h</span>
+                    <span class="label-char" style="--index: 5">a</span>
+                  </label>
+
+                </div>
+
+                <div class="icon-search">
+                  <ion-buttons>
+                    <ion-button *ngIf="senha" fill="clear" class="clear-button" [hidden]="!senha"
+                      (click)="limparInput('senha')">
+                      <ion-icon name="close"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+              </div>
+              <span class="bar"></span>
+            </div>
+          </ion-col>
+        </ion-row>
+
+
+        <ion-row>
+          <ion-col>
+            <div class="div-btSalvarConfig">
+              <ion-button id="btSalvarConfigUser" (click)="salvarConfig()">
+                Salvar
+              </ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+
+
+
+
+      </ion-grid>
+    </ion-content>
+    <div class="footer-paths">
+      <img alt="Silhouette of mountains" src="../../../assets/icons/filamed-sem-fundo.png" />
+    </div>
+
+  </ng-template>
+</ion-modal>

@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">FilaMed</string>
-    <string name="title_activity_main">FilaMed</string>
-    <string name="package_name">io.ionic.starter</string>
-    <string name="custom_url_scheme">io.ionic.starter</string>
+    <string name="app_name">FilaMed Admin</string>
+    <string name="title_activity_main">FilaMed Admin</string>
+    <string name="package_name">com.filamed.adminapp</string>
+    <string name="custom_url_scheme">com.filamed.adminapp</string>
     <string name="google_maps_key">AIzaSyDvQ8YamcGrMBGAp0cslVWSRhS5NXNEDcI</string>
 </resources>

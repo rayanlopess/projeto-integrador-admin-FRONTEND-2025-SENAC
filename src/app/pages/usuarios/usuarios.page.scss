@@ -1,0 +1,21 @@
+:host {
+    display: block;
+    height: 100%;
+  }
+  
+  ion-content {
+    --background: transparent;
+  }
+
+.modal-datetime {
+  // Muda a cor do fundo escuro que cobre a tela
+  background-color: rgba(0, 0, 0, 0.6); 
+}
+.modal-datetime::part(content) {
+  // Exemplo: aplicar uma borda ou sombra específica ao contêiner
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2)
+}
+#btDatetime{
+    width: max-content;
+}

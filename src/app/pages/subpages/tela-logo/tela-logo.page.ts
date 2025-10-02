@@ -60,14 +60,17 @@ export class TelaLogoPage implements AfterViewInit {
       // Aguarda a animação de saída terminar
       await new Promise(resolve => setTimeout(resolve, 1000));
 
+      localStorage.setItem("isLogged", "true");
+
       const isFirstTime = localStorage.getItem("isLogged");
+
       if (isFirstTime === "false") {
-        this.router.navigate(['/path/home'], {
+        this.router.navigate(['/login'], {
           replaceUrl: true
         });
       }
       else{
-        this.router.navigate(['/login'], {
+        this.router.navigate(['/path/hospitais'], {
           replaceUrl: true
         });
       }

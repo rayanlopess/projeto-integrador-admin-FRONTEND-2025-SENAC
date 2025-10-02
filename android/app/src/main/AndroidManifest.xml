@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    
+
     <uses-feature android:name="android.hardware.location.gps" />
 
     <application
@@ -18,7 +18,6 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         android:hardwareAccelerated="true">
-        
         <activity
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation"
             android:name=".MainActivity"
@@ -37,15 +36,13 @@
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
-            <meta-data 
-                android:name="android.support.FILE_PROVIDER_PATHS" 
-                android:resource="@xml/file_paths" />
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" />
         </provider>
 
         <!-- Meta-data do Google Maps DEVE estar DENTRO de <application> -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDvQ8YamcGrMBGAp0cslVWSRhS5NXNEDcI" />
-            
+            android:value="AIzaSyDvQ8YamcGrMBGAp0cslVWSRhS5NXNEDcI"
+        />
     </application>
 </manifest>
