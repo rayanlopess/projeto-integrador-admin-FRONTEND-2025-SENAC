@@ -64,13 +64,13 @@ export class TelaLogoPage implements AfterViewInit {
 
       const isFirstTime = localStorage.getItem("isLogged");
 
-      if (isFirstTime === "false") {
+      if (isFirstTime === "true") {
         this.router.navigate(['/login'], {
           replaceUrl: true
         });
       }
       else{
-        this.router.navigate(['/path/hospitais'], {
+        this.router.navigate(['/login'], {
           replaceUrl: true
         });
       }

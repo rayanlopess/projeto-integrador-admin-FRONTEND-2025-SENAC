@@ -4,6 +4,103 @@
     <div>
       <div class="login-box">
 
+
+        <div class="img-logo-filamed">
+          <img src="../../../assets/icons/filamed-azul-sf.png" alt="" width="200px">
+        </div>
+
+
+        <div class="input-barra">
+          <div class="input-texto">
+
+            <div class="icon-search">
+              <ion-buttons>
+                <ion-button>
+                  <i class="bi bi-person-fill icon"></i>
+                </ion-button>
+              </ion-buttons>
+            </div>
+            <div class="wave-group">
+              <input required="" [type]="'text'" class="input-tecido" [(ngModel)]="login"
+                placeholder="Ex.: Usuário123" #inputLoginRef>
+              <label class="label">
+                <span class="label-char" style="--index: 0">U</span>
+                <span class="label-char" style="--index: 1">s</span>
+                <span class="label-char" style="--index: 2">u</span>
+                <span class="label-char" style="--index: 3">á</span>
+                <span class="label-char" style="--index: 5">r</span>
+                <span class="label-char" style="--index: 6">i</span>
+                <span class="label-char" style="--index: 7">o</span>
+                <span class="label-char" style="--index: 8">&nbsp;</span>
+                <span class="label-char" style="--index: 9">o</span>
+                <span class="label-char" style="--index: 10">u</span>
+                <span class="label-char" style="--index: 11">&nbsp;</span>
+                <span class="label-char" style="--index: 12">E</span>
+                <span class="label-char" style="--index: 13">-</span>
+                <span class="label-char" style="--index: 14">m</span>
+                <span class="label-char" style="--index: 15">a</span>
+                <span class="label-char" style="--index: 16">i</span>
+                <span class="label-char" style="--index: 17">l</span>
+              </label>
+
+            </div>
+
+            <div class="icon-search">
+              <ion-buttons>
+                <ion-button *ngIf="login" fill="clear" class="clear-button" [hidden]="!login"
+                  (click)="limparInput('login')">
+                  <ion-icon name="close"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </div>
+
+          </div>
+          <span class="bar"></span>
+        </div>
+
+
+
+        <div class="input-barra">
+          <div class="input-texto">
+
+            <div class="icon-search">
+              <ion-buttons>
+                <ion-button (click)="togglePasswordVisibility()">
+                  <ion-icon class="icon lock-icon"
+                    [name]="isPasswordVisible ? 'lock-open' : 'lock-closed'"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </div>
+
+
+            <div class="wave-group">
+              <input required="" [type]="isPasswordVisible ? 'text' : 'password'" class="input-tecido"
+                [(ngModel)]="senha" #inputSenhaRef>
+              <label class="label">
+                <span class="label-char" style="--index: 0">S</span>
+                <span class="label-char" style="--index: 1">e</span>
+                <span class="label-char" style="--index: 2">n</span>
+                <span class="label-char" style="--index: 3">h</span>
+                <span class="label-char" style="--index: 5">a</span>
+              </label>
+
+            </div>
+
+            <div class="icon-search">
+              <ion-buttons>
+                <ion-button *ngIf="senha" fill="clear" class="clear-button" [hidden]="!senha"
+                  (click)="limparInput('senha')">
+                  <ion-icon name="close"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </div>
+
+          </div>
+          <span class="bar"></span>
+        </div>
+
+
+
       </div>
     </div>
   </div>
