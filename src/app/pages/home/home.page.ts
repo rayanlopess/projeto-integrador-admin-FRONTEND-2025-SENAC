@@ -43,9 +43,11 @@ import { Subscription, Observable } from 'rxjs'; // <-- CORREÇÃO: Importação
 import { RefresherEventDetail } from '@ionic/angular';
 
 // Presumo que estas interfaces e o Service estão no mesmo arquivo ou que HospitalService as importa corretamente
-import { HospitalService, HospitalProcessado } from '../../services/sistema-hospital/hospital'; 
+import { HospitalService, HospitalProcessado, HospitalBackend } from '../../services/sistema-hospital/hospital';
 
 import { finalize } from 'rxjs/operators';
+
+import { GoogleMapsViewerComponent } from '../../components/google-maps/google-maps-viewer/google-maps-viewer.component'; // <-- Importe o novo componente
 
 
 // --- REMOVEMOS A INTERFACE 'Hospital' MOCKADA PARA EVITAR CONFLITO DE TIPOS ---
@@ -62,7 +64,7 @@ import { finalize } from 'rxjs/operators';
         IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonTitle, IonContent, IonSpinner,
         IonRefresher, IonRefresherContent, IonGrid, IonRow, IonCol, IonCard, IonCardContent,
         IonList, IonItem, IonThumbnail, IonRippleEffect, CommonModule, FormsModule,
-        IonFab, IonFabButton, IonFabList, IonModal, IonLabel
+        IonFab, IonFabButton, IonFabList, IonModal, IonLabel, GoogleMapsViewerComponent
     ]
 })
 export class HomePage implements OnInit, OnDestroy {
@@ -115,7 +117,7 @@ export class HomePage implements OnInit, OnDestroy {
         if (this.isDeletingMode) {
             return 'Modo de Exclusão Ativo';
         }
-        return 'Hospitais';
+        return 'Bem-Vindo Ao FilaMed';
     }
 
     async ngOnInit() {
@@ -126,6 +128,10 @@ export class HomePage implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
+    updateTempCoords(event: { lat: number, lng: number }) {
+        this.tempLatitude = event.lat;
+        this.tempLongitude = event.lng;
+    }
 
     async carregarHospitais() {
         this.carregando = true;
@@ -154,7 +160,7 @@ export class HomePage implements OnInit, OnDestroy {
     handleRefresh(event: CustomEvent<RefresherEventDetail>) {
         this.carregarHospitais()
             .then(() => event.detail.complete())
-            .catch(() => event.detail.complete()); 
+            .catch(() => event.detail.complete());
     }
 
 
@@ -162,8 +168,9 @@ export class HomePage implements OnInit, OnDestroy {
     // LÓGICA DE MODAIS E FORMULÁRIOS
     // -----------------------------------------------------------
 
-    setOpenAdd(isOpen: boolean) {
+    setOpenAdd(isOpen: boolean, hospital: HospitalProcessado | null = null) {
         this.isModalOpenAdd = isOpen;
+        this.selectedHospital = hospital; // Este é o ponto chave!
         if (!isOpen) {
             this.nomeHospital = '';
             this.hospitalPhoto = null;
@@ -176,16 +183,27 @@ export class HomePage implements OnInit, OnDestroy {
 
     setOpenEdit(isOpen: boolean, hospital: HospitalProcessado | null = null) {
         this.isModalOpenEdit = isOpen;
-        this.selectedHospital = hospital;
+        this.selectedHospital = hospital; // ✅ Se 'hospital' não for nulo, o ID está aqui.
 
-        if (isOpen && hospital) {
-            this.nomeHospital = hospital.nome;
-            this.tempLatitude = hospital.lati;
-            this.tempLongitude = hospital.longi;
-            this.hospitalPhoto = null; // Limpa o Base64, a visualização usará hospital.foto (URL)
-        } else if (!isOpen) {
-            this.selectedHospital = null;
-        }
+        
+
+    if (isOpen && hospital) {
+        // ✅ ATENÇÃO: Carregue as variáveis do formulário com os dados EXISTENTES
+        this.nomeHospital = hospital.nome;
+        
+        // 🚨 O TEMPLongitude e TEMPlatitude DEVEM ser carregados do hospital selecionado!
+        this.tempLatitude = hospital.lati; 
+        this.tempLongitude = hospital.longi;
+        
+        this.hospitalPhoto = null; 
+    } else if (!isOpen) {
+        // Ao fechar, limpa
+        this.selectedHospital = null;
+        this.nomeHospital = '';
+        this.tempLatitude = null;
+        this.tempLongitude = null;
+        this.hospitalPhoto = null;
+    }
     }
 
     // -----------------------------------------------------------
@@ -258,14 +276,22 @@ export class HomePage implements OnInit, OnDestroy {
         await loading.present();
 
         // 1. Prepara os dados de texto
-        const hospitalData = {
-            id: this.selectedHospital?.id,
+        // ⚠️ Correção aqui: Tipar como Partial<HospitalBackend> e garantir que o ID está presente.
+        // 1. Prepara os dados de texto
+        const hospitalData: Partial<HospitalBackend> = {
+            // Se estiver no modo de edição, use o ID do selectedHospital
+            id: this.isModalOpenEdit ? this.selectedHospital?.id : undefined,
             nome: this.nomeHospital,
             lati: this.tempLatitude,
             longi: this.tempLongitude,
-            // ATENÇÃO: Adicione aqui todos os outros campos (uf, cidade, bairro, logradouro, tempo_espera, etc.)
-            // que seu formulário deve preencher e que o backend espera!
         };
+
+        // ⚠️ Mantenha este bloco de erro, mas ele deve ser acionado apenas se o fluxo anterior falhar.
+        if (this.isModalOpenEdit && !hospitalData.id) {
+            loading.dismiss();
+            this.presentToast('Erro de Edição: ID do hospital não encontrado. Tente reabrir o modal.', 'danger');
+            return;
+        }
 
         // 2. Cria o FormData, incluindo a foto Base64
         const formData = this.hospitalService.createFormData(
@@ -305,6 +331,7 @@ export class HomePage implements OnInit, OnDestroy {
                 })
         );
     }
+
 
     // --- MÉTODOS AUXILIARES DE TOAST (Usando ToastController) ---
 

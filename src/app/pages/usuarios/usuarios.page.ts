@@ -147,7 +147,7 @@ export class UsuariosPage implements OnInit {
       addIcons({ home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create, chevronUp, add, trash, lockClosed, lockOpen, closeCircle, document, ellipsisVertical });
     }
   ngOnInit(): void {
-    
+    this.loadUsers();
   }
 
   // --- Lógica de Carregamento de Usuários ---
@@ -169,6 +169,7 @@ export class UsuariosPage implements OnInit {
 
     try {
       this.users = await this.userService.getAllUsers();
+      console.log(this.users)
       this.erroCarregamento = false;
     } catch (error) {
       console.error('Erro ao carregar usuários:', error);

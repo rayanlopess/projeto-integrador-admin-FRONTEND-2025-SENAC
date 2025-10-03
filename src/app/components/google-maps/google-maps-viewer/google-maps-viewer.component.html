@@ -1,0 +1,18 @@
+<div class="map-wrapper" style="height: 100%; width: 100%;">
+    <google-map 
+        height="100%" 
+        width="100%" 
+        [zoom]="zoom" 
+        [center]="center" 
+        [options]="mapOptions">
+        
+        <map-marker 
+            [position]="markerPosition" 
+            [options]="markerOptions"
+            (mapDragend)="markerDragEnd($event)"
+            (mapClick)="isSelectable ? markerDragEnd($event) : null"
+            >
+        </map-marker>
+        
+    </google-map>
+</div>
