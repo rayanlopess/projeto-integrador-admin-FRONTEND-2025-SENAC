@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { PathsPage } from './pages/paths/paths.page';
+import { authGuard } from './services/sistema-login/auth-guard';
 
 export const routes: Routes = [
 
@@ -22,6 +23,7 @@ export const routes: Routes = [
         pathMatch: 'full',
       }
     ],
+    canActivate: [authGuard]
   },
 
 
@@ -40,7 +42,8 @@ export const routes: Routes = [
  
   {
     path: 'central-ajuda',
-    loadComponent: () => import('./pages/subpages/central-ajuda/central-ajuda.page').then( m => m.CentralAjudaPage)
+    loadComponent: () => import('./pages/subpages/central-ajuda/central-ajuda.page').then( m => m.CentralAjudaPage),
+    canActivate: [authGuard]
   },
   {
     path: 'login',

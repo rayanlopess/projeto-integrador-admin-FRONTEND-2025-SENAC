@@ -1,19 +1,20 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start" *ngIf="isEditingMode || isDeletingMode">
-      <ion-button id="botao-toolbar" (click)="exitMode()" >
+      <ion-button id="botao-toolbar" (click)="exitMode()">
         <ion-icon id="icon-toolbar" class="icon-exit" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
 
     <div class="titulos-container">
-      <ion-title id="home-title" [ngStyle]="{'color': isDeletingMode ? '#a4071a' : (isEditingMode ? '#0e2b52' : undefined)}">{{pageTitle}}</ion-title>
+      <ion-title id="home-title"
+        [ngStyle]="{'color': isDeletingMode ? '#a4071a' : (isEditingMode ? '#0e2b52' : undefined)}">{{pageTitle}}</ion-title>
       <span id="home-title" *ngIf="!isEditingMode && !isDeletingMode">{{data}}</span>
     </div>
 
     <ion-buttons slot="end" *ngIf="!isEditingMode && !isDeletingMode">
       <ion-button id="botao-toolbar" (click)="presentPopover($event)">
-        <ion-icon id="icon-toolbar"  name="ellipsis-vertical"></ion-icon>
+        <ion-icon id="icon-toolbar" name="ellipsis-vertical"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -23,8 +24,9 @@
 
 
 <ion-content [fullscreen]="true">
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="!isEditingMode && !isDeletingMode">
 
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" 
+  *ngIf="is_master_admin === '1' && !isEditingMode && !isDeletingMode">
     <ion-fab-button>
       <ion-icon name="chevron-up"></ion-icon>
     </ion-fab-button>
@@ -88,10 +90,10 @@
               <ion-list>
                 <ion-item lines="none">
                   <div class="informacoes-div">
-                    <h1>{{user.nomeUsuario}}</h1>
+                    <h1>{{user.usuario}}</h1>
                     <p>
                       <i class="bi bi-person-vcard"></i>&nbsp;
-                      <span>{{user.nomeCompleto}}</span>
+                      <span>{{user.nome}}</span>
                     </p>
                   </div>
                 </ion-item>
@@ -159,15 +161,13 @@
                     <ion-item>
 
                       <div class="informacoes-div">
-                        <!-- <h1>{{hospital.nome}} - {{getDistanciaDisplay(hospital)}}</h1> -->
-                        <h1></h1>
-                        <!-- *ngIf="hospital.tempoDeslocamento" -->
+                        <h1>{{nomeUsuario || 'João123'}}</h1>
                         <p>
-
                           <i class="bi bi-person-vcard"></i>&nbsp;
-                          <!-- Tempo Ida: <span>{{hospital.tempoDeslocamento}} min</span> -->
-                          <span></span>
+                          <span>{{nomeCompleto || 'João da Silva'}}</span>
                         </p>
+
+                        
                       </div>
                     </ion-item>
                   </ion-list>
@@ -251,7 +251,7 @@
                   <ng-template>
                     <ion-datetime color="filamed-blue" id="dataNascimentoModal" presentation="date" min="1900-01-01"
                       max="2025-12-31" class="custom-data-picker" [(ngModel)]="dataNascimento" locale="pt-BR"
-                      [showDefaultButtons]="true"></ion-datetime>
+                      [showDefaultButtons]="true" (ionChange)="formatarData($event)"></ion-datetime>
                   </ng-template>
                 </ion-modal>
               </div>
@@ -276,7 +276,7 @@
 
                 <div class="wave-group">
                   <input required="" [type]="'text'" class="input-tecido" [(ngModel)]="cpf" #inputCpfRef
-                    placeholder="Ex.: 000.000.000-00" mask="000.000.000-00">
+                    placeholder="Ex.: 000.000.000-00" mask="000.000.000-00" [dropSpecialCharacters]="false" >
                   <label class="label">
                     <span class="label-char" style="--index: 0">C</span>
                     <span class="label-char" style="--index: 1">P</span>
@@ -485,10 +485,10 @@
                   <ion-list>
                     <ion-item lines="none">
                       <div class="informacoes-div">
-                        <h1>{{selectedUser.nomeUsuario}}</h1>
+                        <h1>{{selectedUser.usuario}}</h1>
                         <p>
                           <i class="bi bi-person-vcard"></i>&nbsp;
-                          <span>{{selectedUser.nomeCompleto}}</span>
+                          <span>{{selectedUser.nome}}</span>
                         </p>
                       </div>
                     </ion-item>

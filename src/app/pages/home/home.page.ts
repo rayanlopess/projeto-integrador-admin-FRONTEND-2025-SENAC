@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -97,10 +97,12 @@ export class HomePage implements OnInit, OnDestroy {
     public hospitalPhoto: string | null = null; // Base64 da foto
     public hospitalPhotoFilename: string = 'foto_hospital.jpeg'; // Nome do arquivo para o backend
 
-
+    public token = localStorage.getItem('token') || '';
 
     private subscription: Subscription = new Subscription();
     isRefreshing = false;
+
+    private storageChangeListener = this.handleStorageChange.bind(this); 
 
     constructor(
         private router: Router,
@@ -111,11 +113,18 @@ export class HomePage implements OnInit, OnDestroy {
         private toastController: ToastController,
         private hospitalService: HospitalService,
         private geocodingService: GeocodingService,
-        private actionSheetController: ActionSheetController) {
+        private actionSheetController: ActionSheetController, 
+        private cd: ChangeDetectorRef) {
         addIcons({ home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create, chevronUp, add, trash, locate, image, close, camera });
     }
 
-    // GETTER PARA O TÍTULO DINÂMICO
+    private handleStorageChange(event: StorageEvent): void {
+        // Verifica se a chave 'user' foi afetada.
+        if (event.key === 'user' || event.key === 'token') {
+            // Força o Angular a verificar novamente o getter pageTitle.
+            this.cd.detectChanges();
+        }
+    }
     get pageTitle(): string {
         if (this.isEditingMode) {
             return 'Modo de Edição Ativo';
@@ -123,20 +132,24 @@ export class HomePage implements OnInit, OnDestroy {
         if (this.isDeletingMode) {
             return 'Modo de Exclusão Ativo';
         }
-        return 'Bem-Vindo Ao FilaMed';
+        // 3. Lê o valor do 'user' diretamente no getter, garantindo o dado mais recente.
+        const usuarioTile = localStorage.getItem('user') || 'Usuário';
+        return `Bem-Vindo, ${usuarioTile}`;
     }
 
     async ngOnInit() {
+        window.addEventListener('storage', this.storageChangeListener);
         await this.carregarHospitais();
     }
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+        window.removeEventListener('storage', this.storageChangeListener);
     }
 
     updateTempCoords(coords: { lat: number, lng: number }) {
         this.tempLatitude = coords.lat;
-        this.tempLongi = coords.lng; 
+        this.tempLongi = coords.lng;
     }
 
     async carregarHospitais() {
@@ -287,7 +300,7 @@ export class HomePage implements OnInit, OnDestroy {
                         await loading.present();
 
                         this.subscription.add(
-                            this.hospitalService.deleteHospital(hospital.id)
+                            this.hospitalService.deleteHospital(hospital.id, this.token)
                                 .pipe(finalize(() => loading.dismiss()))
                                 .subscribe({
                                     next: () => {
@@ -378,10 +391,10 @@ export class HomePage implements OnInit, OnDestroy {
         let successMessage: string;
 
         if (this.isModalOpenAdd) {
-            request$ = this.hospitalService.addHospital(formData);
+            request$ = this.hospitalService.addHospital(formData, this.token);
             successMessage = 'Hospital adicionado com sucesso!';
         } else if (this.isModalOpenEdit && this.selectedHospital) {
-            request$ = this.hospitalService.updateHospital(formData);
+            request$ = this.hospitalService.updateHospital(formData, this.token);
             successMessage = 'Hospital atualizado com sucesso!';
         } else {
             loading.dismiss();

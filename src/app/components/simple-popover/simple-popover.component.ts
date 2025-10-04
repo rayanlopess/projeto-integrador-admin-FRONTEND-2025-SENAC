@@ -18,6 +18,7 @@ import {
   IonGrid,
   IonRow,
   IonCol,
+  AlertController
 } from '@ionic/angular/standalone';
 
 import { ThemeActionService } from '../../services/theme/theme-action';
@@ -30,26 +31,27 @@ import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular/standalone';
 
+import { AutenticacaoService } from 'src/app/services/sistema-login/autenticacao';
 
 
 @Component({
   selector: 'app-simple-popover',
   standalone: true,
   imports: [IonList,
-  IonItem,
-  IonLabel,
-  IonNote,
-  IonModal,
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonButton,
-  IonIcon,
-  IonTitle,
-  IonContent,
-  IonGrid,
-  IonRow,
-  IonCol, CommonModule],
+    IonItem,
+    IonLabel,
+    IonNote,
+    IonModal,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonTitle,
+    IonContent,
+    IonGrid,
+    IonRow,
+    IonCol, CommonModule],
   template: `
     <ion-list>
 
@@ -68,6 +70,10 @@ import { PopoverController } from '@ionic/angular/standalone';
 
       <ion-item lines="none" button (click)="abrirCentralAjuda()">
         <ion-label>Central de Ajuda</ion-label>
+      </ion-item>
+
+      <ion-item lines="none" button (click)="logOut()">
+        <ion-label>Sair</ion-label>
       </ion-item>
     </ion-list>
 
@@ -288,6 +294,8 @@ export class SimplePopoverComponent {
   private subscription!: Subscription;
   public config: any = localStorage.getItem('configuracoesUsuario');
 
+
+
   isModalOpen = false;
   isModalOpen1 = false;
 
@@ -295,7 +303,9 @@ export class SimplePopoverComponent {
     private themeActionService: ThemeActionService,
     private themeService: ThemeService,
     private router: Router,
-    private popoverCtrl: PopoverController // Adicione esta linha
+    private popoverCtrl: PopoverController,
+    private alertController: AlertController,
+    private autenticacao_service: AutenticacaoService
   ) {
     addIcons({ sunny, moon, phonePortrait, close, arrowBackOutline });
   }
@@ -367,6 +377,57 @@ export class SimplePopoverComponent {
   }
 
   irPagina() {
+
+  }
+
+
+
+  public token = localStorage.getItem('token') || '';
+
+  async logOut() {
+    const alert = await this.alertController.create({
+      header: 'Deseja realmente fazer Log-Out?',
+      buttons: [ {
+        text: 'cancelar',
+        role: 'cancelar',
+        handler: () => {
+
+        },
+      },
+      {
+        text: 'OK',
+        role: 'OK',
+        handler: () => {
+          this.autenticacao_service
+            .logOut(this.token)
+            .subscribe(
+              async (_res: any) => {
+                if (_res.message == 'Logout realizado com sucesso') {
+                  await this.popoverCtrl.dismiss();
+                  localStorage.removeItem('token');
+                  localStorage.removeItem('nome');
+                  localStorage.removeItem('user');
+                  localStorage.removeItem('email');
+                  localStorage.removeItem('is_master_admin');
+                  localStorage.removeItem('user'); 
+                  localStorage.removeItem('user'); 
+                  this.router.navigate(['/login'])
+                }
+                else {
+                  console.log(_res)
+                }
+              }
+            )
+        },
+      },
+      ],
+    });
+
+    await alert.present();
+
+
+
+
 
   }
 

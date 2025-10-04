@@ -1,29 +1,45 @@
 import { Injectable } from '@angular/core';
-import { RequiemDosDeusesService } from '../requisicao-HTTP/requisicao';  
+import { RequiemDosDeusesService } from '../requisicao-HTTP/requisicao';
 import { Observable } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AutenticacaoService {
-    
+
   constructor(public rs: RequiemDosDeusesService) { }
 
   logar(login: string, senha: string) {
-    // Opção 1: Usando FormData (como você estava fazendo)
-    const fd = new FormData();
-    fd.append('login', login);
-    fd.append('senha', senha);
-    
-    return this.rs.post('/auth/login', fd);
 
-    // Opção 2: Usando JSON (mais comum para APIs REST)
-    // const dados = { login, senha };
-    // return this.rs.post('/auth/login', dados);
+    const dadosDeLogin = { login, senha };
+    console.log(dadosDeLogin)
+    return this.rs.post('/auth/login', dadosDeLogin);
+
   }
 
-  validarToken(token: string) {
-  
+  validarToken(token: string): Observable<any> {
+    
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}` 
+      });
+
+      return this.rs.post('/auth/validar-token', {}, { headers: headers }); 
+  }
+
+  logOut(token: string): Observable<any>{
+   
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}` 
+      });
+
+ 
+      return this.rs.post('/auth/logout', {}, { headers: headers }); 
+
+      
   }
 
 }
+
+

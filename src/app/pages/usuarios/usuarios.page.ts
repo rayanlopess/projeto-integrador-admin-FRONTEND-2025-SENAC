@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -90,7 +90,7 @@ import { Inject } from '@angular/core';
   ],
   providers: [provideNgxMask(), UserService] // Adicionado UserService
 })
-export class UsuariosPage implements OnInit {
+export class UsuariosPage implements OnInit, OnDestroy {
 
   // Referências do DOM (já estavam)
   @ViewChild('inputRef') inputElement: ElementRef | undefined;
@@ -113,6 +113,8 @@ export class UsuariosPage implements OnInit {
   // Variáveis de Modo de Interação
   public isEditingMode: boolean = false; // Controla se o modo de edição está ativo
   public isDeletingMode: boolean = false; // Controla se o modo de exclusão está ativo
+
+
   get pageTitle(): string {
     if (this.isEditingMode) {
       return 'Modo de Edição Ativo';
@@ -120,7 +122,21 @@ export class UsuariosPage implements OnInit {
     if (this.isDeletingMode) {
       return 'Modo de Exclusão Ativo';
     }
-    return 'Bem-Vindo Ao FilaMed'; // Título padrão
+    // 3. Lê o valor do 'user' diretamente no getter, garantindo o dado mais recente.
+    const usuarioTile = localStorage.getItem('user') || 'Usuário';
+    return `Bem-Vindo, ${usuarioTile}`;
+  }
+
+  private storageChangeListener = this.handleStorageChange.bind(this);
+
+  private handleStorageChange(event: StorageEvent): void {
+    // Verifica se a chave 'user' foi afetada.
+    if (event.key === 'user' || event.key === 'token' || event.key === 'is_master_admin') {
+      // Força o Angular a verificar novamente o getter pageTitle.
+      this.cd.detectChanges();
+    }
+   
+
   }
 
   // Variáveis do Modal de Cadastro/Edição
@@ -135,26 +151,35 @@ export class UsuariosPage implements OnInit {
   isModalOpenAdd = false;
   isModalOpenEdit = false;
 
+  public is_master_admin: string = localStorage.getItem('is_master_admin') || '';
+
+
+  public token = localStorage.getItem('token') || '';
+
+
   constructor(
-      private router: Router,
-      private dateService: DateService,
-      public alertController: AlertController,
-      private popoverCtrl: PopoverController,
-      private loadingController: LoadingController,
-      // Injetando o novo serviço
-      @Inject(UserService) private userService: UserService
-    ) {
-      addIcons({ home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create, chevronUp, add, trash, lockClosed, lockOpen, closeCircle, document, ellipsisVertical });
-    }
-  ngOnInit(): void {
-    this.loadUsers();
+    private router: Router,
+    private dateService: DateService,
+    public alertController: AlertController,
+    private popoverCtrl: PopoverController,
+    private loadingController: LoadingController,
+    // Injetando o novo serviço
+    @Inject(UserService) private userService: UserService,
+    private cd: ChangeDetectorRef
+
+  ) {
+    addIcons({ home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create, chevronUp, add, trash, lockClosed, lockOpen, closeCircle, document, ellipsisVertical });
   }
 
-  // --- Lógica de Carregamento de Usuários ---
+  ngOnInit() {
+    window.addEventListener('storage', this.storageChangeListener);
+    this.loadUsers();
+  }
+  ngOnDestroy() {
+    window.removeEventListener('storage', this.storageChangeListener);
+  }
 
-  /**
-   * Carrega a lista de usuários do serviço.
-   */
+
   async loadUsers() {
     if (this.carregando) return;
 
@@ -168,7 +193,7 @@ export class UsuariosPage implements OnInit {
     this.erroCarregamento = false;
 
     try {
-      this.users = await this.userService.getAllUsers();
+      this.users = await this.userService.getAllUsers(this.token);
       console.log(this.users)
       this.erroCarregamento = false;
     } catch (error) {
@@ -226,23 +251,22 @@ export class UsuariosPage implements OnInit {
     this.selectedUser = user;
 
     if (isOpen && user) {
-        this.fillForm(user);
+      this.fillForm(user);
     } else if (!isOpen) {
-        this.clearForm();
-        // NÃO SAIR do modo de edição aqui
+      this.clearForm();
+      // NÃO SAIR do modo de edição aqui
     }
-}
+  }
 
   /**
    * Preenche as variáveis do formulário com os dados do usuário selecionado.
    */
   fillForm(user: User) {
-    this.nomeCompleto = user.nomeCompleto;
-    this.dataNascimento = user.dataNascimento;
+    this.nomeCompleto = user.nome;
+    this.dataNascimento = user.nascimento;
     this.cpf = user.cpf;
     this.email = user.email;
-    this.nomeUsuario = user.nomeUsuario;
-    // Não preencher a senha por segurança, o usuário deve digitá-la para alterar
+    this.nomeUsuario = user.usuario;
     this.senha = '';
   }
 
@@ -272,12 +296,12 @@ export class UsuariosPage implements OnInit {
 
     try {
       const userData: Omit<User, 'id'> = {
-        nomeCompleto: this.nomeCompleto,
-        dataNascimento: this.dataNascimento,
-        cpf: this.cpf,
         email: this.email,
-        nomeUsuario: this.nomeUsuario,
-        senha: this.senha
+        usuario: this.nomeUsuario,
+        senha: this.senha,
+        nome: this.nomeCompleto,
+        cpf: this.cpf,
+        nascimento: this.dataNascimento
       };
 
       if (this.selectedUser) {
@@ -287,7 +311,7 @@ export class UsuariosPage implements OnInit {
         this.presentAlert('Sucesso!', 'Usuário atualizado com sucesso!');
       } else {
         // Modo Cadastro
-        await this.userService.createUser(userData);
+        await this.userService.createUser(userData, this.token);
         this.setOpenAdd(false);
         this.presentAlert('Sucesso!', 'Usuário cadastrado com sucesso!');
       }
@@ -309,41 +333,41 @@ export class UsuariosPage implements OnInit {
    */
   async deleteUser(user: User) {
     // NÃO VAMOS SAIR do modo de deleção aqui: this.isDeletingMode = false;
-    
-    const alert = await this.alertController.create({
-        // ... (restante do alert mantido)
-        buttons: [
-            {
-                text: 'Cancelar',
-                role: 'cancel',
-            },
-            {
-                text: 'Deletar',
-                handler: async () => {
-                    const loading = await this.loadingController.create({
-                        message: 'Deletando usuário...',
-                        spinner: 'dots',
-                    });
-                    await loading.present();
 
-                    try {
-                        await this.userService.deleteUser(user.id);
-                        await this.loadUsers();
-                        this.presentAlert('Sucesso!', 'Usuário deletado com sucesso!');
-                        // O modo continua ativo, permitindo deletar mais.
-                    } catch (error) {
-                        console.error('Erro ao deletar usuário:', error);
-                        this.presentAlert('Erro', 'Não foi possível deletar o usuário.');
-                    } finally {
-                        loading.dismiss();
-                    }
-                },
-            },
-        ],
+    const alert = await this.alertController.create({
+      // ... (restante do alert mantido)
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Deletar',
+          handler: async () => {
+            const loading = await this.loadingController.create({
+              message: 'Deletando usuário...',
+              spinner: 'dots',
+            });
+            await loading.present();
+
+            try {
+              await this.userService.deleteUser(user.id);
+              await this.loadUsers();
+              this.presentAlert('Sucesso!', 'Usuário deletado com sucesso!');
+              // O modo continua ativo, permitindo deletar mais.
+            } catch (error) {
+              console.error('Erro ao deletar usuário:', error);
+              this.presentAlert('Erro', 'Não foi possível deletar o usuário.');
+            } finally {
+              loading.dismiss();
+            }
+          },
+        },
+      ],
     });
 
     await alert.present();
-}
+  }
 
   /**
    * Navega ou exibe detalhes do usuário (ação padrão do card).
@@ -355,7 +379,7 @@ export class UsuariosPage implements OnInit {
       return;
     }
     // Implementar aqui a lógica de visualização de detalhes
-    this.presentAlert('Detalhes do Usuário', `Nome Completo: ${user.nomeCompleto}\nNome de Usuário: ${user.nomeUsuario}`);
+    this.presentAlert('Detalhes do Usuário', `Nome Completo: ${user.nome}\nNome de Usuário: ${user.usuario}`);
   }
 
 
@@ -419,5 +443,20 @@ export class UsuariosPage implements OnInit {
       buttons: ['OK'],
     });
     await alert.present();
+  }
+
+  formatarData(event: any) {
+    // O valor bruto (value) do evento vem como "YYYY-MM-DDTXX:XX:XX"
+    const valorCompleto: string = event.detail.value;
+
+    if (valorCompleto) {
+      // Pegamos a substring da data (os primeiros 10 caracteres: YYYY-MM-DD)
+      const dataFormatada: string = valorCompleto.substring(0, 10);
+
+      // Salvamos APENAS a data na sua variável
+      this.dataNascimento = dataFormatada;
+
+      console.log('Data salva:', this.dataNascimento); // Deve mostrar "2025-10-16"
+    }
   }
 }

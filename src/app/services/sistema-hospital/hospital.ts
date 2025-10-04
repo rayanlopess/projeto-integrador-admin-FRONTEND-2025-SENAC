@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 // import { EnderecoCompleto } from '../geocoding/geocoding.service'; // Opcional: Para tipagem
@@ -53,6 +53,15 @@ export class HospitalService {
         return { lat: -23.5505, lng: -46.6333 };
     }
 
+    private getJsonHttpOptions() {
+        return {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            })
+        };
+    }
+
     getAllHospitais(): Observable<HospitalProcessado[]> {
         return this.http.get<HospitalBackend[]>(`${this.API_URL}`).pipe(
             map(hospitais => hospitais.map(hospital => {
@@ -95,20 +104,29 @@ export class HospitalService {
     }
 
 
-    addHospital(formData: FormData): Observable<any> {
-        return this.http.post(`${this.API_URL}/add-hospital`, formData);
+    addHospital(formData: FormData, token: any): Observable<any> {
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`
+        });
+        return this.http.post(`${this.API_URL}/add-hospital`, formData, { headers: headers });
     }
 
-
-    updateHospital(formData: FormData): Observable<any> {
-        return this.http.post(`${this.API_URL}/update`, formData);
+    updateHospital(formData: FormData, token: any): Observable<any> {
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`
+        });
+        return this.http.post(`${this.API_URL}/update`, formData, { headers: headers });
     }
 
+    deleteHospital(id: number, token: any): Observable<any> {
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`
+        });
 
-    deleteHospital(id: number): Observable<any> {
-        // 🚨 CORREÇÃO: Usa POST e envia o objeto { id: id } no body
+
+
         const body = { id: id };
-        return this.http.post(`${this.API_URL}/delete-hospital`, body);
+        return this.http.post(`${this.API_URL}/delete-hospital`, body, { headers: headers });
     }
 
 

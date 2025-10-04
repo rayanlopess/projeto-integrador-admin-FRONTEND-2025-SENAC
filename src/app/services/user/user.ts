@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RequiemDosDeusesService } from '../requisicao-HTTP/requisicao';
 import { lastValueFrom } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
 
 // Interface para o modelo de dados do Usuário (mantida)
 export interface UserApiResponse {
@@ -16,19 +17,19 @@ export interface UserApiResponse {
 // Sua interface de domínio/frontend (mantida)
 export interface User {
     id: number;
-    nomeCompleto: string;
-    dataNascimento: string | null;
+    nome: string;
+    nascimento: string | null;
     cpf: string;
     email: string;
-    nomeUsuario: string; 
+    usuario: string;
     senha: string;
 }
 export function mapUserToDomain(apiUser: UserApiResponse): User {
     return {
         id: apiUser.id,
-        nomeCompleto: apiUser.usuario, // Mapeando 'usuario' para 'nomeCompleto'
-        nomeUsuario: apiUser.usuario, // Mapeando 'usuario' para 'nomeUsuario'
-        dataNascimento: apiUser.data_nasc || null, // Mapeando campo de data do backend (ajuste se o nome for outro)
+        nome: apiUser.usuario, // Mapeando 'usuario' para 'nomeCompleto'
+        usuario: apiUser.usuario, // Mapeando 'usuario' para 'nomeUsuario'
+        nascimento: apiUser.data_nasc || null, // Mapeando campo de data do backend (ajuste se o nome for outro)
         cpf: apiUser.cpf,
         email: apiUser.email,
         senha: apiUser.senha // A senha provavelmente é um hash e só está no backend, mas mantemos o campo
@@ -38,61 +39,59 @@ export function mapUserToDomain(apiUser: UserApiResponse): User {
     providedIn: 'root'
 })
 export class UserService {
-    
+
     // As rotas agora são específicas do seu backend
-    private getAllUsersEndpoint = '/user'; 
-    private addUserEndpoint = '/add-user';
+    private getAllUsersEndpoint = '/user';
+    private addUserEndpoint = '/user/add-user';
     private updateUserEndpoint = '/user/update-user';
 
     constructor(private reqService: RequiemDosDeusesService) { }
 
-// ----------------------------------------------------------------------
-// READ (Leitura)
-// ----------------------------------------------------------------------
+    // ----------------------------------------------------------------------
+    // READ (Leitura)
+    // ----------------------------------------------------------------------
+    async getAllUsers(token: any): Promise<User[]> {
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`
+        });
+        const observable = this.reqService.get(this.getAllUsersEndpoint, { headers: headers });
 
-    /**
-     * Busca todos os usuários do backend (GET /all).
-     * @returns Uma Promise que resolve para um array de User.
-     */
-    async getAllUsers(): Promise<User[]> {
-    const observable = this.reqService.get(this.getAllUsersEndpoint, {});
+        // 1. Resolve para o array (ou objeto de resposta) do backend
+        const response = await lastValueFrom(observable) as UserApiResponse[] | { data: UserApiResponse[] };
+
+        let apiUsers: UserApiResponse[];
+
+        // Tenta identificar se o array está na propriedade 'data'
+        if (Array.isArray(response)) {
+            apiUsers = response; // Se a resposta for o array direto
+        } else if (response && (response as any).data && Array.isArray((response as any).data)) {
+            apiUsers = (response as any).data; // Se o array estiver em 'data'
+        } else {
+            return []; // Retorna array vazio se não conseguir encontrar os dados
+        }
+
+        // 2. Mapeia cada objeto da API para o formato esperado pelo frontend (User)
+        return apiUsers.map(mapUserToDomain);
+    }
+
+    // ----------------------------------------------------------------------
+    // CREATE (Criação)
+    // ----------------------------------------------------------------------
+
     
-    // 1. Resolve para o array (ou objeto de resposta) do backend
-    const response = await lastValueFrom(observable) as UserApiResponse[] | { data: UserApiResponse[] };
+    async createUser(userData: Omit<User, 'id'>, token: any): Promise<any> {
+        console.log(userData)
 
-    let apiUsers: UserApiResponse[];
-
-    // Tenta identificar se o array está na propriedade 'data'
-    if (Array.isArray(response)) {
-        apiUsers = response; // Se a resposta for o array direto
-    } else if (response && (response as any).data && Array.isArray((response as any).data)) {
-        apiUsers = (response as any).data; // Se o array estiver em 'data'
-    } else {
-        return []; // Retorna array vazio se não conseguir encontrar os dados
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`
+        });
+        const observable = this.reqService.post(this.addUserEndpoint, userData, { headers: headers });
+        return lastValueFrom(observable); 
     }
 
-    // 2. Mapeia cada objeto da API para o formato esperado pelo frontend (User)
-    return apiUsers.map(mapUserToDomain); 
-}
-
-// ----------------------------------------------------------------------
-// CREATE (Criação)
-// ----------------------------------------------------------------------
-
-    /**
-     * Cria um novo usuário (POST /add-user).
-     * @param userData Os dados do novo usuário (sem ID).
-     * @returns Uma Promise que resolve para o User criado (ou a resposta do servidor).
-     */
-    async createUser(userData: Omit<User, 'id'>): Promise<any> {
-        // Se a senha estiver vazia, deve ser tratada no backend ou aqui, mas vamos enviar os dados completos
-        const observable = this.reqService.post(this.addUserEndpoint, userData);
-        return lastValueFrom(observable); // Retorna a resposta completa do POST (sucesso/erro)
-    }
-
-// ----------------------------------------------------------------------
-// UPDATE (Atualização)
-// ----------------------------------------------------------------------
+    // ----------------------------------------------------------------------
+    // UPDATE (Atualização)
+    // ----------------------------------------------------------------------
 
     /**
      * Atualiza um usuário existente (POST /update-user).
@@ -108,9 +107,9 @@ export class UserService {
         return lastValueFrom(observable); // Retorna a resposta completa do POST
     }
 
-// ----------------------------------------------------------------------
-// DELETE (Exclusão - Standby)
-// ----------------------------------------------------------------------
+    // ----------------------------------------------------------------------
+    // DELETE (Exclusão - Standby)
+    // ----------------------------------------------------------------------
 
     /**
      * Exclui um usuário (Em Standby).
@@ -120,9 +119,9 @@ export class UserService {
     async deleteUser(id: number): Promise<void> {
         // Mantido em standby, lançando um erro para indicar que o endpoint ainda não existe.
         return new Promise((_, reject) => {
-             reject(new Error("A rota de exclusão de usuário ainda não está implementada no backend."));
+            reject(new Error("A rota de exclusão de usuário ainda não está implementada no backend."));
         });
-        
+
         /*
         // Quando for implementar, provavelmente será um POST ou DELETE para uma rota como:
         // const observable = this.reqService.post('/delete-user', { userId: id }); 
