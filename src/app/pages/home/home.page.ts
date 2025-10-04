@@ -25,7 +25,7 @@ import {
     IonFabButton,
     IonFabList,
     IonModal,
-    IonLabel, ToastController
+    IonLabel, ToastController, ActionSheetController
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 
@@ -34,13 +34,16 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Geolocation } from '@capacitor/geolocation';
 
 import { addIcons } from 'ionicons';
-import { close, home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create, chevronUp, add, trash, locate, image } from 'ionicons/icons';
-import { AlertController, PopoverController, LoadingController, RefresherCustomEvent } from '@ionic/angular/standalone';
+import { close, home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create, chevronUp, add, trash, locate, image, camera } from 'ionicons/icons';
+import { AlertController, PopoverController, LoadingController, RefresherCustomEvent, } from '@ionic/angular/standalone';
 
 import { DateService } from '../../services/datetime-service/date-service';
 import { SimplePopoverComponent } from '../../components/simple-popover/simple-popover.component';
-import { Subscription, Observable } from 'rxjs'; // <-- CORREÇÃO: Importação do Observable
+import { Subscription, Observable, firstValueFrom } from 'rxjs'; // <-- CORREÇÃO: Importação do firstValueFrom
 import { RefresherEventDetail } from '@ionic/angular';
+
+// Importação do serviço de Geocodificação
+import { GeocodingService, EnderecoCompleto } from '../../services/geocoding/geocoding.service';
 
 // Presumo que estas interfaces e o Service estão no mesmo arquivo ou que HospitalService as importa corretamente
 import { HospitalService, HospitalProcessado, HospitalBackend } from '../../services/sistema-hospital/hospital';
@@ -64,7 +67,7 @@ import { GoogleMapsViewerComponent } from '../../components/google-maps/google-m
         IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonTitle, IonContent, IonSpinner,
         IonRefresher, IonRefresherContent, IonGrid, IonRow, IonCol, IonCard, IonCardContent,
         IonList, IonItem, IonThumbnail, IonRippleEffect, CommonModule, FormsModule,
-        IonFab, IonFabButton, IonFabList, IonModal, IonLabel, GoogleMapsViewerComponent
+        IonFab, IonFabButton, IonFabList, IonModal, IonLabel, GoogleMapsViewerComponent,
     ]
 })
 export class HomePage implements OnInit, OnDestroy {
@@ -90,9 +93,11 @@ export class HomePage implements OnInit, OnDestroy {
     public nomeHospital: string = '';
     public selectedHospital: HospitalProcessado | null = null;
     public tempLatitude: number | null = null;
-    public tempLongitude: number | null = null;
+    public tempLongi: number | null = null; // 🚨 CORREÇÃO: Renomeado de tempLongitude para tempLong
     public hospitalPhoto: string | null = null; // Base64 da foto
     public hospitalPhotoFilename: string = 'foto_hospital.jpeg'; // Nome do arquivo para o backend
+
+
 
     private subscription: Subscription = new Subscription();
     isRefreshing = false;
@@ -104,9 +109,10 @@ export class HomePage implements OnInit, OnDestroy {
         private popoverCtrl: PopoverController,
         private loadingController: LoadingController,
         private toastController: ToastController,
-        private hospitalService: HospitalService
-    ) {
-        addIcons({ home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create, chevronUp, add, trash, locate, image, close });
+        private hospitalService: HospitalService,
+        private geocodingService: GeocodingService,
+        private actionSheetController: ActionSheetController) {
+        addIcons({ home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create, chevronUp, add, trash, locate, image, close, camera });
     }
 
     // GETTER PARA O TÍTULO DINÂMICO
@@ -128,9 +134,9 @@ export class HomePage implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    updateTempCoords(event: { lat: number, lng: number }) {
-        this.tempLatitude = event.lat;
-        this.tempLongitude = event.lng;
+    updateTempCoords(coords: { lat: number, lng: number }) {
+        this.tempLatitude = coords.lat;
+        this.tempLongi = coords.lng; 
     }
 
     async carregarHospitais() {
@@ -145,7 +151,7 @@ export class HomePage implements OnInit, OnDestroy {
                         this.hospitais = data;
                         this.erroCarregamento = false;
                     },
-                    error: (err: any) => { // <-- CORREÇÃO: Tipo 'any' adicionado
+                    error: (err: any) => {
                         console.error('Erro ao carregar hospitais:', err);
                         this.erroCarregamento = true;
                         this.mensagemErro = 'Não foi possível carregar os dados. Tente novamente.';
@@ -154,9 +160,6 @@ export class HomePage implements OnInit, OnDestroy {
                 })
         );
     }
-
-    // <-- CORREÇÃO: A SEGUNDA IMPLEMENTAÇÃO DE handleRefresh FOI REMOVIDA.
-    // Mantenho apenas a primeira, que faz o refresh correto:
     handleRefresh(event: CustomEvent<RefresherEventDetail>) {
         this.carregarHospitais()
             .then(() => event.detail.complete())
@@ -175,9 +178,20 @@ export class HomePage implements OnInit, OnDestroy {
             this.nomeHospital = '';
             this.hospitalPhoto = null;
             this.tempLatitude = null;
-            this.tempLongitude = null;
+            this.tempLongi = null; // 🚨 CORREÇÃO: Usando tempLong
         } else {
             this.getCurrentLocation();
+        }
+    }
+    async getCurrentLocation() {
+        try {
+            const position = await Geolocation.getCurrentPosition();
+            this.tempLatitude = position.coords.latitude;
+            this.tempLongi = position.coords.longitude; // Atualiza as coordenadas temporárias
+            this.presentToast('Localização atual obtida com sucesso!', 'success');
+        } catch (error) {
+            console.error('Erro ao obter localização:', error);
+            this.presentToast('Não foi possível obter a localização atual. Defina-a no mapa.', 'warning');
         }
     }
 
@@ -185,51 +199,80 @@ export class HomePage implements OnInit, OnDestroy {
         this.isModalOpenEdit = isOpen;
         this.selectedHospital = hospital; // ✅ Se 'hospital' não for nulo, o ID está aqui.
 
-        
 
-    if (isOpen && hospital) {
-        // ✅ ATENÇÃO: Carregue as variáveis do formulário com os dados EXISTENTES
-        this.nomeHospital = hospital.nome;
-        
-        // 🚨 O TEMPLongitude e TEMPlatitude DEVEM ser carregados do hospital selecionado!
-        this.tempLatitude = hospital.lati; 
-        this.tempLongitude = hospital.longi;
-        
-        this.hospitalPhoto = null; 
-    } else if (!isOpen) {
-        // Ao fechar, limpa
-        this.selectedHospital = null;
-        this.nomeHospital = '';
-        this.tempLatitude = null;
-        this.tempLongitude = null;
-        this.hospitalPhoto = null;
-    }
+
+        if (isOpen && hospital) {
+            // ✅ ATENÇÃO: Carregue as variáveis do formulário com os dados EXISTENTES
+            this.nomeHospital = hospital.nome;
+
+            // 🚨 O TEMPlongitude e TEMPlatitude DEVEM ser carregados do hospital selecionado!
+            this.tempLatitude = hospital.lati;
+            this.tempLongi = hospital.longi; // 🚨 CORREÇÃO: Usando tempLong
+
+            this.hospitalPhoto = null;
+        } else if (!isOpen) {
+            // Ao fechar, limpa
+            this.selectedHospital = null;
+            this.nomeHospital = '';
+            this.tempLatitude = null;
+            this.tempLongi = null; // 🚨 CORREÇÃO: Usando tempLong
+            this.hospitalPhoto = null;
+        }
     }
 
     // -----------------------------------------------------------
     // AÇÕES DE MAPA E CÂMERA (Capacitor)
     // -----------------------------------------------------------
 
-    async openCamera() {
+    // home.page.ts
+
+    async openCameraOrGallery() {
+        const actionSheet = await this.actionSheetController.create({
+            header: 'Selecione a fonte da imagem',
+            buttons: [
+                {
+                    text: 'Abrir Câmera',
+                    icon: 'camera',
+                    handler: () => {
+                        this.takePicture(CameraSource.Camera);
+                    }
+                },
+                {
+                    text: 'Abrir Galeria (Álbum de Fotos)',
+                    icon: 'image',
+                    handler: () => {
+                        this.takePicture(CameraSource.Photos);
+                    }
+                },
+                {
+                    text: 'Cancelar',
+                    icon: 'close',
+                    role: 'cancel'
+                }
+            ]
+        });
+        await actionSheet.present();
+    }
+
+
+    async takePicture(source: CameraSource) {
         try {
             const image = await Camera.getPhoto({
                 quality: 90,
                 allowEditing: false,
                 resultType: CameraResultType.DataUrl,
-                source: CameraSource.Camera,
+                source: source, // Usa a fonte selecionada
             });
 
             this.hospitalPhoto = image.dataUrl || null;
             this.hospitalPhotoFilename = `foto_${Date.now()}.jpeg`;
         } catch (error) {
-            console.error('Erro ao abrir a câmera:', error);
+            console.error('Erro ao acessar a mídia:', error);
             this.presentToast('Não foi possível acessar a câmera ou galeria.', 'warning');
         }
     }
 
-    // -----------------------------------------------------------
-    // MÉTODOS DE AÇÃO DE DADOS (USANDO O SERVICE)
-    // -----------------------------------------------------------
+
 
     async deleteHospital(hospital: HospitalProcessado) {
         const alert = await this.alertController.create({
@@ -265,25 +308,43 @@ export class HomePage implements OnInit, OnDestroy {
     }
 
     async salvarConfig() {
-        if (!this.nomeHospital || this.tempLatitude === null || this.tempLongitude === null) {
+        if (!this.nomeHospital || this.tempLatitude === null || this.tempLongi === null) { // 🚨 CORREÇÃO: Usando tempLong
             this.presentToast('Preencha nome e localize o hospital.', 'warning');
             return;
         }
 
         const loading = await this.loadingController.create({
-            message: this.isModalOpenAdd ? 'Adicionando hospital...' : 'Atualizando hospital...'
+            message: 'Buscando endereço e salvando hospital...'
         });
         await loading.present();
 
-        // 1. Prepara os dados de texto
-        // ⚠️ Correção aqui: Tipar como Partial<HospitalBackend> e garantir que o ID está presente.
-        // 1. Prepara os dados de texto
+        // 🌟 ETAPA 1: GEOCODIFICAÇÃO REVERSA (Coordenadas -> Endereço)
+        let fullAddress: EnderecoCompleto;
+        try {
+            // Usa o GeocodingService para obter os dados de endereço (UF, Cidade, Bairro, Logradouro)
+            fullAddress = await this.geocodingService.getAddressFromCoords(
+                this.tempLatitude,
+                this.tempLongi // 🚨 CORREÇÃO: Usando tempLong
+            );
+        } catch (error: any) {
+            loading.dismiss();
+            this.presentToast(`Erro ao obter endereço. ${error.message || 'Verifique o console.'}`, 'danger');
+            console.error('Erro na Geocodificação Reversa:', error);
+            return;
+        }
+        // 🌟 FIM DA GEOCODIFICAÇÃO REVERSA
+
+        // 2. Prepara os dados de texto, agora com os campos de endereço preenchidos
         const hospitalData: Partial<HospitalBackend> = {
             // Se estiver no modo de edição, use o ID do selectedHospital
             id: this.isModalOpenEdit ? this.selectedHospital?.id : undefined,
             nome: this.nomeHospital,
-            lati: this.tempLatitude,
-            longi: this.tempLongitude,
+            lati: this.tempLatitude, // Serão os valores originais se o usuário não arrastar
+            longi: this.tempLongi, // 🚨 CORREÇÃO: Usando tempLong
+            uf: fullAddress.uf,
+            cidade: fullAddress.cidade,
+            bairro: fullAddress.bairro,
+            logradouro: fullAddress.logradouro,
         };
 
         // ⚠️ Mantenha este bloco de erro, mas ele deve ser acionado apenas se o fluxo anterior falhar.
@@ -293,12 +354,25 @@ export class HomePage implements OnInit, OnDestroy {
             return;
         }
 
-        // 2. Cria o FormData, incluindo a foto Base64
+        // 3. Cria o FormData, incluindo a foto Base64
         const formData = this.hospitalService.createFormData(
             hospitalData,
             this.hospitalPhoto,
             this.hospitalPhotoFilename
         );
+
+        // MENSAGEM DE DEBUG: VERIFICAR CONTEÚDO DO FORMDATA
+        console.log("--- DEBUG: Conteúdo do FormData Enviado ---");
+        formData.forEach((value, key) => {
+            // Se o valor for um Blob (a foto), ele mostrará o tipo.
+            if (value instanceof Blob) {
+                console.log(`${key}: [Blob/Arquivo - Tamanho: ${value.size} bytes, Tipo: ${value.type}]`);
+            } else {
+                console.log(`${key}: ${value}`);
+            }
+        });
+        console.log("-------------------------------------------");
+        // ...
 
         let request$: Observable<any>;
         let successMessage: string;
@@ -314,7 +388,7 @@ export class HomePage implements OnInit, OnDestroy {
             return;
         }
 
-        // 3. Executa a requisição
+        // 4. Executa a requisição
         this.subscription.add(
             request$.pipe(finalize(() => loading.dismiss()))
                 .subscribe({
@@ -323,10 +397,12 @@ export class HomePage implements OnInit, OnDestroy {
                         this.setOpenAdd(false);
                         this.setOpenEdit(false);
                         this.carregarHospitais();
+
                     },
                     error: (err: any) => { // <-- CORREÇÃO: Tipo 'any' adicionado
                         console.error('Erro na requisição:', err);
                         this.presentToast('Erro ao salvar os dados. Verifique o servidor.', 'danger');
+                        console.log(request$)
                     }
                 })
         );
@@ -379,43 +455,51 @@ export class HomePage implements OnInit, OnDestroy {
         await popover.present();
     }
 
-    // -----------------------------------------------------------
-    // LÓGICA DE MAPA E LOCALIZAÇÃO (Capacitor)
-    // -----------------------------------------------------------
-
-    viewHospitalOnMap(hospital: HospitalProcessado) { // <-- CORREÇÃO: Usando HospitalProcessado
+    //VISUALIZAÇÃO E FECHAMENTO DO MODAL DO MAPA DO HOSPITAL
+    viewHospitalOnMap(hospital: HospitalProcessado) {
         if (this.isEditingMode || this.isDeletingMode) return;
 
         this.selectedHospital = hospital;
         this.isModalOpenMap = true;
+        console.log(this.selectedHospital)
+    }
+    closeHospitalOnMap() {
+        this.isModalOpenMap = false;
     }
 
     openLocationSelectionModal() {
-        if (this.selectedHospital) {
+
+        // 1. Caso de EDIÇÃO (o hospital já tem coordenadas):
+        if (this.isModalOpenEdit && this.selectedHospital) {
             this.tempLatitude = this.selectedHospital.lati;
-            this.tempLongitude = this.selectedHospital.longi;
+            this.tempLongi = this.selectedHospital.longi; // Inicializa com as coordenadas do hospital
+        }
+        // 2. Caso de ADIÇÃO (o hospital NÃO existe):
+        // Se isModalOpenEdit for false, e tempLatitude/tempLongi JÁ tiverem valores
+        // (vindos do getCurrentLocation() chamado em setOpenAdd), NADA é feito, mantendo o GPS.
+        else if (this.tempLatitude === null || this.tempLongi === null) {
+            // Se isModalOpenEdit for false E as coordenadas NÃO estiverem setadas, 
+            // tenta obter o GPS como fallback, ou zera (para evitar NaN).
+            this.getCurrentLocation();
         }
 
-        this.getCurrentLocation();
+        // Se o modo for adição e as coordenadas já vierem do GPS (passo 1 da setOpenAdd),
+        // o código simplesmente ignora o 'else' anterior e mantém os valores.
+
         this.isModalOpenLocationSelect = true;
     }
 
-    async getCurrentLocation() {
-        try {
-            const position = await Geolocation.getCurrentPosition();
-            this.tempLatitude = position.coords.latitude;
-            this.tempLongitude = position.coords.longitude;
-        } catch (error) {
-            console.error('Erro ao obter localização:', error);
-            this.presentToast('Não foi possível obter a localização atual.', 'warning');
-        }
+    closeLocationSelectionModal() {
+        this.isModalOpenLocationSelect = false;
     }
 
+
+
     saveSelectedLocation() {
-        if (this.tempLatitude !== null && this.tempLongitude !== null) {
+        if (this.tempLatitude !== null && this.tempLongi !== null) { // 🚨 CORREÇÃO: Usando tempLong
             if (this.selectedHospital) {
                 this.selectedHospital.lati = this.tempLatitude;
-                this.selectedHospital.longi = this.tempLongitude;
+                this.selectedHospital.longi = this.tempLongi; // 🚨 CORREÇÃO: Usando tempLong
             }
         }
         this.isModalOpenLocationSelect = false;

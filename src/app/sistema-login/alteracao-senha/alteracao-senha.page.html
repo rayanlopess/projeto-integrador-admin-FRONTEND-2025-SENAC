@@ -1,13 +1,119 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>alteracao-senha</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button default-href="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Voltar para o Login</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">alteracao-senha</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="content-login">
+  <div class="container-login">
+    <div>
+      <div class="login-box-alterar">
+
+
+
+        <div class="img-logo-filamed">
+          <img src="../../../assets/icons/filamed-sem-fundo.png" alt="" width="200px">
+        </div>
+
+        <div class="texto-login">
+          <p>
+            <span id="titulo-forget">Redefina sua senha abaixo!</span><br>
+          </p>
+        </div>
+
+         <div class="input-barra-login">
+          <div class="input-texto-login">
+            <div class="icon-search-login">
+              <ion-buttons>
+                <ion-button (click)="togglePasswordVisibility()">
+                  <ion-icon class="icon lock-icon-login"
+                    [name]="isPasswordVisible ? 'lock-open' : 'lock-closed'"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </div>
+            <div class="wave-group-login">
+              <input required="" [type]="isPasswordVisible ? 'text' : 'password'" class="input-tecido-login" [(ngModel)]="senha"
+                 #inputSenhaRef>
+              <label class="label-login">
+                <span class="label-char-login" style="--index: 0">S</span>
+                <span class="label-char-login" style="--index: 1">e</span>
+                <span class="label-char-login" style="--index: 2">n</span>
+                <span class="label-char-login" style="--index: 3">h</span>
+                <span class="label-char-login" style="--index: 5">a</span>
+              </label>
+            </div>
+            <div class="icon-search-login">
+              <ion-buttons>
+                <ion-button *ngIf="senha" fill="clear" class="clear-button" [hidden]="!senha"
+                  (click)="limparInput('senha')">
+                  <ion-icon name="close"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </div>
+          </div>
+          <span class="bar-login"></span>
+        </div>
+
+        <div class="input-barra-login">
+          <div class="input-texto-login">
+            <div class="icon-search-login">
+              <ion-buttons>
+                <ion-button (click)="togglePasswordVisibility1()">
+                  <ion-icon class="icon lock-icon-login"
+                    [name]="isPasswordVisible1 ? 'lock-open' : 'lock-closed'"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </div>
+            <div class="wave-group-login">
+              <input required="" [type]="isPasswordVisible1 ? 'text' : 'password'" class="input-tecido-login" [(ngModel)]="confirmaSenha"
+                 #inputConfirmaSenhaRef>
+              <label class="label-login">
+                <span class="label-char-login" style="--index: 0">C</span>
+                <span class="label-char-login" style="--index: 1">o</span>
+                <span class="label-char-login" style="--index: 2">n</span>
+                <span class="label-char-login" style="--index: 3">f</span>
+                <span class="label-char-login" style="--index: 5">i</span>
+                <span class="label-char-login" style="--index: 6">r</span>
+                <span class="label-char-login" style="--index: 7">m</span>
+                <span class="label-char-login" style="--index: 8">e</span>
+                <span class="label-char-login" style="--index: 9">&nbsp;</span>
+                <span class="label-char-login" style="--index: 10">a</span>
+                <span class="label-char-login" style="--index: 11">&nbsp;</span>
+                <span class="label-char-login" style="--index: 12">S</span>
+                <span class="label-char-login" style="--index: 13">e</span>
+                <span class="label-char-login" style="--index: 14">n</span>
+                <span class="label-char-login" style="--index: 15">h</span>
+                <span class="label-char-login" style="--index: 16">a</span>
+               
+              </label>
+            </div>
+            <div class="icon-search-login">
+              <ion-buttons>
+                <ion-button *ngIf="confirmaSenha" fill="clear" class="clear-button" [hidden]="!confirmaSenha"
+                  (click)="limparInput('confirmaSenha')">
+                  <ion-icon name="close"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </div>
+          </div>
+          <span class="bar-login"></span>
+        </div>
+
+
+
+
+
+        <div class="div-btEntrar">
+          <ion-button id="btRecuperacao">
+            Enviar e-mail de recuperação
+          </ion-button>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
 </ion-content>

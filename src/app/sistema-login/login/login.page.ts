@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonButtons, IonButton, IonIcon} from '@ionic/angular/standalone';
+import { IonContent, IonButtons, IonButton, IonIcon, IonHeader, IonToolbar, IonTitle
+} from '@ionic/angular/standalone';
 import { AutenticacaoService } from 'src/app/services/sistema-login/autenticacao';
 
 import { addIcons } from 'ionicons';
@@ -16,7 +17,7 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [ IonContent, IonButtons, IonButton, IonIcon, CommonModule, FormsModule]
+  imports: [ IonContent, IonButtons, IonButton, IonIcon, CommonModule, FormsModule, IonHeader, IonToolbar, IonTitle]
 })
 export class LoginPage implements OnInit {
   @ViewChild('inputRef') inputElement: ElementRef | undefined;

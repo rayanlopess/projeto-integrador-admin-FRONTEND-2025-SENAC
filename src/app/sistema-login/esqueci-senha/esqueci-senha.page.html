@@ -1,13 +1,75 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>esqueci-senha</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button default-href="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Voltar</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">esqueci-senha</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="content-login">
+  <div class="container-login">
+    <div>
+      <div class="login-box-forget">
+
+
+
+        <div class="img-logo-filamed">
+          <img src="../../../assets/icons/filamed-sem-fundo.png" alt="" width="200px">
+        </div>
+
+        <div class="texto-login">
+          <p>
+            <span id="titulo-forget">Esqueceu sua senha?</span><br>
+            <span id="subtitulo-forget">Nós te ajudamos!</span>
+          </p>
+        </div>
+
+        <div class="input-barra-login">
+          <div class="input-texto-login">
+
+            <div class="icon-search-login">
+              <ion-buttons>
+                <ion-button>
+                  <i class="bi bi-person-fill icon"></i>
+                </ion-button>
+              </ion-buttons>
+            </div>
+            <div class="wave-group-login">
+              <input required="" [type]="'email'" class="input-tecido-login" [(ngModel)]="email"
+                placeholder="Ex.: Usuário123" #inputEmailRef>
+              <label class="label-login">
+
+                <span class="label-char-login" style="--index: 0">E</span>
+                <span class="label-char-login" style="--index: 1">-</span>
+                <span class="label-char-login" style="--index: 2">m</span>
+                <span class="label-char-login" style="--index: 3">a</span>
+                <span class="label-char-login" style="--index: 4">i</span>
+                <span class="label-char-login" style="--index: 5">l</span>
+              </label>
+
+            </div>
+            <div class="icon-search-login">
+              <ion-buttons>
+                <ion-button *ngIf="email" fill="clear" class="clear-button" [hidden]="!email"
+                  (click)="limparInput('email')">
+                  <ion-icon name="close"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </div>
+          </div>
+          <span class="bar-login"></span>
+        </div>
+
+        
+        <div class="div-btEntrar">
+          <ion-button id="btRecuperacao">
+            Enviar e-mail de recuperação
+          </ion-button>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
 </ion-content>

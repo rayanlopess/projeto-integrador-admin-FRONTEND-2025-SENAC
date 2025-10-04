@@ -785,19 +785,249 @@ ion-datetime::part(month-year-button) {
 }
 .login-box{
   width: 320px;
-  height: 400px;
-  background: rgba(255, 255, 255, 0.5);
+  height: 470px;
+  background: #4b6384;
   backdrop-filter: blur(40px);
-  border: 3px solid #fff;
+  border: 3px solid #728097;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  
 
 }
+#titulo-login{
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+  width: 100%;
+}
+#subtitulo-login{
+  color: #fff;
+  font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+}
+
+//search bar
+ .input-barra-login {
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+  }
+  .input-texto-login {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #cce1ff;
+    width: 100%;
+  }
+  .input-texto-datetime-login {
+    display: flex;
+    border-bottom: 1px solid #cce1ff;
+    width: 100%;
+  }
+  .icon-search-login {
+    width: max-content;
+    color: #cce1ff;
+    padding-top: 10px;
+  }
+  .icon-search-datetime-login {
+    width: max-content;
+    color: #cce1ff;
+    padding: 10px 0px 5px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .icon-login-login {
+    font-size: 24px;
+  }
+  .lock-icon-login {
+    transition: all 1s ease-in-out;
+    transform: scale(1);
+  }
+  .lock-icon-login:active {
+    transform: scale(0.9);
+  }
+  .lock-icon-login {
+    animation-duration: 0.3s;
+    animation-fill-mode: both;
+  }
+  .lock-icon-animate-login {
+    animation-name: bounce;
+  }
+  .wave-group-login {
+    width: 100%;
+    position: relative;
+  }
+  .wave-group-login .input-tecido-login {
+    font-size: 16px !important;
+    padding: 15px 10px 10px 5px !important;
+    display: block !important;
+    width: 100% !important;
+    border: none !important;
+    color: #cce1ff;
+    background: transparent;
+    font-weight: 300;
+  }
+  .wave-group-login .input-tecido-login:focus {
+    outline: none !important;
+  }
+  .wave-group-login .label-login {
+    color: #cce1ff !important;
+    font-size: 18px !important;
+    font-weight: normal !important;
+    position: absolute !important;
+    pointer-events: none !important;
+    left: 10px !important;
+    top: 14px !important;
+    display: flex !important;
+    font-weight: 400 !important;
+  }
+  .wave-group-login .label-char-login {
+    transition: 0.2s ease all !important;
+    transition-delay: calc(var(--index) * .02s) !important;
+  }
+  .wave-group-login .input-tecido-login:focus~label .label-char-login,
+  .wave-group-login .input-tecido-login:valid~label .label-char-login {
+    transform: translateY(-22px) translateX(-45px) !important;
+    font-size: 14px !important;
+    color: #cce1ff !important;
+  }
+  .input-tecido-login::placeholder {
+    opacity: 0 !important;
+    color: #cce1ff99 !important;
+  }
+
+  //Mostra o placeholder apenas quando o input está em foco
+  .input-tecido-login:focus::placeholder {
+    opacity: 1 !important;
+  }
+  .input-tecido-login::placeholder {
+    transition: opacity .4s ease !important;
+  }
+
+  //barra embaixo
+  .bar-login {
+    position: relative;
+    display: block;
+    width: 100%;
+    background-color: #cce1ff;
+    height: 0px;
+    bottom: 0px;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+  }
+  
+  .bar-login::before,
+  .bar-login::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    width: 0 !important;
+    height: 3px !important;
+    background-color: #cce1ff !important;
+    transition: 0.4s ease all !important;
+  }
+  
+  .bar-login::before {
+    left: 50% !important;
+  }
+  
+  .bar-login::after {
+    right: 50% !important;
+  }
+  
+  .input-barra-login:focus-within .bar-login::before,
+  .input-barra-login:focus-within .bar-login::after {
+    width: 50% !important;
+  }
+//fim da search bar
+#btEntrar{
+  --background: #0e2b52;
+  --color: #fff;
+}
+#esqueci-senha{
+  color: #fff;
+  text-decoration: underline;
+}
+
 
 //FIM DO LOGIN.SCSS
 
 //-----------------------------------------------//
+
+//ALTERACAO.SCSS
+ion-back-button{
+  color: #fff;
+}
+.login-box-forget{
+  width: 320px;
+  height: 400px;
+  background: #4b6384;
+  backdrop-filter: blur(40px);
+  border: 3px solid #728097;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+#btRecuperacao{
+  --background: #0e2b52;
+  --color: #fff;
+  font-size: 12px;
+}
+#titulo-forget{
+  color: #fff;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+  width: 100%;
+}
+#subtitulo-forget{
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  width: 100%;
+}
+//FIM DA ALTERACAO.SCSS
+
+//-----------------------------------------------//
+
+//ALTERACAO.SCSS
+ion-back-button{
+  color: #fff;
+}
+.login-box-alterar{
+  width: 320px;
+  height: 450px;
+  background: #4b6384;
+  backdrop-filter: blur(40px);
+  border: 3px solid #728097;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+#btRecuperacao{
+  --background: #0e2b52;
+  --color: #fff;
+  font-size: 12px;
+}
+#titulo-forget{
+  color: #fff;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+  width: 100%;
+}
+#subtitulo-forget{
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  width: 100%;
+}
+//FIM DA ALTERACAO.SCSS
+
+//-----------------------------------------------//
+
 
 /* ------------ FIM DO LIGHT MODE ------------ */
 

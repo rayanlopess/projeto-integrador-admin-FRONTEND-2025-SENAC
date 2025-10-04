@@ -1,0 +1,41 @@
+ion-toolbar {
+  --background: transparent;
+  --border-width: 0 !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  color: #e7dfd3;
+  /* Garante que fique acima do conteúdo */
+}
+
+.img-logo-filamed {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 10%;
+}
+
+.texto-login {
+
+  margin: 10% 0 10% 0;
+  width: 100%;
+
+  p {
+    text-align: center;
+  }
+}
+.div-btEntrar{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15%;
+}
+.div-esqueci-senha{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 4%;
+}

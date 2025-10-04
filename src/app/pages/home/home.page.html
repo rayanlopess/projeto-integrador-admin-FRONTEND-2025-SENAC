@@ -88,8 +88,7 @@
                             <ion-list>
                                 <ion-item lines="none">
                                     <ion-thumbnail slot="end">
-                                        <img alt="Hospital"
-                                            [src]="hospital.foto || '../../../assets/icons/filamed-icon-azul.png'" />
+                                        <img *ngIf="hospital.foto" [src]="hospital.foto" alt="Foto do Hospital">
                                     </ion-thumbnail>
                                     <div class="informacoes-div">
                                         <h1>{{hospital.nome}}</h1>
@@ -160,7 +159,7 @@
                                                 </p>
                                                 <p>
                                                     <ion-icon class="icon-text" name="locate"></ion-icon>&nbsp;
-                                                    <span>Long: {{tempLongitude | number: '1.4-4'}}</span>
+                                                    <span>Long: {{tempLongi | number: '1.4-4'}}</span>
                                                 </p>
                                             </div>
                                         </ion-item>
@@ -230,7 +229,7 @@
                 <ion-row>
                     <ion-col>
                         <div class="div-btSalvarConfig">
-                            <ion-button id="btAddImg" (click)="openCamera()">
+                            <ion-button id="btAddImg" (click)="openCameraOrGallery()">
                                 <div class="button-img">
                                     <div class="esquerda">
                                         <ion-icon name="image"></ion-icon>
@@ -305,7 +304,7 @@
                                                 </p>
                                                 <p>
                                                     <ion-icon class="icon-text" name="locate"></ion-icon>&nbsp;
-                                                    <span>Long: {{tempLongitude | number: '1.4-4'}}</span>
+                                                    <span>Long: {{tempLongi | number: '1.4-4'}}</span>
                                                 </p>
                                             </div>
                                         </ion-item>
@@ -375,7 +374,7 @@
                 <ion-row>
                     <ion-col>
                         <div class="div-btSalvarConfig">
-                            <ion-button id="btAddImg" (click)="openCamera()">
+                            <ion-button id="btAddImg" (click)="openCameraOrGallery()">
                                 <div class="button-img">
                                     <div class="esquerda">
                                         <ion-icon name="image"></ion-icon>
@@ -412,8 +411,19 @@
 <ion-modal [isOpen]="isModalOpenMap">
     <ng-template>
         <ion-header>
-            <ion-title>Localização de {{selectedHospital?.nome}}</ion-title>
+            <ion-toolbar>
+                <ion-buttons slot="start">
+                    <ion-button id="botao-toolbar" (click)="closeHospitalOnMap()">
+                        <ion-icon name="arrow-back-outline"></ion-icon>
+                    </ion-button>
+                </ion-buttons>
+                <div class="titulos-container">
+                    <ion-title id="home-title">Localização de {{selectedHospital?.nome}}</ion-title>
+                </div>
+            </ion-toolbar>
         </ion-header>
+
+
         <ion-content [fullscreen]="true">
             <ion-grid style="height: 100%;">
                 <ion-row style="height: 60%;">
@@ -421,11 +431,12 @@
                         <p id="titulo-cards-home">Localização no mapa (via pesquisa):</p>
                         <div style="height: 100%;" *ngIf="selectedHospital">
                             <app-google-maps-viewer [addressSearchString]="
-                                    selectedHospital.nome + ', ' + 
-                                    selectedHospital.logradouro + ', ' + 
+                                    selectedHospital.nome + ', ' +
                                     selectedHospital.cidade + '/' + 
-                                    selectedHospital.uf" [initialLatitude]="selectedHospital.lati"
-                                [initialLongitude]="selectedHospital.longi" [isSelectable]="false">
+                                    selectedHospital.uf" 
+                                    [initialLatitude]="selectedHospital.lati"
+                                [initialLongitude]="selectedHospital.longi" 
+                                [isSelectable]="false">
                             </app-google-maps-viewer>
                         </div>
                     </ion-col>
@@ -438,21 +449,32 @@
 
 <ion-modal [isOpen]="isModalOpenLocationSelect">
     <ng-template>
+        <ion-header>
+            <ion-toolbar>
+                <ion-buttons slot="start">
+                    <ion-button id="botao-toolbar" (click)="closeLocationSelectionModal()">
+                        <ion-icon name="arrow-back-outline"></ion-icon>
+                    </ion-button>
+                </ion-buttons>
+                <div class="titulos-container">
+                    <ion-title id="home-title">Localização de {{selectedHospital?.nome}}</ion-title>
+                </div>
+            </ion-toolbar>
+        </ion-header>
+
         <ion-content [fullscreen]="true">
             <ion-grid>
                 <ion-row>
                     <ion-col>
                         <p id="titulo-cards-home">Arraste o marcador no mapa:</p>
-                        <div style="height: 300px; border: 1px solid var(--ion-color-medium);">
-                            <app-google-maps-viewer [initialLatitude]="tempLatitude ?? 0"
-                                [initialLongitude]="tempLongitude ?? 0" [isSelectable]="true"
-                                (coordsChange)="updateTempCoords($event)">
-                            </app-google-maps-viewer>
-                        </div>
                         <p style="text-align: center; margin-top: 5px;">
-                            <small>Lat: {{tempLatitude | number: '1.4-4'}} / Long: {{tempLongitude | number:
+                            <small>Lat: {{tempLatitude | number: '1.4-4'}} / Longi: {{tempLongi | number:
                                 '1.4-4'}}</small>
                         </p>
+
+                        <app-google-maps-viewer [initialLatitude]="tempLatitude ?? 0" [initialLongitude]="tempLongi ?? 0"
+                            [isSelectable]="true" (coordsChange)="updateTempCoords($event)">
+                        </app-google-maps-viewer>
                     </ion-col>
                 </ion-row>
             </ion-grid>
