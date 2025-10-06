@@ -77,7 +77,7 @@ export class DateService {
     const month = (this.getCurrentMonthNumber()).toString().padStart(2, '0');
     const year = this.getCurrentYear();
     
-    return `${day}/${month}/${year}`;
+    return `${year}-${month}-${day}`;
   }
 
   // Retorna a data com hora formatada (ex: "25/12/2023 14:30")

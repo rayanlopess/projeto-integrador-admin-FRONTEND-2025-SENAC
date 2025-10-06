@@ -240,7 +240,6 @@ ion-refresher.refresher-native .refresher-pulling-icon, ion-refresher.refresher-
   --color: #a4071a !important;
   color: #a4071a !important;
 }
-
 //alerts
 .alert-wrapper{
   --background: #fff !important;
@@ -522,7 +521,7 @@ ion-fab-button {
   }
 
   //barra embaixo
-  body.dark.bar {
+  .bar {
     position: relative;
     display: block;
     width: 100%;
@@ -806,7 +805,6 @@ ion-datetime::part(month-year-button) {
     font-weight: 400;
     text-align: center;
 }
-
 //search bar
  .input-barra-login {
     width: 80%;
@@ -941,7 +939,8 @@ ion-datetime::part(month-year-button) {
   .input-barra-login:focus-within .bar-login::after {
     width: 50% !important;
   }
-//fim da search bar
+//fim da search baR
+
 #btEntrar{
   --background: #0e2b52;
   --color: #fff;
@@ -1277,627 +1276,127 @@ body.dark .fab-remove{
 //fim do ion-fab tela principal
 
 //search bar
-  body.dark .input-texto {
-    border-bottom: 1px solid #fff;
-  }
-  body.dark .input-texto-datetime {
-    border-bottom: 1px solid #fff;
-  }
-  body.dark .icon-search {
-    color: #fff;
-  }
-  body.dark .icon-search-datetime {
-    color: #fff;
-  }
-  body.dark .wave-group .input-tecido {
-    color: #fff;
-  }
-  body.dark .wave-group .label {
-    color: #fff !important;
-  }
-  body.dark .wave-group .input-tecido:focus~label .label-char,
-  body.dark .wave-group .input-tecido:valid~label .label-char {
-    transform: translateY(-22px) translateX(-45px) !important;
-    font-size: 14px !important;
-    color: #fff !important;
-  }
-  body.dark .input-tecido::placeholder {
-    opacity: 0 !important;
-    color: #ffffff77 !important;
-  }
+body.dark .input-texto {
+  border-bottom: 1px solid #fff;
+}
+body.dark .input-texto-datetime {
+  border-bottom: 1px solid #fff;
+}
+body.dark .icon-search {
+  width: max-content;
+  color: #fff;
+  padding-top: 10px;
+}
+body.dark .icon-search-datetime {
+  width: max-content;
+  color: #fff;
+  padding: 10px 0px 5px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  //Mostra o placeholder apenas quando o input está em foco
+body.dark .wave-group .input-tecido {
+  color: #fff;
+}
+body.dark .wave-group .label {
+  color: #fff !important;
+}
+body.dark .wave-group .input-tecido:focus~label .label-char,
+body.dark .wave-group .input-tecido:valid~label .label-char {
+  color: #fff !important;
+}
+body.dark .input-tecido::placeholder {
+  color: #ffffff77 !important;
+}
 
-  //barra embaixo
-  body.dark .bar {
-    background-color: #fff;
-  }
-  
-  body.dark .bar::before,
-  body.dark .bar::after {
-    background-color: #fff !important;
-  }
-  
-  
-  body.dark .input-barra:focus-within .bar::before,
-  body.dark .input-barra:focus-within .bar::after {
-    width: 50% !important;
-  }
+
+//barra embaixo
+body.dark .bar {
+  background-color: #fff;
+}
+
+body.dark .bar::before,
+body.dark .bar::after {
+  background-color: #fff !important;
+}
 //fim da search bar
 
 //botao da localizacao
-#btAjustaLoc{
-  --background: #0e2b52;
+body.dark #btAjustaLoc{
+  --background: #1a1a1a;
   --color: #fff;
-  --border-radius: 10px;
-  border-radius: 12px;
   border: 3px solid #d9d9d9;
-  width: 82%;
-  height: 50px;
-  font-weight: 600;
-  margin-top: 10px;
 }
 //fim do botao da localizacao
 
 //botao de add img
-#btAddImg{
-   --background: #0e2b52;
+body.dark #btAddImg{
+  --background: #1a1a1a;
   --color: #fff;
-  --border-radius: 10px;
-  border-radius: 12px;
   border: 3px solid #d9d9d9;
-  width: 82%;
-  height: 50px;
-  font-weight: 600; 
 }
 //fim do botao de add img
 
 //botoes importantes
-#btSalvarConfig{
-  --background: #0e2b52;
+body.dark #btSalvarConfig{
+  --background: #1a1a1a;
   --color: #fff;
-  --border-radius: 20px;
-  border-radius: 22px;
   border: 3px solid #d9d9d9;
-  width: 50%;
-  height: 50px;
-  font-size: 18px;
-  font-weight: 600;
-  margin-top: 70px;
 }
-#btSalvarAlteracoes{
-  --background: #0e2b52;
+body.dark #btSalvarAlteracoes{
+  --background: #1a1a1a;
   --color: #fff;
-  --border-radius: 20px;
-  border-radius: 22px;
   border: 3px solid #d9d9d9;
-  width: 70%;
-  height: 50px;
-  font-size: 18px;
-  font-weight: 600;
-  margin-top: 70px;
 }
-#btSalvarConfigUser{
-  --background: #0e2b52;
+body.dark #btSalvarConfigUser{
+  --background: #1a1a1a;
   --color: #fff;
-  --border-radius: 20px;
-  border-radius: 22px;
   border: 3px solid #d9d9d9;
-  width: 50%;
-  height: 50px;
-  font-size: 18px;
-  font-weight: 600;
-  margin-top: 20px;
 }
 //fim dos botoes importantes
 
 //data de nascimento
-.labelDtNascimento{
-  font-size: 14px;
-  margin-left: 10px;
+body.dark ion-datetime{
+  --background: #1a1a1a;
 }
-ion-datetime{
-  --background: #fff;
-}
-ion-datetime::part(calendar-day) {
-  color: #0e2b52;
-}
-ion-datetime::part(calendar-day today) {
-  color: #0e2b52;
-}
-ion-datetime::part(calendar-day):focus {
-  background-color: #0e2b5266;
-  box-shadow: 0px 0px 0px 4px #0e2b5266;
-}
-ion-datetime.md::part(calendar-day active),
-ion-datetime.md::part(calendar-day active):focus {
-  background-color: #0e2b52;
-  border-color: #0e2b52 ;
+body.dark ion-datetime::part(calendar-day) {
   color: #fff;
 }
-
-ion-datetime.md::part(calendar-day today) {
-  border: 2px solid #0e2b52;
+body.dark ion-datetime::part(calendar-day today) {
+  color: #fff;
 }
-ion-datetime-button::part(native) {
+body.dark ion-datetime::part(calendar-day):focus {
+  background-color: #ffffff66;
+  box-shadow: 0px 0px 0px 4px #ffffff66;
+}
+body.dark ion-datetime.md::part(calendar-day active),
+body.dark ion-datetime.md::part(calendar-day active):focus {
+  background-color: #fff;
+  border-color: #fff ;
+  color: #1a1a1a;
+}
+
+body.dark ion-datetime.md::part(calendar-day today) {
+  border: 2px solid #fff;
+}
+body.dark ion-datetime-button::part(native) {
   background: #fff;
-  color: #0e2b52;
-  border: 2px solid #0e2b52;
+  color: #1a1a1a;
+  border: 2px solid #fff;
   
 }
-ion-datetime::part(month-year-button) {
-  color: #0e2b52 !important;
+body.dark ion-datetime::part(month-year-button) {
+  color: #fff !important;
   font-weight: 600;
 }
+
 //fim data de nascimento
 
 //FIM DO PATHS.SCSS
 
 //-----------------------------------------------//
 
-//SWIPPER.SCSS
-
-//filamed icon
-body.dark #filamed-logo {
-  width: 0;
-  height: 0;
-}
-body.dark #filamed-logo-1 {
-  width: 111.1111111111111px;
-  height: 38.88888888888889px;
-  margin-top: 10px;
-}
-//fim do filamed icon
-
-//config carrossel
-body.dark .indicator {
-  background-color: rgba(255, 255, 255, 0.5);
-}
-
-body.dark .indicator.active {
-  background-color: #fff;
-}
-//fim da config carrossel
-
-//botao do swipper
-body.dark .butao-icon {
-  color: rgba(255, 255, 255, 0.5);
-}
-body.dark .carousel-control:active .butao-icon {
-  font-size: 50px;
-  color: #fff;
-}
-//fim do botao swipper
-
-//------------//
-
-//page1
-
-//coloração
-body.dark .carousel-page:nth-child(1) {
-  background-color: #121212;
-}
-
-//enfermeira e paciente
-body.dark #enf-img-1 {
-    width: 290px;
-    height: 290px;
-    height: max-content; 
-}
-body.dark #enf-img{
-    width: 0;
-    height: 0;
-}
-
-//letreiros
-body.dark .carousel-title-page-1{
-  color: #fff;
-}
-body.dark .carousel-footer-page-1{
-    color: #fff;
-}
-//fim dos letreiros 
-
-//fim da page1
-
-//------------//
-
-//page2
-
-//coloração
-body.dark .carousel-page:nth-child(2) {
-  background-color: #121212;
-}
-
-//estilização do card de example
-body.dark .swipper-card {
-  background-color: #1a1a1a;
-  border: 3px solid #fff;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
-
-  .informacoes-div-swipper > p{
-    color: #fff;
-  }
-  .informacoes-div-swipper > p > span{
-    color: #fff;
-  }
-  .informacoes-div-swipper > h1{
-    color: #fff;
-  }
-  .icon-text-swipper{
-    color: #a4071a;
-    font-size: 16px;
-  }
-}
-
-//letreiros
-body.dark .carousel-title-page-2{
-  color: #fff;
-}
-body.dark .carousel-footer-page-2{
-  color: #fff;
-}
-//fim dos letreiros 
-
-//fim da page2
-
-//------------//
-
-//page3
-
-//coloração
-body.dark .carousel-page:nth-child(3) {
-  background-color: #121212;
-}
-
-//
-body.dark .tab-bar-swipper{
-  background-color: #1e1e1e;
-}
-body.dark .dedo-apontado-3{
-  color: #fff;
-}
-
-//letreiros
-body.dark .carousel-title-page-3{
-  color: #fff;
-}
-body.dark .carousel-footer-page-3{
-  color: #fff;
-}
-//fim dos letreiros
-
-//fim da page3
-
-//------------//
-
-//page4
-
-//coloração
-body.dark .carousel-page:nth-child(4) {
-  background-color: #121212;
-}
-
-body.dark .dedo-apontado-4{
-  color: #fff;
-}
-
-//letreiros
-body.dark .carousel-title-page-4{
-  color: #fff;
-}
-body.dark .carousel-footer-page-4{
-  color: #fff;
-}
-//fim dos letreiros
-
-//fim da page4
-
-//------------//
-
-//page5
-
-//coloração
-body.dark .carousel-page:nth-child(5) {
-  background-color: #121212;
-}
-
-//
-body.dark .dedo-apontado-5{
-  color: #fff;
-}
-
-//letreiros
-body.dark .carousel-title-page-5{
-  color: #fff;  
-}
-body.dark .carousel-footer-page-5{
-  color: #fff;
-}
-//fim dos letreiros
-
-//fim da page5
-
-//------------//
-
-//page6
-
-//coloração
-body.dark .carousel-page:nth-child(6) {
-  background-color: #121212;
-}
-
-//
-body.dark .ion-toolbar-swipper{
-  background-color: #1a1a1a;
-  
-  .titulos-container-swipper{
-    color: #fff;
-  }
-}
-body.dark .popover-swipper{
-    background-color: #1e1e1e; 
-}
-body.dark #botao-toolbar-swipper{
-    color: #fff !important;
-}
-body.dark #seta-light{
-  display: none;
-  width: 0px;
-  height: 0px;
-}
-body.dark #seta-dark{
-  display: block;
-  width: 70px;
-  height: 70px;
-}
-
-//letreiros
-body.dark .carousel-title-page-6{
-  color: #fff;
-}
-body.dark .carousel-footer-page-6{
-  color: #fff;
-}
-//fim dos letreiros
-
-//fim da page6
-
-//------------//
-
-//page7
-body.dark #titulo-aviso-dados{
-  color: #fff;
-}
-body.dark #texto-aviso-dados{
-  color: #fff;
-}
-body.dark #smile-dark{
-  width: 250px;
-  height: 250px;
-  margin-left: 20px;
-}
-body.dark #smile-light{
-  width: 0;
-  height: 0;
-}
-///fim da page8
-
-//------------//
-
-//page8
-
-//coloração
-body.dark .carousel-page:nth-child(7) {
-  background-color: #121212;
-}
-body.dark ion-checkbox {
-  color: #fff;
-  --checkbox-background: #121212;
-  --checkbox-background-checked: #121212;
-  a{
-    color: #fff !important;
-  }
-}
-body.dark ion-checkbox::part(container) {
-  border: 2px solid #fff;
-}
-//letreiros
-body.dark .carousel-title-page-7{
-  color: #fff;
-}
-body.dark #btIniciarApp{
-  --background: #fff;
-  --color: #121212;
-}
-body.dark #btSairApp{
-  --background: transparent;
-  --color: #fff;
-}
-//fim dos letreiros 
-
-//fim da page8
-
-//------------//
-
-//FIM DO SWIPPER.SCSS
-
-//-----------------------------------------------//
-
-//CONFIG-INICIAL.SCSS
-
-//titulos
-body.dark #titulo-config-inicial{
-  color: #fff;
-}
-body.dark #subtitulo-config-inicial{
-  color: #fff;
-}
-//fim dos titulos
-
-//localização
-
-//btLocalização
-body.dark #btLocalizacao{
-  --color: #fff;
-  --background: transparent;
-  border: 3px solid #f5f5f5;
-}
-//fim do btLocalização
-body.dark #letreiro-btLocalizacao{
-  color: #fff;
-}
-//texto entre button e input
-body.dark #text-entre-2{
-  color: #fff;
-}
-//fim do texto entre button e input
-
-//search bar
-  body.dark .input-texto {
-    border-bottom: 1px solid #fff;
-  }
-  body.dark .icon-search {
-    color: #fff;
-  }
-  body.dark .wave-group .input-tecido {
-    color: #fff;
-  }
-  body.dark .wave-group .label {
-    color: #fff;
-  }
-  body.dark .wave-group .input-tecido:focus~label .label-char,
-  body.dark .wave-group .input-tecido:valid~label .label-char {
-    color: #fff;
-  }
-  body.dark .input-tecido::placeholder {
-    opacity: 0;
-    color: #ffffff77;
-  }
-
-  //barra embaixo
-  body.dark .bar {
-    background-color: #fff;
-  }
-  
-  body.dark .bar::before,
-  body.dark .bar::after {
-    background-color: #fff;
-  }
-//fim da search bar
-
-//previsao da prediction
-body.dark .autocomplete-list{
-  
-  background-color: #1a1a1a;
-  
-}
-body.dark #item-prediction{
-  --background: #1a1a1a !important;
-  color: #fff;
-}
-//fim da prediction
-
-//fim da localização
-
-//letreiro distancia maxima
-body.dark #titulo-distancia-inicial{
-  color: #fff;
-}
-//fim do letreiro distancia maxima
-
-//range-bar
-body.dark ion-range::part(tick) {
-  background: #fff;
-}
-body.dark ion-range::part(pin) {
-  background: #fff;
-  color: #0e2b52;
-  
-  /* Adiciona a setinha */
-  &::after {
-    border-top: 6px solid #fff;
-  }
-}
-body.dark ion-range::part(knob) {
-  background: #fff;
-}
-body.dark ion-range::part(bar) {
-  background: #ffffff66;
-}
-body.dark ion-range::part(bar-active) {
-  background: #fff;
-}
-//fim da range-bar
-
-//botao de salvar
-body.dark #btSalvarConfig{
-  --background: #fff;
-  --color: #0e2b52;
-  border: 3px solid #d9d9d9;
-}
-//fim do botao de salvar
-
-//nota
-body.dark #nota-config-inicial{
-  text-align: center;
-  font-size: 12px;
-  color: #ffffff55;
-  font-weight: 600;
-}
-//fim da nota
-
-//FIM DO CONFIG-INICIAL.SCSS
-
-//-----------------------------------------------//
-
-//TELEFONES.SCSS
-body.dark .aviso-telefones{
-  width: 100%;
-  height: 80px;
-  background-color: #1a1a1a;
-  display: flex;
-  justify-content: space-between;
-}
-body.dark .div-titulo-telefones{
-  color: #fff;
-}
-body.dark #titulo-telefones{
-  color: #fff;
-}
-body.dark .card-telefones{
-  background: #1a1a1a !important; 
-  --ion-item-background: #1a1a1a;
-  --ion-border-color: #1a1a1a;
-  .informacoes-div > p{
-    color: #fff;
-  }
-  .informacoes-div > h1{
-    color: #fff;
-  }
-  #ambulancia-light{
-    width: 0px;
-  }
-  #ambulancia-dark{
-    width: 70px;
-  }
-  #bombeiro-light{
-    width: 0px;
-  }
-  #bombeiro-dark{
-    width: 70px;
-  }
-  #policia-light{
-    width: 0px;
-  }
-  #policia-dark{
-    width: 70px;
-  }
-}
-
-//FIM DO TELEFONES.SCSS
-
-//-----------------------------------------------//
 
 //TERMOS-USO.SCSS (MODAL)
 body.dark #titulo-termos-uso{
@@ -1913,49 +1412,6 @@ body.dark #texto-termos-uso{
 
 //-----------------------------------------------//
 
-//CONFIG-USER.SCSS
-
-//titulos
-body.dark #titulo-enderecos-config-user{
-  color: #fff;
-}
-//fim dos titulos
-
-//localização
-
-//texto entre button e input
-body.dark #text-entre-2-config-inicial{
-  color: #fff;
-}
-//fim do texto entre button e input
-
-//fim da localização
-
-//letreiro distancia maxima
-body.dark #titulo-distancia-user{
-  color: #fff;
-}
-//fim do letreiro distancia maxima
-
-body.dark .card-config-user{
-  background: #1a1a1a !important;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px !important;
-  --ion-item-background: transparent;
-  --ion-border-color: transparent;
-  border: 2px solid #787878 !important;
-  .informacoes-div > h1{
-    color: #fff;
-  }
-}
-body.dark .card-config-user.selected{
-  border: 3px solid #fff !important;
-}
-body.dark .selected-indicator {
-  color: #fff;
-}
-//FIM DO CONFIG-USER.SCSS
-
-//-----------------------------------------------//
 
 //CENTRAL-AJUDA.SCSS
 

@@ -73,7 +73,7 @@ import { AutenticacaoService } from 'src/app/services/sistema-login/autenticacao
       </ion-item>
 
       <ion-item lines="none" button (click)="logOut()">
-        <ion-label>Sair</ion-label>
+        <ion-label class="cancelarAction">Sair</ion-label>
       </ion-item>
     </ion-list>
 
@@ -390,6 +390,7 @@ export class SimplePopoverComponent {
       buttons: [ {
         text: 'cancelar',
         role: 'cancelar',
+        cssClass: 'cancelarAction',
         handler: () => {
 
         },
@@ -397,6 +398,7 @@ export class SimplePopoverComponent {
       {
         text: 'OK',
         role: 'OK',
+        cssClass: 'confirmarAction',
         handler: () => {
           this.autenticacao_service
             .logOut(this.token)

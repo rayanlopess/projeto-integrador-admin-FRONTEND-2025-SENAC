@@ -51,6 +51,7 @@ import { DataValidator } from '../../directives/data-validator';
 import { Inject } from '@angular/core';
 
 import { RefresherEventDetail } from '@ionic/angular';
+import { ThemeService } from 'src/app/services/theme/theme';
 
 @Component({
   selector: 'app-usuarios',
@@ -158,8 +159,14 @@ export class UsuariosPage implements OnInit, OnDestroy {
 
   public token = localStorage.getItem('token') || '';
 
+  anoMaximo:string = this.dateService.getFormattedDateShort();
+
+  temaAtual:string = this.themeService.getCurrentTheme();
+
+  corDoDatepicker: string = this.atualizarCor(); 
 
   constructor(
+    private themeService: ThemeService,
     private router: Router,
     private dateService: DateService,
     public alertController: AlertController,
@@ -167,7 +174,8 @@ export class UsuariosPage implements OnInit, OnDestroy {
     private loadingController: LoadingController,
     // Injetando o novo serviço
     @Inject(UserService) private userService: UserService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    
 
   ) {
     addIcons({ home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create, chevronUp, add, trash, lockClosed, lockOpen, closeCircle, document, ellipsisVertical });
@@ -176,6 +184,8 @@ export class UsuariosPage implements OnInit, OnDestroy {
   ngOnInit() {
     window.addEventListener('storage', this.storageChangeListener);
     this.loadUsers();
+    console.log(this.corDoDatepicker);
+    
   }
   ngOnDestroy() {
     window.removeEventListener('storage', this.storageChangeListener);
@@ -184,6 +194,17 @@ export class UsuariosPage implements OnInit, OnDestroy {
     this.loadUsers()
       .then(() => event.detail.complete())
       .catch(() => event.detail.complete());
+  }
+  atualizarCor() {
+    const temaAtual = this.temaAtual; // Use o método real do seu serviço
+
+    if (temaAtual === 'dark') {
+      return this.corDoDatepicker = 'light'; // Se o app é escuro, a cor do componente é clara
+    } else {
+      
+      return this.corDoDatepicker = 'filamed-blue'; // Se o app é claro, a cor do componente é filamed-blue
+    }
+
   }
 
   async loadUsers() {

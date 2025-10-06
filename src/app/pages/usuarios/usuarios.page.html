@@ -252,8 +252,8 @@
 
                 <ion-modal [keepContentsMounted]="true" class="modal-datetime">
                   <ng-template>
-                    <ion-datetime color="filamed-blue" id="dataNascimentoModal" presentation="date" min="1900-01-01"
-                      max="2025-12-31" class="custom-data-picker" [(ngModel)]="dataNascimento" locale="pt-BR"
+                    <ion-datetime color="light" id="dataNascimentoModal" presentation="date" min="1900-01-01"
+                      max=`{{anoMaximo}}` class="custom-data-picker" [(ngModel)]="dataNascimento" locale="pt-BR"
                       [showDefaultButtons]="true" (ionChange)="formatarData($event)"></ion-datetime>
                   </ng-template>
                 </ion-modal>
@@ -546,9 +546,11 @@
             </div>
           </ion-col>
         </ion-row>
+
         <ion-row>
           <ion-col>
             <div class="input-barra">
+              <ion-label class="labelDtNascimento">Data de Nascimento</ion-label>
               <div class="input-texto-datetime">
                 <div class="icon-search-datetime">
                   <ion-buttons>
@@ -562,7 +564,7 @@
                 <ion-modal [keepContentsMounted]="true" class="modal-datetime">
                   <ng-template>
                     <ion-datetime color="filamed-blue" id="dataNascimentoModal" presentation="date" min="1900-01-01"
-                      max="2025-12-31" class="custom-data-picker" [(ngModel)]="dataNascimento" locale="pt-BR"
+                      max=`{{anoMaximo}}` class="custom-data-picker" [(ngModel)]="dataNascimento" locale="pt-BR"
                       [showDefaultButtons]="true"></ion-datetime>
                   </ng-template>
                 </ion-modal>
