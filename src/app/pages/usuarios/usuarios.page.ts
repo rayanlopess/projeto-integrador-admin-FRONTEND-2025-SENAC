@@ -50,6 +50,8 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { DataValidator } from '../../directives/data-validator';
 import { Inject } from '@angular/core';
 
+import { RefresherEventDetail } from '@ionic/angular';
+
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.page.html',
@@ -135,7 +137,7 @@ export class UsuariosPage implements OnInit, OnDestroy {
       // Força o Angular a verificar novamente o getter pageTitle.
       this.cd.detectChanges();
     }
-   
+
 
   }
 
@@ -178,41 +180,36 @@ export class UsuariosPage implements OnInit, OnDestroy {
   ngOnDestroy() {
     window.removeEventListener('storage', this.storageChangeListener);
   }
-
+  handleRefresh(event: CustomEvent<RefresherEventDetail>) {
+    this.loadUsers()
+      .then(() => event.detail.complete())
+      .catch(() => event.detail.complete());
+  }
 
   async loadUsers() {
-    if (this.carregando) return;
-
-    const loading = await this.loadingController.create({
-      message: 'Carregando usuários...',
-      spinner: 'circles',
-    });
-    await loading.present();
+ 
 
     this.carregando = true;
     this.erroCarregamento = false;
 
     try {
       this.users = await this.userService.getAllUsers(this.token);
-      console.log(this.users)
+      
       this.erroCarregamento = false;
     } catch (error) {
       console.error('Erro ao carregar usuários:', error);
       this.erroCarregamento = true;
       this.users = []; // Limpa a lista em caso de erro
-      this.presentAlert('Erro', 'Não foi possível carregar a lista de usuários. Tente novamente mais tarde.');
+
     } finally {
       this.carregando = false;
-      loading.dismiss();
+
     }
   }
 
   // --- Lógica de Modos (Edição/Deleção) ---
 
-  /**
-   * Alterna entre os modos de edição e deleção.
-   * @param mode 'edit' para modo de edição, 'delete' para modo de deleção.
-   */
+
   toggleMode(mode: 'edit' | 'delete') {
     // Impedir que os modos se sobreponham
     if (mode === 'edit') {
@@ -230,9 +227,7 @@ export class UsuariosPage implements OnInit, OnDestroy {
 
   // --- Lógica dos Modais (Add/Edit) ---
 
-  /**
-   * Abre e fecha o modal de cadastro de usuário.
-   */
+
   setOpenAdd(isOpen: boolean) {
     this.isModalOpenAdd = isOpen;
     if (isOpen) {
@@ -240,12 +235,7 @@ export class UsuariosPage implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Abre e fecha o modal de edição de usuário.
-   * Preenche o formulário se um usuário for fornecido.
-   * @param isOpen Se o modal deve estar aberto.
-   * @param user O usuário a ser editado (opcional).
-   */
+
   setOpenEdit(isOpen: boolean, user: User | null = null) {
     this.isModalOpenEdit = isOpen;
     this.selectedUser = user;
@@ -258,9 +248,7 @@ export class UsuariosPage implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Preenche as variáveis do formulário com os dados do usuário selecionado.
-   */
+
   fillForm(user: User) {
     this.nomeCompleto = user.nome;
     this.dataNascimento = user.nascimento;
@@ -268,11 +256,10 @@ export class UsuariosPage implements OnInit, OnDestroy {
     this.email = user.email;
     this.nomeUsuario = user.usuario;
     this.senha = '';
+    console.log('Data de Nascimento do Backend:', user.nascimento);
+    console.log('Variável this.dataNascimento:', this.dataNascimento);
   }
 
-  /**
-   * Limpa as variáveis do formulário.
-   */
   clearForm() {
     this.nomeCompleto = '';
     this.dataNascimento = null;
@@ -303,10 +290,18 @@ export class UsuariosPage implements OnInit, OnDestroy {
         cpf: this.cpf,
         nascimento: this.dataNascimento
       };
+      const userDataEdit: Omit<User, 'id'> = {
+        email: this.email,
+        usuario: this.nomeUsuario,
+        senha: this.senha,
+        nome: this.nomeCompleto,
+        cpf: this.cpf,
+        nascimento: this.dataNascimento
+      };
 
       if (this.selectedUser) {
         // Modo Edição
-        await this.userService.updateUser({ ...userData, id: this.selectedUser.id });
+        await this.userService.updateUser({ ...userDataEdit, id: this.selectedUser.id }, this.token);
         this.setOpenEdit(false);
         this.presentAlert('Sucesso!', 'Usuário atualizado com sucesso!');
       } else {
@@ -332,10 +327,9 @@ export class UsuariosPage implements OnInit, OnDestroy {
    * @param user O usuário a ser deletado.
    */
   async deleteUser(user: User) {
-    // NÃO VAMOS SAIR do modo de deleção aqui: this.isDeletingMode = false;
 
     const alert = await this.alertController.create({
-      // ... (restante do alert mantido)
+
       buttons: [
         {
           text: 'Cancelar',
@@ -351,7 +345,7 @@ export class UsuariosPage implements OnInit, OnDestroy {
             await loading.present();
 
             try {
-              await this.userService.deleteUser(user.id);
+              await this.userService.deleteUser(user.id, this.token);
               await this.loadUsers();
               this.presentAlert('Sucesso!', 'Usuário deletado com sucesso!');
               // O modo continua ativo, permitindo deletar mais.
@@ -369,10 +363,7 @@ export class UsuariosPage implements OnInit, OnDestroy {
     await alert.present();
   }
 
-  /**
-   * Navega ou exibe detalhes do usuário (ação padrão do card).
-   * @param user O usuário clicado.
-   */
+
   viewUserDetails(user: User) {
     if (this.isEditingMode || this.isDeletingMode) {
       // Se estiver em modo de edição/deleção, a ação é pelo botão de canto.

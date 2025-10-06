@@ -15,7 +15,7 @@ export interface HttpOptions {
 })
 export class RequiemDosDeusesService {
 
-  private baseUrl = 'https://projeto-integrador-backend-2025-senac.onrender.com';
+  private baseUrl = 'http://localhost:2324';
 
   constructor(public http: HttpClient) { }
 

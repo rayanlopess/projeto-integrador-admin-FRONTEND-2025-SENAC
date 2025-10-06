@@ -1,6 +1,6 @@
 {
     "/requisicao":{
-        "target": "https://projeto-integrador-backend-2025-senac.onrender.com/",
+        "target": "http://localhost:2324/",
         "secure": false,
         "changeOrigin": true,
         "logLevel": "debug"

@@ -43,7 +43,7 @@ export interface HospitalProcessado {
 export class HospitalService {
 
     // ALERTA: Ajuste o endereço base da sua API
-    private API_URL = 'https://projeto-integrador-backend-2025-senac.onrender.com/hospital';
+    private API_URL = 'http://localhost:2324/hospital';
 
     constructor(private http: HttpClient) { }
 

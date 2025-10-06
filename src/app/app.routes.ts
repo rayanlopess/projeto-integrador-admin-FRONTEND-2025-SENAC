@@ -54,7 +54,7 @@ export const routes: Routes = [
     loadComponent: () => import('./sistema-login/esqueci-senha/esqueci-senha.page').then( m => m.EsqueciSenhaPage)
   },
   {
-    path: 'alteracao-senha',
+    path: 'alteracao-senha/:recupCode',
     loadComponent: () => import('./sistema-login/alteracao-senha/alteracao-senha.page').then( m => m.AlteracaoSenhaPage)
   },
   

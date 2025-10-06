@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EsqueciSenha } from './esqueci-senha';
+import { EsqueciSenhaService } from './esqueci-senha';
 
 describe('EsqueciSenha', () => {
-  let service: EsqueciSenha;
+  let service: EsqueciSenhaService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(EsqueciSenha);
+    service = TestBed.inject(EsqueciSenhaService);
   });
 
   it('should be created', () => {

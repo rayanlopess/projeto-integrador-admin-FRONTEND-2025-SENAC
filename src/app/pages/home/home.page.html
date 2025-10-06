@@ -96,14 +96,11 @@
                                             <ion-icon class="icon-text" name="location"></ion-icon>&nbsp;
                                             <span
                                                 (click)="!isEditingMode && !isDeletingMode && viewHospitalOnMap(hospital); $event.stopPropagation()">
-                                                Ver no maps
+                                                Ver no Maps
                                             </span>
                                         </p>
 
-                                        <p *ngIf="hospital.tempo_espera">
-                                            <ion-icon class="icon-text" name="time"></ion-icon>&nbsp;
-                                            Tempo de Espera: <span>{{ getTempoEsperaDisplay(hospital) }}</span>
-                                        </p>
+
                                     </div>
                                 </ion-item>
                             </ion-list>
@@ -418,7 +415,7 @@
                     </ion-button>
                 </ion-buttons>
                 <div class="titulos-container">
-                    <ion-title id="home-title">Localização de {{selectedHospital?.nome}}</ion-title>
+                    <ion-title id="home-title">{{selectedHospital?.nome}}</ion-title>
                 </div>
             </ion-toolbar>
         </ion-header>
@@ -426,17 +423,15 @@
 
         <ion-content [fullscreen]="true">
             <ion-grid style="height: 100%;">
-                <ion-row style="height: 60%;">
+                <ion-row style="height: 100%;">
                     <ion-col style="height: 100%;">
-                        <p id="titulo-cards-home">Localização no mapa (via pesquisa):</p>
+
                         <div style="height: 100%;" *ngIf="selectedHospital">
                             <app-google-maps-viewer [addressSearchString]="
                                     selectedHospital.nome + ', ' +
                                     selectedHospital.cidade + '/' + 
-                                    selectedHospital.uf" 
-                                    [initialLatitude]="selectedHospital.lati"
-                                [initialLongitude]="selectedHospital.longi" 
-                                [isSelectable]="false">
+                                    selectedHospital.uf" [initialLatitude]="selectedHospital.lati"
+                                [initialLongitude]="selectedHospital.longi" [isSelectable]="false">
                             </app-google-maps-viewer>
                         </div>
                     </ion-col>
@@ -457,23 +452,22 @@
                     </ion-button>
                 </ion-buttons>
                 <div class="titulos-container">
-                    <ion-title id="home-title">Localização de {{selectedHospital?.nome}}</ion-title>
+                    <ion-title id="home-title">Selecionar Localização</ion-title>
                 </div>
             </ion-toolbar>
         </ion-header>
 
         <ion-content [fullscreen]="true">
-            <ion-grid>
-                <ion-row>
-                    <ion-col>
-                        <p id="titulo-cards-home">Arraste o marcador no mapa:</p>
-                        <p style="text-align: center; margin-top: 5px;">
-                            <small>Lat: {{tempLatitude | number: '1.4-4'}} / Longi: {{tempLongi | number:
-                                '1.4-4'}}</small>
-                        </p>
+            <ion-grid style="height: 100%;">
+                <ion-row style="height: 100%;">
+                    <ion-col style="height: 100%;">
 
-                        <app-google-maps-viewer [initialLatitude]="tempLatitude ?? 0" [initialLongitude]="tempLongi ?? 0"
-                            [isSelectable]="true" (coordsChange)="updateTempCoords($event)">
+
+
+                        <app-google-maps-viewer [initialLatitude]="tempLatitude ?? 0"
+                            [initialLongitude]="tempLongi ?? 0" [isSelectable]="true"
+                            (coordsChange)="updateTempCoords($event)">
+                            
                         </app-google-maps-viewer>
                     </ion-col>
                 </ion-row>

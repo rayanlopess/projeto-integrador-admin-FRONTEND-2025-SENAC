@@ -201,10 +201,10 @@ export class HomePage implements OnInit, OnDestroy {
             const position = await Geolocation.getCurrentPosition();
             this.tempLatitude = position.coords.latitude;
             this.tempLongi = position.coords.longitude; // Atualiza as coordenadas temporárias
-            this.presentToast('Localização atual obtida com sucesso!', 'success');
+
         } catch (error) {
             console.error('Erro ao obter localização:', error);
-            this.presentToast('Não foi possível obter a localização atual. Defina-a no mapa.', 'warning');
+            
         }
     }
 
@@ -284,8 +284,6 @@ export class HomePage implements OnInit, OnDestroy {
             this.presentToast('Não foi possível acessar a câmera ou galeria.', 'warning');
         }
     }
-
-
 
     async deleteHospital(hospital: HospitalProcessado) {
         const alert = await this.alertController.create({

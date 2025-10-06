@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AlteracaoSenha } from './alteracao-senha';
+import { AlteracaoSenhaService } from './alteracao-senha';
 
 describe('AlteracaoSenha', () => {
-  let service: AlteracaoSenha;
+  let service: AlteracaoSenhaService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(AlteracaoSenha);
+    service = TestBed.inject(AlteracaoSenhaService);
   });
 
   it('should be created', () => {

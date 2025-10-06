@@ -522,7 +522,7 @@ ion-fab-button {
   }
 
   //barra embaixo
-  .bar {
+  body.dark.bar {
     position: relative;
     display: block;
     width: 100%;
@@ -1191,27 +1191,34 @@ body.dark .confirmarAction{
 
 //aviso erro
 body.dark #error-img-light{
-  width: 0px;
+  width: 0;
 }
 body.dark #error-img-dark{
   width: 100%;
 }
 body.dark #error-img-light2{
-  
-  width: 0px;
+  width: 0;
 }
 body.dark #error-img-dark2{
   width: 100%;
 }
 body.dark #btAlterarConfig{
-  --background: #121212;
+  --background: #0e2b52;
   --color: #fff;
-  border: 3px solid #fff;
+  --border-radius: 20px;
+  border-radius: 22px;
+  width: 70%;
+  height: 50px;
+  font-size: 14px;
 }
-body.dark #btTentarNovamente{
-  --background: #121212;
+#btTentarNovamente{
+  --background: #0e2b52;
   --color: #fff;
-  border: 3px solid #fff;
+  --border-radius: 20px;
+  border-radius: 22px;
+  width: 70%;
+  height: 50px;
+  font-size: 14px;
 }
 //fim do aviso erro
 
@@ -1219,32 +1226,210 @@ body.dark #btTentarNovamente{
 body.dark #titulo-cards-home{
   color: #fff;
 }
+body.dark .icon-exit{
+  font-size: 32px !important;
+  color: #a4071a;
+}
 body.dark .card-home {
   background-color: #1a1a1a;
   border: 3px solid #fff;
-  border-radius: 10px;
-  box-shadow: rgba(255, 255, 255, 0.1) 2px 2px 2px;  
-
-
   .informacoes-div > p{
     color: #fff;
   }
+ 
   .informacoes-div > h1{
     color: #fff;
   }
-  .icon-text{
-    color: #a4071a;
-  }
-  ion-thumbnail{
-    width: 70px;
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  } 
- 
+}
+.botao-delete {
+  right: 20px; 
+  border: 3px solid #a4071a !important;
+  background: #a4071a !important;
+}
+body.dark .botao-canto ion-icon, body.dark .botao-canto-delete ion-icon {
+    font-size: 20px;
+    color: #1a1a1a; 
+}
+
+body.dark .botao-canto-card, body.dark.botao-canto-delete-card {
+  border: 3px solid #fff !important;
+  background: #fff !important;
+  color: #1a1a1a; 
+}
+body.dark .botao-delete {
+  border: 3px solid #a4071a !important;
+  background: #a4071a !important;
+}
+body.dark .botao-canto-card ion-icon, body.dark .botao-canto-delete-card ion-icon {
+    color: #1a1a1a;
 }
 //fim do cards tela principal
+
+//ion-fab tela principal
+body.dark ion-fab-button {
+  --background: #fff;
+  --color: #1a1a1a;
+}
+body.dark .fab-remove{
+  --background: #a4071a;
+  --color: #fff;
+}
+//fim do ion-fab tela principal
+
+//search bar
+  body.dark .input-texto {
+    border-bottom: 1px solid #fff;
+  }
+  body.dark .input-texto-datetime {
+    border-bottom: 1px solid #fff;
+  }
+  body.dark .icon-search {
+    color: #fff;
+  }
+  body.dark .icon-search-datetime {
+    color: #fff;
+  }
+  body.dark .wave-group .input-tecido {
+    color: #fff;
+  }
+  body.dark .wave-group .label {
+    color: #fff !important;
+  }
+  body.dark .wave-group .input-tecido:focus~label .label-char,
+  body.dark .wave-group .input-tecido:valid~label .label-char {
+    transform: translateY(-22px) translateX(-45px) !important;
+    font-size: 14px !important;
+    color: #fff !important;
+  }
+  body.dark .input-tecido::placeholder {
+    opacity: 0 !important;
+    color: #ffffff77 !important;
+  }
+
+  //Mostra o placeholder apenas quando o input está em foco
+
+  //barra embaixo
+  body.dark .bar {
+    background-color: #fff;
+  }
+  
+  body.dark .bar::before,
+  body.dark .bar::after {
+    background-color: #fff !important;
+  }
+  
+  
+  body.dark .input-barra:focus-within .bar::before,
+  body.dark .input-barra:focus-within .bar::after {
+    width: 50% !important;
+  }
+//fim da search bar
+
+//botao da localizacao
+#btAjustaLoc{
+  --background: #0e2b52;
+  --color: #fff;
+  --border-radius: 10px;
+  border-radius: 12px;
+  border: 3px solid #d9d9d9;
+  width: 82%;
+  height: 50px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+//fim do botao da localizacao
+
+//botao de add img
+#btAddImg{
+   --background: #0e2b52;
+  --color: #fff;
+  --border-radius: 10px;
+  border-radius: 12px;
+  border: 3px solid #d9d9d9;
+  width: 82%;
+  height: 50px;
+  font-weight: 600; 
+}
+//fim do botao de add img
+
+//botoes importantes
+#btSalvarConfig{
+  --background: #0e2b52;
+  --color: #fff;
+  --border-radius: 20px;
+  border-radius: 22px;
+  border: 3px solid #d9d9d9;
+  width: 50%;
+  height: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 70px;
+}
+#btSalvarAlteracoes{
+  --background: #0e2b52;
+  --color: #fff;
+  --border-radius: 20px;
+  border-radius: 22px;
+  border: 3px solid #d9d9d9;
+  width: 70%;
+  height: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 70px;
+}
+#btSalvarConfigUser{
+  --background: #0e2b52;
+  --color: #fff;
+  --border-radius: 20px;
+  border-radius: 22px;
+  border: 3px solid #d9d9d9;
+  width: 50%;
+  height: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 20px;
+}
+//fim dos botoes importantes
+
+//data de nascimento
+.labelDtNascimento{
+  font-size: 14px;
+  margin-left: 10px;
+}
+ion-datetime{
+  --background: #fff;
+}
+ion-datetime::part(calendar-day) {
+  color: #0e2b52;
+}
+ion-datetime::part(calendar-day today) {
+  color: #0e2b52;
+}
+ion-datetime::part(calendar-day):focus {
+  background-color: #0e2b5266;
+  box-shadow: 0px 0px 0px 4px #0e2b5266;
+}
+ion-datetime.md::part(calendar-day active),
+ion-datetime.md::part(calendar-day active):focus {
+  background-color: #0e2b52;
+  border-color: #0e2b52 ;
+  color: #fff;
+}
+
+ion-datetime.md::part(calendar-day today) {
+  border: 2px solid #0e2b52;
+}
+ion-datetime-button::part(native) {
+  background: #fff;
+  color: #0e2b52;
+  border: 2px solid #0e2b52;
+  
+}
+ion-datetime::part(month-year-button) {
+  color: #0e2b52 !important;
+  font-weight: 600;
+}
+//fim data de nascimento
 
 //FIM DO PATHS.SCSS
 
