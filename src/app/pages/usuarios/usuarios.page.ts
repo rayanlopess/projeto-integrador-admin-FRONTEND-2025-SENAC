@@ -350,7 +350,7 @@ export class UsuariosPage implements OnInit, OnDestroy {
 
         const loading = await this.loadingController.create({
           message: 'Salvando usuário...',
-          spinner: 'lines',
+         
         });
         await loading.present();
         try {

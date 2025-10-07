@@ -175,11 +175,18 @@ export class HomePage implements OnInit, OnDestroy {
                         this.erroCarregamento = false;
                         sessionStorage.setItem('hospitais', JSON.stringify(this.hospitais));
                     },
-                    error: (err: any) => {
+                    error: async (err: any) => {
                         console.error('Erro ao carregar hospitais:', err);
                         this.erroCarregamento = true;
                         this.mensagemErro = 'Não foi possível carregar os dados. Tente novamente.';
-                        this.presentToast('Erro ao carregar dados.', 'danger');
+                        const alert = await this.alertController.create({
+                            header: 'Erro ao carregar os hospitais!',
+                            buttons: [
+                                { text: 'ok', role: 'ok', cssClass: 'confirmarAction' },
+                            ],
+                        });
+                        await alert.present();
+                        return;
                     }
                 })
         );
@@ -289,8 +296,14 @@ export class HomePage implements OnInit, OnDestroy {
             this.hospitalPhoto = image.dataUrl || null;
             this.hospitalPhotoFilename = `foto_${Date.now()}.jpeg`;
         } catch (error) {
-            console.error('Erro ao acessar a mídia:', error);
-            this.presentToast('Não foi possível acessar a câmera ou galeria.', 'warning');
+            const alert = await this.alertController.create({
+                header: 'Foto não enviada!',
+                buttons: [
+                    { text: 'ok', role: 'ok', cssClass: 'confirmarAction' },
+                ],
+            });
+            await alert.present();
+            return;
         }
     }
 
@@ -325,9 +338,16 @@ export class HomePage implements OnInit, OnDestroy {
 
                                         await this.carregarHospitais();
                                     },
-                                    error: (err: any) => { // <-- CORREÇÃO: Tipo 'any' adicionado
+                                    error: async (err: any) => { // <-- CORREÇÃO: Tipo 'any' adicionado
                                         console.error('Erro ao excluir:', err);
-                                        this.presentToast('Erro ao excluir hospital.', 'danger');
+                                        const alert = await this.alertController.create({
+                                            header: 'Erro ao excluir hospital!',
+                                            buttons: [
+                                                { text: 'ok', role: 'ok', cssClass: 'confirmarAction' },
+                                            ],
+                                        });
+                                        await alert.present();
+                                        return;
                                     }
                                 })
                         );
@@ -439,11 +459,18 @@ export class HomePage implements OnInit, OnDestroy {
                         });
                         await alert.present();
                         await this.exitMode();
+                        this.enderecoManual = '';
                     },
-                    error: (err: any) => { // <-- CORREÇÃO: Tipo 'any' adicionado
+                    error: async (err: any) => { // <-- CORREÇÃO: Tipo 'any' adicionado
                         console.error('Erro na requisição:', err);
-                        this.presentToast('Erro ao salvar os dados. Verifique o servidor.', 'danger');
-                        console.log(request$)
+                        const alert = await this.alertController.create({
+                            header: 'Erro na requisição com o servidor interno!',
+                            buttons: [
+                                { text: 'ok', role: 'ok', cssClass: 'confirmarAction' },
+                            ],
+                        });
+                        await alert.present();
+                        return;
                     }
                 })
         );
@@ -452,16 +479,7 @@ export class HomePage implements OnInit, OnDestroy {
 
     // --- MÉTODOS AUXILIARES DE TOAST (Usando ToastController) ---
 
-    async presentToast(message: string, color: string = 'primary') {
-        const toast = await this.toastController.create({
-            message: message,
-            duration: 2000,
-            position: 'bottom',
-            color: color,
-            buttons: [{ text: 'FECHAR', role: 'cancel' }]
-        });
-        await toast.present();
-    }
+
 
 
     // -----------------------------------------------------------

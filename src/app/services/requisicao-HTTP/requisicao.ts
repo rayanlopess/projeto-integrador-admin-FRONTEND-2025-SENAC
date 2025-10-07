@@ -15,7 +15,7 @@ export interface HttpOptions {
 })
 export class RequiemDosDeusesService {
 
-  private baseUrl = 'http://192.168.0.112:2324';
+  private baseUrl = 'http://192.168.0.109:2324';
 
   constructor(public http: HttpClient) { }
 

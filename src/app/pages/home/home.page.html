@@ -2,13 +2,13 @@
     <ion-toolbar>
         <ion-buttons slot="start" *ngIf="isEditingMode || isDeletingMode" class="close-button">
             <ion-button (click)="exitMode()" [color]="isDeletingMode ? 'danger' : 'primary'" id="botao-toolbar">
-                <ion-icon id="icon-toolbar" name="close"></ion-icon>
+                <ion-icon id="icon-toolbar" name="close" class="icon-exit"></ion-icon>
             </ion-button>
         </ion-buttons>
 
         <div class="titulos-container">
             <ion-title id="home-title"
-                [ngStyle]="{'color': isDeletingMode ? '#a4071a' : (isEditingMode ? '#0e2b52' : undefined)}">
+                [ngStyle]="{'color': isDeletingMode ? '#a4071a' : (isEditingMode ? '' : undefined)}">
                 {{ pageTitle }}
             </ion-title>
             <span id="home-title" *ngIf="!isEditingMode && !isDeletingMode">{{data}}</span>

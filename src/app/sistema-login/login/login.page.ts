@@ -68,6 +68,7 @@ export class LoginPage implements OnInit {
         buttons: [{
           text: 'OK',
           role: 'OK',
+          cssClass: 'confirmarAction',
           handler: () => {
 
           },
@@ -92,6 +93,7 @@ export class LoginPage implements OnInit {
             buttons: [{
               text: 'OK',
               role: 'OK',
+              cssClass: 'confirmarAction',
               handler: () => {
                 console.log(_res);
                 localStorage.setItem('token', _res.token);
@@ -124,6 +126,7 @@ export class LoginPage implements OnInit {
           buttons: [{
             text: 'OK',
             role: 'OK',
+            cssClass: 'confirmarAction',
             handler: () => {
               // Limpar campos ou focar no input se necessário
             },

@@ -87,6 +87,7 @@ export class AlteracaoSenhaPage implements OnInit {
         buttons: [{
           text: 'OK',
           role: 'OK',
+          cssClass: 'confirmarAction',
           handler: () => {
 
           },
@@ -101,6 +102,7 @@ export class AlteracaoSenhaPage implements OnInit {
         buttons: [{
           text: 'OK',
           role: 'OK',
+          cssClass: 'confirmarAction',
           handler: () => {
 
           },
@@ -122,6 +124,7 @@ export class AlteracaoSenhaPage implements OnInit {
                 buttons: [{
                   text: 'OK',
                   role: 'OK',
+                  cssClass: 'confirmarAction',
                   handler: () => {
                     
                     
@@ -144,6 +147,7 @@ export class AlteracaoSenhaPage implements OnInit {
               buttons: [{
                 text: 'OK',
                 role: 'OK',
+                cssClass: 'confirmarAction',
                 handler: () => {
                   console.log(err)
                 },

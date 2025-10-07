@@ -7,7 +7,7 @@ import { EsqueciSenhaService } from 'src/app/services/sistema-login/esqueci-senh
 import { addIcons } from 'ionicons';
 import { add, trash, chevronDown, personCircle, lockClosed, person, lockOpen, close } from 'ionicons/icons';
 import { Router, RouterLink } from '@angular/router';
-import { AlertController } from '@ionic/angular/standalone';
+import { AlertController, LoadingController } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-esqueci-senha',
@@ -23,7 +23,8 @@ export class EsqueciSenhaPage implements OnInit {
   constructor(
     public amnesia_senha_service: EsqueciSenhaService,
     public alertController: AlertController,
-    public rt: Router
+    public rt: Router,
+    public loadingController: LoadingController
   ) {
     addIcons({ add, trash, chevronDown, personCircle, lockClosed, person, lockOpen, close });
   }
@@ -56,6 +57,7 @@ export class EsqueciSenhaPage implements OnInit {
         buttons: [{
           text: 'OK',
           role: 'OK',
+          cssClass: 'confirmarAction',
           handler: () => {
 
           },
@@ -64,48 +66,67 @@ export class EsqueciSenhaPage implements OnInit {
 
       await alert.present();
     }
+
+
     else {
-      this.amnesia_senha_service
-        .esqueciSenha(email)
-        .subscribe({
-          // 1. CALLBACK DE SUCESSO (next) - Chamado SOMENTE se o HTTP retornar 200/OK
-          next: async (_res: any) => {
-            if (_res.message == "Caso exista, email enviado") {
-              
+      const loading = await this.loadingController.create({
+        message: 'Envando email...',
+
+      });
+      await loading.present();
+
+      try {
+        this.amnesia_senha_service
+          .esqueciSenha(email)
+          .subscribe({
+            // 1. CALLBACK DE SUCESSO (next) - Chamado SOMENTE se o HTTP retornar 200/OK
+            next: async (_res: any) => {
+              if (_res.message == "Caso exista, email enviado") {
+
+                const alert = await this.alertController.create({
+                  header: `Enviamos as instruções de recuperação de senha para o seu e-mail.`,
+                  buttons: [{
+                    text: 'OK',
+                    role: 'OK',
+                    cssClass: 'confirmarAction',
+                    handler: () => {
+
+                      this.rt.navigate(['/login']);
+                    },
+                  },],
+                });
+                await alert.present();
+              } else {
+
+
+              }
+            },
+
+            // 2. CALLBACK DE ERRO (error) - Chamado quando o HTTP retorna status 4xx, 5xx, ou falha de rede
+            error: async (err: any) => {
               const alert = await this.alertController.create({
-                header: `Enviamos as instruções de recuperação de senha para o seu e-mail.`,
+                header: 'Erro interno!',// Adicione uma mensagem mais clara
                 buttons: [{
                   text: 'OK',
                   role: 'OK',
                   handler: () => {
-                    
-                    this.rt.navigate(['/login']);
+                    console.log(err)
                   },
                 },],
               });
+
               await alert.present();
-            } else {
-
-
             }
-          },
-
-          // 2. CALLBACK DE ERRO (error) - Chamado quando o HTTP retorna status 4xx, 5xx, ou falha de rede
-          error: async (err: any) => {
-            const alert = await this.alertController.create({
-              header: 'Erro interno!',// Adicione uma mensagem mais clara
-              buttons: [{
-                text: 'OK',
-                role: 'OK',
-                handler: () => {
-                  console.log(err)
-                },
-              },],
-            });
-
-            await alert.present();
-          }
-        });
+          });
+      }
+      catch(error){
+        console.log(error);
+        
+      }
+      finally{
+        loading.dismiss();
+      }
+        
     }
   }
 

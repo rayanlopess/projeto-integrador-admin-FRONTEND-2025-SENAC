@@ -2,7 +2,9 @@
   <ion-toolbar>
     <ion-buttons slot="start" *ngIf="isEditingMode || isDeletingMode">
       <ion-button id="botao-toolbar" (click)="exitMode()">
-        <ion-icon id="icon-toolbar" class="icon-exit" name="close"></ion-icon>
+        <ion-icon id="icon-toolbar" class="icon-exit" name="close"
+        [ngStyle]="{'color': '#a4071a' }"
+        ></ion-icon>
       </ion-button>
     </ion-buttons>
 
