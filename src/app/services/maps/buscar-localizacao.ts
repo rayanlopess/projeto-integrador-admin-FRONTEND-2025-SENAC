@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 declare var google: any;
 
@@ -10,7 +11,7 @@ declare var google: any;
 export class BuscarLocalizacao {
   private autocompleteService: any;
 
-  constructor() {
+  constructor(private http: HttpClient) {
     // Inicializa o serviço Autocomplete assim que o serviço é criado.
     // Garante que o objeto google está disponível.
     this.initService();
@@ -55,4 +56,24 @@ export class BuscarLocalizacao {
       map((result: any) => result)
     );
   }
+
+
+getCoordsFromPlaceId(placeId: string): Observable<{ lat: number, lng: number }> {
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?place_id=${placeId}&key=AIzaSyDvQ8YamcGrMBGAp0cslVWSRhS5NXNEDcI`;
+    
+    return this.http.get<any>(url).pipe(
+      map(response => {
+        if (response.status === 'OK' && response.results.length > 0) {
+          const location = response.results[0].geometry.location;
+          return {
+            lat: location.lat,
+            lng: location.lng
+          };
+        }
+        throw new Error('Coordenadas não encontradas para este Place ID.');
+      })
+    );
+  }
+
+
 }

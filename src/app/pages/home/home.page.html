@@ -1,8 +1,8 @@
 <ion-header [translucent]="true">
     <ion-toolbar>
-        <ion-buttons slot="start" *ngIf="isEditingMode || isDeletingMode">
-            <ion-button (click)="exitMode()" [color]="isDeletingMode ? 'danger' : 'primary'">
-                <ion-icon name="close"></ion-icon>
+        <ion-buttons slot="start" *ngIf="isEditingMode || isDeletingMode" class="close-button">
+            <ion-button (click)="exitMode()" [color]="isDeletingMode ? 'danger' : 'primary'" id="botao-toolbar">
+                <ion-icon id="icon-toolbar" name="close"></ion-icon>
             </ion-button>
         </ion-buttons>
 
@@ -180,7 +180,8 @@
                                 </div>
                                 <div class="wave-group">
                                     <input required type="text" class="input-tecido" placeholder="Ex.: UPA "
-                                        [(ngModel)]="nomeHospital" errorText="Preencha os campos corretamente">
+                                        [(ngModel)]="nomeHospital" errorText="Preencha os campos corretamente"
+                                        #inputHospitalRef>
                                     <label class="label">
                                         <span class="label-char" style="--index: 0">N</span>
                                         <span class="label-char" style="--index: 1">o</span>
@@ -199,6 +200,14 @@
                                         <span class="label-char" style="--index: 15">a</span>
                                         <span class="label-char" style="--index: 16">l</span>
                                     </label>
+                                </div>
+                                <div class="icon-search">
+                                    <ion-buttons>
+                                        <ion-button *ngIf="nomeHospital" fill="clear" class="clear-button"
+                                            [hidden]="!nomeHospital" (click)="limparInput('nomeHospital')">
+                                            <ion-icon name="close"></ion-icon>
+                                        </ion-button>
+                                    </ion-buttons>
                                 </div>
                             </div>
                             <span class="bar"></span>
@@ -263,7 +272,7 @@
         <ion-header>
             <ion-toolbar>
                 <ion-buttons slot="start">
-                    <ion-button id="botao-toolbar" (click)="setOpenEdit(false)">
+                    <ion-button id="botao-toolbar" (click)="setOpenEdit(false)" (click)="exitMode()">
                         <ion-icon name="arrow-back-outline"></ion-icon>
                     </ion-button>
                 </ion-buttons>
@@ -325,7 +334,7 @@
                                 </div>
                                 <div class="wave-group">
                                     <input required type="text" class="input-tecido" placeholder="Ex.: UPA "
-                                        [(ngModel)]="nomeHospital" errorText="Preencha os campos corretamente">
+                                        [(ngModel)]="nomeHospital" errorText="Preencha os campos corretamente" #inputHospitalRef>
                                     <label class="label">
                                         <span class="label-char" style="--index: 0">N</span>
                                         <span class="label-char" style="--index: 1">o</span>
@@ -344,6 +353,14 @@
                                         <span class="label-char" style="--index: 15">a</span>
                                         <span class="label-char" style="--index: 16">l</span>
                                     </label>
+                                </div>
+                                <div class="icon-search">
+                                    <ion-buttons>
+                                        <ion-button *ngIf="nomeHospital" fill="clear" class="clear-button"
+                                            [hidden]="!nomeHospital" (click)="limparInput('nomeHospital')">
+                                            <ion-icon name="close"></ion-icon>
+                                        </ion-button>
+                                    </ion-buttons>
                                 </div>
                             </div>
                             <span class="bar"></span>
@@ -423,11 +440,14 @@
 
         <ion-content [fullscreen]="true">
             <ion-grid style="height: 100%;">
+
+
                 <ion-row style="height: 100%;">
                     <ion-col style="height: 100%;">
 
                         <div style="height: 100%;" *ngIf="selectedHospital">
-                            <app-google-maps-viewer [addressSearchString]="
+                            <app-google-maps-viewer 
+                            [addressSearchString]="
                                     selectedHospital.nome + ', ' +
                                     selectedHospital.cidade + '/' + 
                                     selectedHospital.uf" [initialLatitude]="selectedHospital.lati"
@@ -459,6 +479,75 @@
 
         <ion-content [fullscreen]="true">
             <ion-grid style="height: 100%;">
+
+
+
+
+
+
+                <div class="position">
+
+                    <div class="input-barra-maps">
+                        <div class="input-texto-maps">
+
+                            <div class="icon-search-maps">
+                                <ion-buttons>
+                                    <ion-button disabled>
+                                        <ion-icon class="icon-maps" name="search"></ion-icon>
+                                    </ion-button>
+                                </ion-buttons>
+                            </div>
+                            <div class="wave-group-maps">
+                                <input required type="text" class="input-tecido-maps" placeholder="Ex.: Rua da Alegria, 123"
+                                    [(ngModel)]="enderecoManual" [class]="class_enderecoManual"
+                                    errorText="Preencha os campos corretamente" (input)="onAddressInput($event)"
+                                    #inputHospitalRef>
+                                <label class="label-maps">
+                                    <span class="label-char-maps" style="--index: 0">P</span>
+                                    <span class="label-char-maps" style="--index: 1">e</span>
+                                    <span class="label-char-maps" style="--index: 2">s</span>
+                                    <span class="label-char-maps" style="--index: 3">q</span>
+                                    <span class="label-char-maps" style="--index: 5">u</span>
+                                    <span class="label-char-maps" style="--index: 6">i</span>
+                                    <span class="label-char-maps" style="--index: 7">s</span>
+                                    <span class="label-char-maps" style="--index: 8">e</span>
+                                    <span class="label-char-maps" style="--index: 9">&nbsp;</span>
+                                    <span class="label-char-maps" style="--index: 10">o</span>
+                                    <span class="label-char-maps" style="--index: 11">&nbsp;</span>
+                                    <span class="label-char-maps" style="--index: 12">e</span>
+                                    <span class="label-char-maps" style="--index: 13">n</span>
+                                    <span class="label-char-maps" style="--index: 14">d</span>
+                                    <span class="label-char-maps" style="--index: 15">e</span>
+                                    <span class="label-char-maps" style="--index: 16">r</span>
+                                    <span class="label-char-maps" style="--index: 17">e</span>
+                                    <span class="label-char-maps" style="--index: 18">ç</span>
+                                    <span class="label-char-maps" style="--index: 19">o</span>
+                                </label>
+                            </div>
+                            <div class="icon-search-maps">
+                                <ion-buttons>
+                                    <ion-button *ngIf="enderecoManual" fill="clear" class="clear-button"
+                                        [hidden]="!enderecoManual" (click)="limparInput('enderecoManual')">
+                                        <ion-icon name="close"></ion-icon>
+                                    </ion-button>
+                                </ion-buttons>
+                            </div>
+                        </div>
+                        <span class="bar-maps"></span>
+                    </div>
+
+                    <!-- CORREÇÃO: Substituído @if e @for pela sintaxe *ngIf e *ngFor -->
+                    <div class="prediction-div">
+                        <ion-list *ngIf="predictions.length > 0" class="autocomplete-list" lines="none">
+                            <ion-item lines="none" id="item-prediction" *ngFor="let prediction of predictions"
+                                (click)="selectPrediction(prediction)" button>
+                                <ion-label>{{ prediction.description }}</ion-label>
+                            </ion-item>
+                        </ion-list>
+                    </div>
+
+
+                </div>
                 <ion-row style="height: 100%;">
                     <ion-col style="height: 100%;">
 
@@ -467,10 +556,14 @@
                         <app-google-maps-viewer [initialLatitude]="tempLatitude ?? 0"
                             [initialLongitude]="tempLongi ?? 0" [isSelectable]="true"
                             (coordsChange)="updateTempCoords($event)">
-                            
+
                         </app-google-maps-viewer>
                     </ion-col>
                 </ion-row>
+
+
+
+
             </ion-grid>
         </ion-content>
     </ng-template>

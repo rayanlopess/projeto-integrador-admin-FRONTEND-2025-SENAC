@@ -121,6 +121,15 @@ ion-refresher.refresher-native .refresher-pulling-icon, ion-refresher.refresher-
 }
 //fim do refresher
 
+.loading-wrapper{
+  --background: #fff; /* Fundo do container azul claro */
+  --color: #0e2b52;      /* Cor do texto verde escuro */
+  --spinner-color: #0e2b52; /* Cor da rotação azul esverdeado */
+}
+.sc-ion-loading-md-h{
+  color: #0e2b52 !important; 
+}
+
 //FIM DO HTML GERAL
 
 //-----------------------------------------------//
@@ -622,6 +631,18 @@ ion-fab-button {
   font-weight: 600;
   margin-top: 20px;
 }
+#btSalvarAlteracoesUser{
+  --background: #0e2b52;
+  --color: #fff;
+  --border-radius: 20px;
+  border-radius: 22px;
+  border: 3px solid #d9d9d9;
+  width: 70%;
+  height: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 20px;
+}
 //fim dos botoes importantes
 
 //data de nascimento
@@ -663,6 +684,133 @@ ion-datetime::part(month-year-button) {
   font-weight: 600;
 }
 //fim data de nascimento
+
+
+//search bar maps
+ .input-barra-maps {
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 6px;
+  }
+  .input-texto-maps {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #0e2b52;
+    width: 100%;
+  }
+  .icon-search-maps {
+    width: max-content;
+    color: #0e2b52;
+    padding-top: 10px;
+  }
+  .icon-maps{
+    font-size: 24px;
+  }
+  .wave-group-maps {
+    width: 100%;
+    position: relative;
+  }
+  .wave-group-maps .input-tecido-maps {
+    font-size: 16px !important;
+    padding: 15px 10px 10px 5px !important;
+    display: block !important;
+    width: 100% !important;
+    border: none !important;
+    color: #0e2b52;
+    background: transparent;
+    font-weight: 300;
+  }
+  .wave-group-maps .input-tecido-maps:focus {
+    outline: none !important;
+  }
+  .wave-group-maps .label-maps {
+    color: #0e2b52 !important;
+    font-size: 18px !important;
+    font-weight: normal !important;
+    position: absolute !important;
+    pointer-events: none !important;
+    left: 10px !important;
+    top: 14px !important;
+    display: flex !important;
+    font-weight: 400 !important;
+  }
+  .wave-group-maps .label-char-maps {
+    transition: 0.2s ease all !important;
+    transition-delay: calc(var(--index) * .02s) !important;
+  }
+  .wave-group-maps .input-tecido-maps:focus~label .label-char-maps,
+  .wave-group-maps .input-tecido-maps:valid~label .label-char-maps {
+    transform: translateY(-22px) translateX(-45px) !important;
+    font-size: 14px !important;
+    color: #0e2b52 !important;
+  }
+  .input-tecido-maps::placeholder {
+    opacity: 0 !important;
+    color: #0e2b5277 !important;
+  }
+
+  //Mostra o placeholder apenas quando o input está em foco
+  .input-tecido-maps:focus::placeholder {
+    opacity: 1 !important;
+  }
+  .input-tecido-maps::placeholder {
+    transition: opacity .4s ease !important;
+  }
+
+  //barra embaixo
+  .bar-maps {
+    position: relative;
+    display: block;
+    width: 100%;
+    background-color: #0e2b52;
+    height: 0px;
+    bottom: 0px;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+  }
+  
+  .bar-maps::before,
+  .bar-maps::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    width: 0 !important;
+    height: 3px !important;
+    background-color: #0e2b52 !important;
+    transition: 0.4s ease all !important;
+  }
+  
+  .bar-maps::before {
+    left: 50% !important;
+  }
+  
+  .bar-maps::after {
+    right: 50% !important;
+  }
+  
+  .input-barra-maps:focus-within .bar-maps::before,
+  .input-barra-maps:focus-within .bar-maps::after {
+    width: 50% !important;
+  }
+//fim da search bar maps
+
+//lista auto-complete
+.autocomplete-list{
+  width: 80%;
+  background: #fff !important;
+  color: #0e2b52;
+  ion-list{
+    --background: #fff !important;
+  }
+  #item-prediction{
+    --background: transparent !important;
+    color: #0e2b52;
+  }
+}
+//lista auto-complete
 
 //FIM DO PATHS.SCSS
 
@@ -772,6 +920,11 @@ ion-datetime::part(month-year-button) {
 //-----------------------------------------------//
 
 //LOGIN.SCSS
+
+.titulos-login{
+  color: #fff;
+}
+
 .content-login{
   background-color: #0e2b52;
 }
@@ -950,7 +1103,6 @@ ion-datetime::part(month-year-button) {
   text-decoration: underline;
 }
 
-
 //FIM DO LOGIN.SCSS
 
 //-----------------------------------------------//
@@ -1110,6 +1262,17 @@ body.dark ion-refresher.refresher-native .refresher-pulling-icon, body.dark ion-
 }
 //fim do refresher
 
+//loading
+body.dark .loading-wrapper{
+  --background: #1a1a1a; /* Fundo do container azul claro */
+  --color: #fff;      /* Cor do texto verde escuro */
+  --spinner-color: #fff; /* Cor da rotação azul esverdeado */
+}
+body.dark .sc-ion-loading-md-h{
+  color: #fff !important; 
+}
+//fim do loading
+
 //FIM DO HTML GERAL
 
 //-----------------------------------------------//
@@ -1240,27 +1403,31 @@ body.dark .card-home {
     color: #fff;
   }
 }
-.botao-delete {
-  right: 20px; 
-  border: 3px solid #a4071a !important;
-  background: #a4071a !important;
+
+body.dark .botao-canto{
+    background-color: #fff !important; 
 }
 body.dark .botao-canto ion-icon, body.dark .botao-canto-delete ion-icon {
     font-size: 20px;
-    color: #1a1a1a; 
+    color: #fff !important; 
 }
 
-body.dark .botao-canto-card, body.dark.botao-canto-delete-card {
+body.dark .botao-canto-card, body.dark .botao-canto-delete-card {
   border: 3px solid #fff !important;
   background: #fff !important;
-  color: #1a1a1a; 
+  
 }
 body.dark .botao-delete {
   border: 3px solid #a4071a !important;
   background: #a4071a !important;
+  color: #fff !important;
 }
-body.dark .botao-canto-card ion-icon, body.dark .botao-canto-delete-card ion-icon {
-    color: #1a1a1a;
+body.dark .botao-canto-delete-card ion-icon {
+    color: #fff;
+}
+
+body.dark .botao-edit ion-icon{
+  color: #1a1a1a !important;
 }
 //fim do cards tela principal
 
@@ -1354,6 +1521,11 @@ body.dark #btSalvarConfigUser{
   --color: #fff;
   border: 3px solid #d9d9d9;
 }
+body.dark #btSalvarAlteracoesUser{
+--background: #1a1a1a;
+  --color: #fff;
+  border: 3px solid #d9d9d9;
+}
 //fim dos botoes importantes
 
 //data de nascimento
@@ -1412,7 +1584,6 @@ body.dark #texto-termos-uso{
 
 //-----------------------------------------------//
 
-
 //CENTRAL-AJUDA.SCSS
 
 body.dark #titulo-central-ajuda{
@@ -1434,5 +1605,93 @@ body.dark .card-central-ajuda{
 }
 
 //FIM DO CENTRAL-AJUDA.SCSS
+
+//-----------------------------------------------//
+
+//LOGIN.SCSS
+body.dark .content-login{
+  background-color: #121212;
+}
+body.dark .login-box{
+  background: #1a1a1a;
+  border: 3px solid #fff;
+}
+//search bar
+  body.dark .input-texto-login {
+    border-bottom: 1px solid #fff;
+  }
+  body.dark .input-texto-datetime-login {
+    border-bottom: 1px solid #fff;
+  }
+  body.dark .icon-search-login {
+    color: #fff;
+  }
+  body.dark .wave-group-login .input-tecido-login {
+    color: #fff;
+  }
+  body.dark .wave-group-login .label-login {
+    color: #fff !important;
+  }
+ 
+  body.dark .wave-group-login .input-tecido-login:focus~label .label-char-login,
+  body.dark .wave-group-login .input-tecido-login:valid~label .label-char-login {
+    color: #fff !important;
+  }
+  body.dark .input-tecido-login::placeholder {
+    color: #ffffff99 !important;
+  }
+
+  //barra embaixo
+  body.dark .bar-login {
+    background-color: #fff;
+  }
+  
+  body.dark .bar-login::before,
+  body.dark .bar-login::after {
+    background-color: #fff !important;
+  }
+//fim da search baR
+
+body.dark #btEntrar{
+  --background: #fff;
+  --color: #1a1a1a;
+}
+#esqueci-senha{
+  color: #fff;
+  text-decoration: underline;
+}
+
+
+//FIM DO LOGIN.SCSS
+
+//-----------------------------------------------//
+
+//ALTERACAO.SCSS
+body.dark .login-box-forget{
+  background: #1a1a1a;
+  border: 3px solid #fff;
+}
+body.dark #btRecuperacao{
+  --background: #fff;
+  --color: #1a1a1a;
+  font-size: 12px;
+}
+//FIM DA ALTERACAO.SCSS
+
+//-----------------------------------------------//
+
+//ALTERACAO.SCSS
+body.dark .login-box-alterar{
+  background: #1a1a1a;
+  border: 3px solid #fff;
+}
+body.dark #btRecuperacao{
+ --background: #fff;
+  --color: #1a1a1a;
+  font-size: 12px;
+}
+//FIM DA ALTERACAO.SCSS
+
+//-----------------------------------------------//
 
 /* ------------ FIM DO DARK MODE ------------ */

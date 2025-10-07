@@ -81,3 +81,18 @@ ion-toolbar {
   }
 }
 
+.position{
+  width: 100%;
+  position: absolute;
+  z-index: 9999;
+}
+.close-button{
+  scale: (1.2);
+}
+.prediction-div{
+  width: 100%;
+  height: max-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

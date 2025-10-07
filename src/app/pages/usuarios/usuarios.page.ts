@@ -159,11 +159,11 @@ export class UsuariosPage implements OnInit, OnDestroy {
 
   public token = localStorage.getItem('token') || '';
 
-  anoMaximo:string = this.dateService.getFormattedDateShort();
+  anoMaximo: string = this.dateService.getFormattedDateShort();
 
-  temaAtual:string = this.themeService.getCurrentTheme();
+  temaAtual: string = this.themeService.getCurrentTheme();
 
-  corDoDatepicker: string = this.atualizarCor(); 
+  corDoDatepicker: string = this.atualizarCor();
 
   constructor(
     private themeService: ThemeService,
@@ -175,7 +175,7 @@ export class UsuariosPage implements OnInit, OnDestroy {
     // Injetando o novo serviço
     @Inject(UserService) private userService: UserService,
     private cd: ChangeDetectorRef,
-    
+
 
   ) {
     addIcons({ home, map, call, settings, personCircle, invertMode, medicalOutline, warningOutline, car, navigate, time, people, location, create, chevronUp, add, trash, lockClosed, lockOpen, closeCircle, document, ellipsisVertical });
@@ -185,7 +185,6 @@ export class UsuariosPage implements OnInit, OnDestroy {
     window.addEventListener('storage', this.storageChangeListener);
     this.loadUsers();
     console.log(this.corDoDatepicker);
-    
   }
   ngOnDestroy() {
     window.removeEventListener('storage', this.storageChangeListener);
@@ -201,26 +200,28 @@ export class UsuariosPage implements OnInit, OnDestroy {
     if (temaAtual === 'dark') {
       return this.corDoDatepicker = 'light'; // Se o app é escuro, a cor do componente é clara
     } else {
-      
+
       return this.corDoDatepicker = 'filamed-blue'; // Se o app é claro, a cor do componente é filamed-blue
     }
 
   }
 
   async loadUsers() {
- 
+
 
     this.carregando = true;
     this.erroCarregamento = false;
 
     try {
       this.users = await this.userService.getAllUsers(this.token);
-      
+
+      sessionStorage.setItem('users', JSON.stringify(this.users));
+
       this.erroCarregamento = false;
     } catch (error) {
       console.error('Erro ao carregar usuários:', error);
       this.erroCarregamento = true;
-      this.users = []; // Limpa a lista em caso de erro
+      this.users = [];
 
     } finally {
       this.carregando = false;
@@ -231,12 +232,31 @@ export class UsuariosPage implements OnInit, OnDestroy {
   // --- Lógica de Modos (Edição/Deleção) ---
 
 
-  toggleMode(mode: 'edit' | 'delete') {
-    // Impedir que os modos se sobreponham
+  async toggleMode(mode: 'edit' | 'delete') {
     if (mode === 'edit') {
+      if (sessionStorage.getItem('users') == '[{"id":1,"nome":"Admin do FilaMed","usuario":"FilaMedAdmin","nascimento":"2000-01-01","cpf":"000.000.001-01","email":"noreplyfilamedpi@gmail.com","senha":""}]') {
+        const alert = await this.alertController.create({
+          header: `Não há hospitais cadastrados para editar!`,
+          buttons: [
+            { text: 'ok', role: 'ok', cssClass: 'confirmarAction' },
+          ],
+        });
+        await alert.present();
+        return;
+      }
       this.isDeletingMode = false;
       this.isEditingMode = !this.isEditingMode;
     } else if (mode === 'delete') {
+      if (sessionStorage.getItem('users') == '[{"id":1,"nome":"Admin do FilaMed","usuario":"FilaMedAdmin","nascimento":"2000-01-01","cpf":"000.000.001-01","email":"noreplyfilamedpi@gmail.com","senha":""}]') {
+        const alert = await this.alertController.create({
+          header: `Não há hospitais cadastrados para deletar!`,
+          buttons: [
+            { text: 'ok', role: 'ok', cssClass: 'confirmarAction' },
+          ],
+        });
+        await alert.present();
+        return;
+      }
       this.isEditingMode = false;
       this.isDeletingMode = !this.isDeletingMode;
     }
@@ -296,11 +316,6 @@ export class UsuariosPage implements OnInit, OnDestroy {
    * Cria ou edita um usuário baseado no modal aberto.
    */
   async salvarConfig() {
-    const loading = await this.loadingController.create({
-      message: 'Salvando usuário...',
-      spinner: 'lines',
-    });
-    await loading.present();
 
     try {
       const userData: Omit<User, 'id'> = {
@@ -322,14 +337,66 @@ export class UsuariosPage implements OnInit, OnDestroy {
 
       if (this.selectedUser) {
         // Modo Edição
-        await this.userService.updateUser({ ...userDataEdit, id: this.selectedUser.id }, this.token);
-        this.setOpenEdit(false);
-        this.presentAlert('Sucesso!', 'Usuário atualizado com sucesso!');
-      } else {
+        if (this.nomeUsuario == "" || this.nomeUsuario == null || this.nomeUsuario == undefined || this.nomeCompleto == "" || this.nomeCompleto == null || this.nomeCompleto == undefined || this.email == "" || this.email == null || this.email == undefined || this.cpf == "" || this.cpf == null || this.cpf == undefined || this.dataNascimento == "" || this.dataNascimento == null || this.dataNascimento == undefined) {
+          const alert = await this.alertController.create({
+            header: `Preencha os campos corretamente`,
+            buttons: [
+              { text: 'ok', role: 'ok', cssClass: 'confirmarAction' },
+            ],
+          });
+          await alert.present();
+          return;
+        }
+
+        const loading = await this.loadingController.create({
+          message: 'Salvando usuário...',
+          spinner: 'lines',
+        });
+        await loading.present();
+        try {
+          await this.userService.updateUser({ ...userDataEdit, id: this.selectedUser.id }, this.token);
+          this.setOpenEdit(false);
+          this.presentAlert('Sucesso!', 'Usuário atualizado com sucesso!');
+          await this.exitMode();
+        }
+        catch (error) {
+          console.log(error)
+        }
+        finally {
+          loading.dismiss();
+        }
+
+      }
+      else {
         // Modo Cadastro
-        await this.userService.createUser(userData, this.token);
-        this.setOpenAdd(false);
-        this.presentAlert('Sucesso!', 'Usuário cadastrado com sucesso!');
+        if (this.nomeUsuario == "" || this.nomeUsuario == null || this.nomeUsuario == undefined || this.nomeCompleto == "" || this.nomeCompleto == null || this.nomeCompleto == undefined || this.senha == "" || this.senha == null || this.senha == undefined || this.email == "" || this.email == null || this.email == undefined || this.cpf == "" || this.cpf == null || this.cpf == undefined || this.dataNascimento == "" || this.dataNascimento == null || this.dataNascimento == undefined) {
+          const alert = await this.alertController.create({
+            header: `Preencha os campos corretamente`,
+            buttons: [
+              { text: 'ok', role: 'ok', cssClass: 'confirmarAction' },
+            ],
+          });
+          await alert.present();
+          return;
+        }
+
+        const loading = await this.loadingController.create({
+          message: 'Salvando usuário...',
+          spinner: 'lines',
+        });
+        await loading.present();
+
+        try {
+          await this.userService.createUser(userData, this.token);
+          this.setOpenAdd(false);
+          this.presentAlert('Sucesso!', 'Usuário cadastrado com sucesso!');
+        }
+        catch (error) {
+          console.log(error);
+        }
+        finally{
+          loading.dismiss()
+        }
       }
 
       // Recarrega a lista após a operação
@@ -338,8 +405,6 @@ export class UsuariosPage implements OnInit, OnDestroy {
     } catch (error) {
       console.error('Erro ao salvar usuário:', error);
       this.presentAlert('Erro', 'Não foi possível salvar o usuário. Verifique os dados e tente novamente.');
-    } finally {
-      loading.dismiss();
     }
   }
 
@@ -350,14 +415,16 @@ export class UsuariosPage implements OnInit, OnDestroy {
   async deleteUser(user: User) {
 
     const alert = await this.alertController.create({
-
+      header: `Tem certeza que deseja deletar ${user.usuario}?`,
       buttons: [
         {
           text: 'Cancelar',
           role: 'cancel',
+          cssClass: "confirmarAction"
         },
         {
           text: 'Deletar',
+          cssClass: "cancelarAction",
           handler: async () => {
             const loading = await this.loadingController.create({
               message: 'Deletando usuário...',
@@ -369,7 +436,7 @@ export class UsuariosPage implements OnInit, OnDestroy {
               await this.userService.deleteUser(user.id, this.token);
               await this.loadUsers();
               this.presentAlert('Sucesso!', 'Usuário deletado com sucesso!');
-              // O modo continua ativo, permitindo deletar mais.
+              await this.exitMode()
             } catch (error) {
               console.error('Erro ao deletar usuário:', error);
               this.presentAlert('Erro', 'Não foi possível deletar o usuário.');
@@ -391,7 +458,7 @@ export class UsuariosPage implements OnInit, OnDestroy {
       return;
     }
     // Implementar aqui a lógica de visualização de detalhes
-    this.presentAlert('Detalhes do Usuário', `Nome Completo: ${user.nome}\nNome de Usuário: ${user.usuario}`);
+    this.presentAlert('Detalhes do Usuário', `Nome Completo: ${user.nome} ` + `\n` + `Nome de Usuário: ${user.usuario}`);
   }
 
 
@@ -452,7 +519,18 @@ export class UsuariosPage implements OnInit, OnDestroy {
     const alert = await this.alertController.create({
       header,
       message,
-      buttons: ['OK'],
+      buttons: [
+
+        {
+          text: 'ok',
+          role: 'ok',
+          cssClass: 'confirmarAction',
+          handler: () => {
+
+          },
+        }
+      ],
+
     });
     await alert.present();
   }

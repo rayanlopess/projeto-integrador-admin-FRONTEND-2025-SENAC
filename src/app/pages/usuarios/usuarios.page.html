@@ -8,7 +8,7 @@
 
     <div class="titulos-container">
       <ion-title id="home-title"
-        [ngStyle]="{'color': isDeletingMode ? '#a4071a' : (isEditingMode ? '#0e2b52' : undefined)}">{{pageTitle}}</ion-title>
+        [ngStyle]="{'color': isDeletingMode ? '#a4071a' : (isEditingMode ? '' : undefined)}">{{pageTitle}}</ion-title>
       <span id="home-title" *ngIf="!isEditingMode && !isDeletingMode">{{data}}</span>
     </div>
 
@@ -72,23 +72,26 @@
 
     <ion-row *ngIf="!carregando">
       <ion-col>
-        <div  class="card-wrapper" *ngFor="let user of users" (click)="viewUserDetails(user)">
+        <div  class="card-wrapper" *ngFor="let user of users" (click)="viewUserDetails(user)" >
 
 
 
           <ion-card class="card-home card-com-botao" [class.highlight-edit]="isEditingMode"
             [class.highlight-delete]="isDeletingMode">
-            <button class="ion-activatable botao-edit botao-canto" *ngIf="isEditingMode"
+            <button class="ion-activatable botao-edit botao-canto" *ngIf="isEditingMode "
               (click)="setOpenEdit(true, user); $event.stopPropagation()">
               <ion-icon name="create"></ion-icon>
               <ion-ripple-effect></ion-ripple-effect>
             </button>
 
-            <button id="" class="ion-activatable botao-delete botao-canto-delete" *ngIf="isDeletingMode"
+            <button id="" class="ion-activatable botao-delete botao-canto-delete" *ngIf="isDeletingMode && user.usuario!='FilaMedAdmin'"
               (click)="deleteUser(user); $event.stopPropagation()">
               <ion-icon name="trash"></ion-icon>
               <ion-ripple-effect></ion-ripple-effect>
             </button>
+
+
+
             <ion-card-content>
               <ion-list>
                 <ion-item lines="none">
@@ -246,13 +249,13 @@
                 </div>
 
 
-                <ion-datetime-button color="filamed-blue" id="btDatetime" datetime="dataNascimentoModal">
+                <ion-datetime-button color="" id="btDatetime" datetime="dataNascimentoModal">
 
                 </ion-datetime-button>
 
                 <ion-modal [keepContentsMounted]="true" class="modal-datetime">
                   <ng-template>
-                    <ion-datetime color="light" id="dataNascimentoModal" presentation="date" min="1900-01-01"
+                    <ion-datetime color="" id="dataNascimentoModal" presentation="date" min="1900-01-01"
                       max=`{{anoMaximo}}` class="custom-data-picker" [(ngModel)]="dataNascimento" locale="pt-BR"
                       [showDefaultButtons]="true" (ionChange)="formatarData($event)"></ion-datetime>
                   </ng-template>
@@ -468,8 +471,8 @@
     <ion-header>
       <ion-toolbar>
         <ion-buttons slot="start">
-          <ion-button id="botao-toolbar" (click)="setOpenEdit(false)">
-            <ion-icon name="arrow-back-outline"></ion-icon>
+          <ion-button id="botao-toolbar" (click)="setOpenEdit(false)" (click)="exitMode()">
+            <ion-icon name="arrow-back-outline" ></ion-icon>
           </ion-button>
         </ion-buttons>
         <div class="titulos-container">
@@ -559,11 +562,11 @@
                     </ion-button>
                   </ion-buttons>
                 </div>
-                <ion-datetime-button color="filamed-blue" id="btDatetime"
+                <ion-datetime-button color="" id="btDatetime"
                   datetime="dataNascimentoModal"></ion-datetime-button>
                 <ion-modal [keepContentsMounted]="true" class="modal-datetime">
                   <ng-template>
-                    <ion-datetime color="filamed-blue" id="dataNascimentoModal" presentation="date" min="1900-01-01"
+                    <ion-datetime color="" id="dataNascimentoModal" presentation="date" min="1900-01-01"
                       max=`{{anoMaximo}}` class="custom-data-picker" [(ngModel)]="dataNascimento" locale="pt-BR"
                       [showDefaultButtons]="true"></ion-datetime>
                   </ng-template>
@@ -690,7 +693,7 @@
         <ion-row>
           <ion-col>
             <div class="div-btSalvarConfig">
-              <ion-button id="btSalvarConfigUser" (click)="salvarConfig()">
+              <ion-button id="btSalvarAlteracoesUser" (click)="salvarConfig()">
                 Salvar Alterações
               </ion-button>
             </div>
