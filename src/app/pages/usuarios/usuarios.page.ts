@@ -189,11 +189,13 @@ export class UsuariosPage implements OnInit, OnDestroy {
   ngOnDestroy() {
     window.removeEventListener('storage', this.storageChangeListener);
   }
+
   handleRefresh(event: CustomEvent<RefresherEventDetail>) {
     this.loadUsers()
       .then(() => event.detail.complete())
       .catch(() => event.detail.complete());
   }
+
   atualizarCor() {
     const temaAtual = this.temaAtual; // Use o método real do seu serviço
 
@@ -261,13 +263,13 @@ export class UsuariosPage implements OnInit, OnDestroy {
       this.isDeletingMode = !this.isDeletingMode;
     }
   }
+
   exitMode() {
     this.isEditingMode = false;
     this.isDeletingMode = false;
   }
 
   // --- Lógica dos Modais (Add/Edit) ---
-
 
   setOpenAdd(isOpen: boolean) {
     this.isModalOpenAdd = isOpen;
@@ -364,9 +366,14 @@ export class UsuariosPage implements OnInit, OnDestroy {
         }
         finally {
           loading.dismiss();
+          setTimeout(() => {
+                this.loadUsers()
+            }, 100);
         }
 
       }
+
+      
       else {
         // Modo Cadastro
         if (this.nomeUsuario == "" || this.nomeUsuario == null || this.nomeUsuario == undefined || this.nomeCompleto == "" || this.nomeCompleto == null || this.nomeCompleto == undefined || this.senha == "" || this.senha == null || this.senha == undefined || this.email == "" || this.email == null || this.email == undefined || this.cpf == "" || this.cpf == null || this.cpf == undefined || this.dataNascimento == "" || this.dataNascimento == null || this.dataNascimento == undefined) {
@@ -395,12 +402,13 @@ export class UsuariosPage implements OnInit, OnDestroy {
           console.log(error);
         }
         finally{
-          loading.dismiss()
+          loading.dismiss();
+          setTimeout(() => {
+                this.loadUsers();
+            }, 100);
         }
       }
 
-      // Recarrega a lista após a operação
-      await this.loadUsers();
 
     } catch (error) {
       console.error('Erro ao salvar usuário:', error);

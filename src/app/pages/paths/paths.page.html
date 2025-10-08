@@ -1,11 +1,11 @@
 <app-cookie-consent></app-cookie-consent>
 <ion-tabs>
   <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="hospitais" >
-      <i class="bi bi-hospital-fill icons-tab"></i>
+    <ion-tab-button tab="hospitais" (click)="exitMode()">
+      <i class="bi bi-hospital-fill icons-tab" ></i>
       Hospitais
     </ion-tab-button>
-    <ion-tab-button tab="usuarios" >
+    <ion-tab-button tab="usuarios"(click)="exitMode()">
       <ion-icon name="people" class="icons-tab"></ion-icon>
       Usuários
     </ion-tab-button>

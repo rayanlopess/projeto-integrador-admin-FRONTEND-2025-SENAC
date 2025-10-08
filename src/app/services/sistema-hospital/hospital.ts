@@ -43,7 +43,7 @@ export interface HospitalProcessado {
 export class HospitalService {
 
     // ALERTA: Ajuste o endereço base da sua API
-    private API_URL = 'http://192.168.0.109:2324/hospital';
+    private API_URL = 'http://10.241.238.192:2324/hospital';
 
     constructor(private http: HttpClient) { }
 

@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 
 import { addIcons } from 'ionicons';
-import { home, map, call, settings, ellipsisVertical, people} from 'ionicons/icons';
+import { home, map, call, settings, ellipsisVertical, people } from 'ionicons/icons';
 import { Router, NavigationEnd } from '@angular/router';
 import { PopoverController, NavController } from '@ionic/angular/standalone';
 
@@ -59,8 +59,8 @@ import {
     IonGrid,
     IonRow,
     IonCol,
-    CommonModule, 
-    FormsModule, 
+    CommonModule,
+    FormsModule,
     CookieConsentComponent
   ],
 
@@ -76,7 +76,7 @@ export class PathsPage implements OnInit, OnDestroy {
     private popoverCtrl: PopoverController,
     private date: DateService
   ) {
-    addIcons({ home, map, call, settings, ellipsisVertical,people });
+    addIcons({ home, map, call, settings, ellipsisVertical, people });
 
 
   }
@@ -84,7 +84,13 @@ export class PathsPage implements OnInit, OnDestroy {
 
   }
 
+  public isEditingMode: boolean = false;
+  public isDeletingMode: boolean = false;
 
+  exitMode() {
+    this.isEditingMode = false;
+    this.isDeletingMode = false;
+  }
 
   ngOnDestroy() {
 

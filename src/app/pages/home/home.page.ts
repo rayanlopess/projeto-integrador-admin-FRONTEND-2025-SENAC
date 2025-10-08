@@ -191,13 +191,12 @@ export class HomePage implements OnInit, OnDestroy {
                 })
         );
     }
+
     handleRefresh(event: CustomEvent<RefresherEventDetail>) {
         this.carregarHospitais()
             .then(() => event.detail.complete())
             .catch(() => event.detail.complete());
     }
-
-
 
     setOpenAdd(isOpen: boolean, hospital: HospitalProcessado | null = null) {
         this.isModalOpenAdd = isOpen;
@@ -211,6 +210,7 @@ export class HomePage implements OnInit, OnDestroy {
             this.getCurrentLocation();
         }
     }
+
     async getCurrentLocation() {
         try {
             const position = await Geolocation.getCurrentPosition();
@@ -308,54 +308,70 @@ export class HomePage implements OnInit, OnDestroy {
     }
 
     async deleteHospital(hospital: HospitalProcessado) {
-        const alert = await this.alertController.create({
-            header: 'Confirma Exclusão?',
-            message: `Tem certeza que deseja deletar ${hospital.nome}?`,
-            buttons: [
-                { text: 'Cancelar', role: 'cancel', cssClass: 'confirmarAction' },
-                {
-                    text: 'Deletar',
-                    cssClass: "cancelarAction",
-                    handler: async () => {
-                        const loading = await this.loadingController.create({ message: 'Excluindo...' });
-                        await loading.present();
+        try {
+            const alert = await this.alertController.create({
+                header: 'Confirma Exclusão?',
+                message: `Tem certeza que deseja deletar ${hospital.nome}?`,
+                buttons: [
+                    { text: 'Cancelar', role: 'cancel', cssClass: 'confirmarAction' },
+                    {
+                        text: 'Deletar',
+                        cssClass: "cancelarAction",
+                        handler: async () => {
+                            const loading = await this.loadingController.create({ message: 'Excluindo...' });
+                            await loading.present();
 
-                        this.subscription.add(
-                            this.hospitalService.deleteHospital(hospital.id, this.token)
-                                .pipe(finalize(() => loading.dismiss()))
-                                .subscribe({
-                                    next: async () => {
-                                        await this.exitMode()
-                                        const alert = await this.alertController.create({
-                                            header: `${hospital.nome} deletado com sucesso!`,
-                                            buttons: [
-                                                { text: 'ok', role: 'ok', cssClass: 'confirmarAction' },
-                                            ],
-                                        });
-                                        await alert.present();
+                            this.subscription.add(
+                                this.hospitalService.deleteHospital(hospital.id, this.token)
+                                    .pipe(finalize(() => loading.dismiss()))
+                                    .subscribe({
+                                        next: async () => {
+                                            this.exitMode()
 
-                                        await this.exitMode();
+                                            const alert = await this.alertController.create({
+                                                header: `${hospital.nome} deletado com sucesso!`,
+                                                buttons: [
+                                                    { text: 'ok', role: 'ok', cssClass: 'confirmarAction' },
+                                                ],
+                                            });
+                                            await alert.present();
 
-                                        await this.carregarHospitais();
-                                    },
-                                    error: async (err: any) => { // <-- CORREÇÃO: Tipo 'any' adicionado
-                                        console.error('Erro ao excluir:', err);
-                                        const alert = await this.alertController.create({
-                                            header: 'Erro ao excluir hospital!',
-                                            buttons: [
-                                                { text: 'ok', role: 'ok', cssClass: 'confirmarAction' },
-                                            ],
-                                        });
-                                        await alert.present();
-                                        return;
-                                    }
-                                })
-                        );
+
+
+
+                                        },
+                                        error: async (err: any) => { // <-- CORREÇÃO: Tipo 'any' adicionado
+                                            console.error('Erro ao excluir:', err);
+                                            const alert = await this.alertController.create({
+                                                header: 'Erro ao excluir hospital!',
+                                                buttons: [
+                                                    { text: 'ok', role: 'ok', cssClass: 'confirmarAction' },
+                                                ],
+                                            });
+                                            await alert.present();
+                                            return;
+                                        }
+                                    })
+                            );
+
+
+                        },
                     },
-                },
-            ],
-        });
-        await alert.present();
+                ],
+            });
+            await alert.present();
+
+        }
+        catch(error){
+            console.log(error)
+        }
+        finally{
+            setTimeout(() => {
+                this.carregarHospitais()
+            }, 1000);
+        }
+        
+        
     }
 
     async salvarConfig() {
